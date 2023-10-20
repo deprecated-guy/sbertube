@@ -1,0 +1,10 @@
+{
+  "semi": true,
+  "useTabs": true,
+  "printWidth": 120,
+	"endOfLine": "lf",
+	"singleQuote": true,
+	"tabWidth": 2,
+	"embeddedLanguageFormatting": "auto",
+	"htmlWhitespaceSensitivity": "css"
+}

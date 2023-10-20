@@ -1,0 +1,24 @@
+.hint {
+	border-radius: 10px;
+	position: absolute;
+	min-width: 100px;
+	min-height: 100px;
+	background: rgba(#000, 50%);
+	margin-top: 40px;
+	right: -70px;
+
+	&:after {
+		top: 0;
+		content: '';
+		border-top: 10px solid rgba(0 0 0 / 50%);
+		border-right: 10px solid transparent;
+		border-left: 10px solid transparent;
+		position: absolute;
+		width: 0;
+		height: 0;
+		transform: rotateX(180deg) translateY(10px);
+		margin-right: 40px;
+		right: 32px;
+		clear: both;
+	}
+}

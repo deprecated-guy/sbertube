@@ -1,0 +1,25 @@
+.player-container {
+	display: flex;
+	flex-direction: column;
+
+	&.sm {
+		margin: 5px;
+		width: 400px;
+		height: 250px;
+	}
+
+	&.lg {
+		margin: 5px;
+		width: 600px;
+		height: 400px;
+	}
+
+	&.full {
+		width: 100%;
+		height: 500px;
+	}
+	&.md {
+		width: 500px;
+		height: 350px;
+	}
+}

@@ -1,0 +1,35 @@
+<div class="player-container {{ size }}">
+	<vg-player (onPlayerReady)="onPlayerReady($event)">
+		<vg-overlay-play></vg-overlay-play>
+		<vg-buffering></vg-buffering>
+
+		<vg-controls>
+			<vg-play-pause></vg-play-pause>
+			<vg-scrub-bar>
+				<vg-scrub-bar-current-time
+					style="margin-right: 50%"
+				></vg-scrub-bar-current-time>
+			</vg-scrub-bar>
+			<vg-time-display
+				vgProperty="current"
+			></vg-time-display>
+			<vg-time-display vgProperty="total"></vg-time-display>
+			<vg-mute></vg-mute>
+			<vg-volume vgFor="media"></vg-volume>
+			<vg-quality-selector> </vg-quality-selector>
+
+			<vg-fullscreen></vg-fullscreen>
+		</vg-controls>
+		<video
+			type="video"
+			#myMedia
+			[src]="source"
+			[vgMedia]="$any(myMedia)"
+			id="media"
+			preload="auto"
+			sbVideo
+			(duration)="getDuration($event)"
+			crossorigin
+		></video>
+	</vg-player>
+</div>
