@@ -17,7 +17,7 @@
 					"prefix": "sb"
 				},
         "@schematics/angular:pipe": {
-          "standalone": true,
+          "standalone": true
         }
       },
       "root": "",
