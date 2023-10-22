@@ -1,0 +1,10 @@
+<div class="user-banner justify-center" [style.background-color]="color">
+	<div class="user-letter">
+		<ng-content></ng-content>
+	</div>
+	<div class="user-info" [style.font-size]="fontSize">
+		<p>Welcome,</p>
+		&nbsp;
+		<b>{{ user.username | titlecase }}</b>
+	</div>
+</div>

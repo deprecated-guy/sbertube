@@ -1,0 +1,77 @@
+<header class="w-full z-10 h-[60px] bg-purple-600 flex fixed">
+	<ng-container *ngIf="!(IS_MOBILE$ | async) && !(IS_LANDSCAPE$ | async); then full; else mobile"></ng-container>
+
+	<ng-template #full>
+		<div class="max-w-[900px] flex w-full items-center px-[20px] mx-auto">
+			<nav class="flex w-full">
+				<div class="text-white">
+					<span class="material-icons">menu</span>
+				</div>
+				<div class="w-[250px] mx-auto flex">
+					<input class="px-[10px] py-[5px] rounded-l-md" />
+					<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
+				</div>
+			</nav>
+			<div class="flex items-center">
+				<ng-container *ngIf="user$ | async as user; else register">
+					<sb-user-avatar [width]="40" [height]="40" [color]="user.avatarBackground" [user]="user"></sb-user-avatar>
+				</ng-container>
+				<ng-template #register>
+					<a routerLink="auth/register" routerLinkActive="active" class="flex items-center text-white cursor-pointer"
+						><span class="material-icons text-white">login</span></a
+					>
+				</ng-template>
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-template #mobile>
+		<ng-container *ngIf="IS_MOBILE$ && !(IS_LANDSCAPE$ | async); else landscape">
+			<div class="max-w-[800x] z-10 flex w-full items-center px-[20px] mx-auto">
+				<nav class="flex w-full">
+					<div class="text-white">
+						<span class="material-icons">menu</span>
+					</div>
+					<div class="w-[250px] mx-auto flex">
+						<input class="px-[10px] py-[5px] rounded-l-md" />
+						<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
+					</div>
+				</nav>
+				<div class="flex items-center">
+					<ng-container *ngIf="user$ | async as user; else register">
+						<sb-user-avatar [width]="40" [height]="40" [user]="user" [color]="user.avatarBackground"></sb-user-avatar>
+					</ng-container>
+					<ng-template #register>
+						<a routerLink="auth/register" routerLinkActive="active" class="flex cursor-pointer items-center text-white"
+							><span class="material-icons text-white">login</span></a
+						>
+					</ng-template>
+				</div>
+			</div>
+		</ng-container>
+	</ng-template>
+
+	<ng-template #landscape>
+		<div class="max-w-[700x] z-10 flex w-full items-center px-[20px] mx-auto">
+			<nav class="flex w-full">
+				<div class="text-white">
+					<span class="material-icons">menu</span>
+				</div>
+				<div class="w-[250px] mx-auto flex">
+					<input class="px-[10px] py-[5px] rounded-l-md" />
+					<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
+				</div>
+			</nav>
+			<div class="flex items-center">
+				<ng-container *ngIf="user$ | async as user; else register">
+					<sb-user-avatar [width]="40" [height]="40" [color]="user.avatarBackground" [user]="user"></sb-user-avatar>
+				</ng-container>
+				<ng-template #register>
+					<a routerLink="auth/register" routerLinkActive="active" class="flex items-center cursor-pointer text-white"
+						><span class="material-icons cursor-pointer">login</span></a
+					>
+				</ng-template>
+			</div>
+		</div>
+	</ng-template>
+</header>

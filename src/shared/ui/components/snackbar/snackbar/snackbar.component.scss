@@ -1,0 +1,45 @@
+.snack {
+	top: 80%;
+	left: 30%;
+
+	flex-direction: column;
+
+	height: auto;
+	min-height: 40px;
+
+	animation: show 0.3s ease-in-out;
+
+	color: white;
+
+	background: rgba(#000, 0.5);
+}
+
+.removing {
+	animation: hide 0.3s ease-in-out;
+}
+
+@keyframes show {
+	from {
+		transform: translateY(100%);
+
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0%);
+
+		opacity: 1;
+	}
+}
+
+@keyframes hide {
+	from {
+		transform: translateY(0%);
+
+		opacity: 1;
+	}
+	to {
+		transform: translateY(100%);
+
+		opacity: 0;
+	}
+}

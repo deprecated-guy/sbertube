@@ -1,0 +1,8 @@
+<div class="avatar" [style.background-color]="color" [style.width]="width" [style.height]="height">
+	<ng-container *ngIf="firstUsernameLetter; else loading">
+		<p [style.font-size]="fontSize">
+			{{ firstUsernameLetter }}
+		</p>
+	</ng-container>
+	<ng-template #loading><sb-skeleton-loader width="50px" height="5px"></sb-skeleton-loader></ng-template>
+</div>

@@ -1,0 +1,40 @@
+.sidebar {
+	z-index: 2;
+
+	animation: sidebar-in 0.3s ease-in-out;
+}
+
+.sidebar.sidebar-out {
+	z-index: 1;
+
+	animation: sidebar-out 0.3s ease-in-out;
+}
+
+.back-drop {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	background: rgba(#000, 0.4);
+}
+
+@keyframes sidebar-in {
+	from {
+		width: 0;
+	}
+	to {
+		width: 295px;
+	}
+}
+
+@keyframes sidebar-out {
+	from {
+		width: 290px;
+	}
+	to {
+		width: 0;
+	}
+}
