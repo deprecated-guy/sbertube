@@ -3,7 +3,6 @@ import { Directive, HostBinding, Input } from '@angular/core';
 @Directive({
 	selector: '[sbExtendedBtn]',
 	standalone: true,
-	inputs: ['appearance', 'rounding'],
 	exportAs: 'extendedBtn',
 })
 export class AppearanceDirective {
