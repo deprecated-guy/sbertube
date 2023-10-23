@@ -1,3 +1,20 @@
 .active {
 	border-bottom: 1px solid white;
 }
+
+button {
+	border-radius: 4px;
+	transition: all 0.2s;
+	&:hover {
+		background: rgba(#ccc, 0.3);
+	}
+
+	&:active {
+		background: #e2ecfa;
+		color: #5f6368;
+	}
+
+	span {
+		z-index: 2;
+	}
+}

@@ -9,7 +9,7 @@
         "@schematics/angular:component": {
           "style": "scss",
           "standalone": true,
-					"changeDetection": "Default",
+					"changeDetection": "OnPush",
 					"prefix": "sb"
 				},
         "@schematics/angular:directive": {

@@ -1,0 +1,23 @@
+<div class="w-full flex flex-col">
+	@if( currentUser(); as user){
+	<sb-user-banner
+		[user]="user"
+		[color]="user.bannerBackground"
+		[fontSize]="40"
+		[rippleColor]="user.avatarBackground"
+		hoverBgColor="#f1f1f1"
+		[btnBgColor]="user.bannerBackground"
+	>
+		<sb-user-avatar
+			[user]="user"
+			[color]="user.avatarBackground"
+			[width]="200"
+			[height]="200"
+			[fontSize]="40"
+		></sb-user-avatar>
+	</sb-user-banner>
+
+	}
+</div>
+
+<sb-user-page-switche></sb-user-page-switche>

@@ -1,0 +1,17 @@
+<button
+	sbRipple
+	sbExtendedBtn
+	[appearance]="appearance"
+	[rounding]="rounding"
+	[rippleColor]="rippleColor"
+	[ngStyle]="{
+		background: isHovered ? hoverBgColor : '',
+		'background-color': isActive ? btnActiveBg : ''
+	}"
+	style=":active"
+	draggable="true"
+	class="bg-{{ background }} min-w-[40px]  flex justify-center relative overflow-hidden py-[3px] "
+>
+	<sb-icon [class]="class" [icon]="icon" [name]="name" [width]="width" [height]="height"></sb-icon>
+	<span class="ml-[10px] font-semibold z-1"><ng-content></ng-content></span>
+</button>

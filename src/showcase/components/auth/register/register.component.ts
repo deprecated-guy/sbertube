@@ -20,6 +20,7 @@ import { PersistenceService } from '@shared/services';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { SbValidators } from '@shared/validators';
+import { ButtonComponent } from '@showcase/components/ui';
 
 @Component({
 	selector: 'sb-register',
@@ -33,6 +34,7 @@ import { SbValidators } from '@shared/validators';
 		ServerErrorsComponent,
 		ControlComponent,
 		NgxMaskDirective,
+		ButtonComponent,
 	],
 	templateUrl: './register.component.html',
 	styleUrls: ['./register.component.scss'],

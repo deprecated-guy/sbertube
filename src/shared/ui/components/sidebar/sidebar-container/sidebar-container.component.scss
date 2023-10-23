@@ -5,7 +5,7 @@
 }
 
 .sidebar.sidebar-out {
-	z-index: 1;
+	z-index: 2;
 
 	animation: sidebar-out 0.3s ease-in-out;
 }
@@ -23,18 +23,18 @@
 
 @keyframes sidebar-in {
 	from {
-		width: 0;
+		transform: translateX(-100%);
 	}
 	to {
-		width: 295px;
+		transform: translateX(0);
 	}
 }
 
 @keyframes sidebar-out {
 	from {
-		width: 290px;
+		transform: translateX(0);
 	}
 	to {
-		width: 0;
+		transform: translateX(-100%);
 	}
 }

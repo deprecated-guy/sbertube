@@ -10,4 +10,8 @@ export const routes: Routes = [
 		path: 'auth',
 		loadChildren: () => import('src/showcase/components/auth/routes').then((r) => r.routes),
 	},
+	{
+		path: 'user',
+		loadChildren: () => import('src/showcase/components/user/routes').then((r) => r.routes),
+	},
 ];

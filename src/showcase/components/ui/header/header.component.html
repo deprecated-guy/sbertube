@@ -1,16 +1,22 @@
 <header class="w-full z-10 h-[60px] bg-purple-600 flex fixed">
 	<ng-container *ngIf="!(IS_MOBILE$ | async) && !(IS_LANDSCAPE$ | async); then full; else mobile"></ng-container>
-
 	<ng-template #full>
 		<div class="max-w-[900px] flex w-full items-center px-[20px] mx-auto">
 			<nav class="flex w-full">
-				<div class="text-white">
-					<span class="material-icons">menu</span>
-				</div>
-				<div class="w-[250px] mx-auto flex">
-					<input class="px-[10px] py-[5px] rounded-l-md" />
-					<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
-				</div>
+				<button
+					draggable="true"
+					(click)="open(sidebar)"
+					class="text-white bg-transparent min-w-[40px] flex px-[10px] relative overflow-hidden py-[5px] items-center text-center"
+				>
+					<sb-icon [class]="'flex items-center '" [name]="'complete'" icon="bars-2" [width]="24" [height]="24">
+					</sb-icon>
+				</button>
+				<form class="w-[250px] mx-auto flex" action="" [formGroup]="search">
+					<div class="w-[250px] mx-auto flex">
+						<input formControlName="search" class="px-[10px] py-[5px] rounded-l-md outline-none border-none" />
+						<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
+					</div>
+				</form>
 			</nav>
 			<div class="flex items-center">
 				<ng-container *ngIf="user$ | async as user; else register">
@@ -29,12 +35,20 @@
 		<ng-container *ngIf="IS_MOBILE$ && !(IS_LANDSCAPE$ | async); else landscape">
 			<div class="max-w-[800x] z-10 flex w-full items-center px-[20px] mx-auto">
 				<nav class="flex w-full">
-					<div class="text-white">
-						<span class="material-icons">menu</span>
-					</div>
+					<button
+						draggable="true"
+						(click)="open(sidebar)"
+						class="text-white bg-transparent min-w-[40px] flex px-[10px] relative overflow-hidden py-[5px] items-center text-center"
+					>
+						<sb-icon [class]="'flex items-center '" [name]="'complete'" icon="bars-2" [width]="24" [height]="24">
+						</sb-icon>
+					</button>
+
 					<div class="w-[250px] mx-auto flex">
-						<input class="px-[10px] py-[5px] rounded-l-md" />
-						<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
+						<form class="w-[250px] mx-auto flex" action="" [formGroup]="search">
+							<input formControlName="search" class="px-[10px] py-[5px] rounded-l-md outline-none border-none" />
+							<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
+						</form>
 					</div>
 				</nav>
 				<div class="flex items-center">
@@ -54,12 +68,19 @@
 	<ng-template #landscape>
 		<div class="max-w-[700x] z-10 flex w-full items-center px-[20px] mx-auto">
 			<nav class="flex w-full">
-				<div class="text-white">
-					<span class="material-icons">menu</span>
-				</div>
+				<button
+					draggable="true"
+					(click)="open(sidebar)"
+					class="text-white bg-transparent min-w-[40px] flex px-[10px] relative overflow-hidden py-[5px] items-center text-center"
+				>
+					<sb-icon [class]="'flex items-center '" [name]="'complete'" icon="bars-2" [width]="24" [height]="24">
+					</sb-icon>
+				</button>
 				<div class="w-[250px] mx-auto flex">
-					<input class="px-[10px] py-[5px] rounded-l-md" />
-					<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
+					<form class="w-[250px] mx-auto flex" action="" [formGroup]="search">
+						<input formControlName="search" class="px-[10px] py-[5px] rounded-l-md outline-none border-none" />
+						<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
+					</form>
 				</div>
 			</nav>
 			<div class="flex items-center">
@@ -75,3 +96,27 @@
 		</div>
 	</ng-template>
 </header>
+
+<ng-template #sidebar>
+	<div class="flex flex-col w-full">
+		<ul class="flex justify-between bg-gray-100 border-b border-gray-300 flex-col">
+			<li
+				class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+				routerLink="/"
+				routerLinkActive="bg-gray-200"
+			>
+				Home
+			</li>
+			<li class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200">Trending</li>
+			<li class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200">Subscriptions</li>
+			<li
+				class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+				routerLink="/user/account"
+				routerLinkActive="bg-gray-200"
+			>
+				Library
+			</li>
+			<li class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200">History</li>
+		</ul>
+	</div>
+</ng-template>

@@ -8,3 +8,4 @@ export * from './hint';
 export * from './loaders';
 export * from './server-errors';
 export * from './form-error';
+export * from './icon';

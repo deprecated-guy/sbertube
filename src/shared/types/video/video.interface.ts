@@ -8,7 +8,11 @@ export interface Video {
 	body: string;
 	path: string;
 	comments: CommentResponse[];
+	uploadedAt: string;
 	watchedTime: number;
 	timeToWatch: number;
 	likesCount: number;
+	dislikesCount: number;
+	isLiked: boolean;
+	isDisliked: boolean;
 }

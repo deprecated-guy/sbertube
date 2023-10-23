@@ -1,136 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ButtonComponent } from '@showcase/components/ui';
+import { VideoLoaderService } from '@showcase/services';
+import { SEARCH_FORM } from '@di';
+import { IconComponent, PlayerComponent } from '@ui';
+import { UserAvatarComponent } from '@shared/ui/components/user';
 
 @Component({
 	selector: 'sb-welcome-page',
 	standalone: true,
-	imports: [CommonModule],
+	imports: [CommonModule, ButtonComponent, IconComponent, PlayerComponent, UserAvatarComponent],
 	templateUrl: './welcome-page.component.html',
 	styleUrls: ['./welcome-page.component.scss'],
-	animations: [
-		trigger('dropdown', [
-			state(
-				'open',
-				style({
-					opacity: 1,
-					transform: 'translateY(0)',
-				}),
-			),
-			state(
-				'closed',
-				style({
-					opacity: 0,
-					transform: 'translateY(-10px)',
-				}),
-			),
-			transition('closed => open', animate('300ms ease-in')),
-			transition('open => closed', animate('300ms ease-out')),
-		]),
-	],
+	animations: [],
 })
 export class WelcomePageComponent {
-	protected name = '';
-	protected method = '';
-	protected state = 'closed';
-	protected names: string[] = [
-		'Аарон',
-		'Абрам',
-		'Аваз',
-		'Аввакум',
-		'Август',
-		'Августа',
-		'Августин',
-		'Августина',
-		'Авдей',
-		'Авдий',
-		'Авдотья',
-		'Авигея',
-		'Авксентий',
-		'Авраам',
-		'Аврор',
-		'Аврора',
-		'Автандил',
-		'Автоноя',
-		'Агап',
-		'Агапия',
-		'Агата',
-		'Агафон',
-		'Агафья',
-		'Аггей',
-		'Аглая',
-		'Агнес',
-		'Агнесса',
-		'Агнета',
-		'Агния',
-		'Агриппина',
-		'Агунда',
-		'Ада',
-		'Адам',
-		'Аделаида',
-		'Аделина',
-		'Аделия',
-		'Адель',
-		'Адельфина',
-		'Адиля',
-		'Адис',
-		'Адольф',
-		'Адриан',
-		'Адриана',
-		'Адриенна',
-		'Аза',
-		'Азалия',
-		'Азамат',
-		'Азарий',
-		'Азат',
-		'Азиза',
-		'Аида',
-		'Айганым',
-		'Айгерим',
-		'Айгуль',
-		'Айдар',
-		'Айжан',
-		'Айлин',
-		'Айнагуль',
-		'Айнур',
-		'Айрат',
-		'Акакий',
-		'Аким',
-		'Аксён',
-		'Аксинья',
-		'Акулина',
-		'Алан',
-		'Алана',
-		'Алдона',
-		'Алевтин',
-		'Алевтина',
-		'Александр',
-		'Александра',
-		'Александрина',
-		'Алексей',
-		'Алексий',
-		'Ален',
-		'Алёна',
-		'Алеся',
-		'Али',
-		'Алика',
-		'Алико',
-		'Алима',
-		'Алина',
-		'Алира',
-		'Алиса',
-		'Алихан',
-		'Алия',
-		'Алла',
-		'Алмаз',
-		'Андрей',
-	];
-
-	protected changeState() {
-		this.state = this.state == 'closed' ? 'open' : 'closed';
-	}
-
-	protected onSubmit(value: string) {
-		this.name = value;
-	}
+	private _videoLoader = inject(VideoLoaderService);
+	protected search = inject(SEARCH_FORM);
+	protected videos$ = this._videoLoader.getVideos(this.search.get('search')?.value as string);
 }

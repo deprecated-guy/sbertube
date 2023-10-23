@@ -1,10 +1,24 @@
-<div class="user-banner justify-center" [style.background-color]="color">
-	<div class="user-letter">
+<div class="flex items-center justify-center h-[350px] flex-col py-[20px]" [style.background-color]="color">
+	<div class="mr-auto ml-[20px]">
+		<sb-button
+			[background]="btnBgColor"
+			icon="arrow-left"
+			name="complete"
+			[width]="22"
+			[height]="22"
+			[rippleColor]="rippleColor"
+			[hoverBgColor]="hoverBgColor"
+			[btnActiveBg]="hoverBgColor"
+			routerLink="/"
+			>Back</sb-button
+		>
+	</div>
+	<div class="">
 		<ng-content></ng-content>
 	</div>
-	<div class="user-info" [style.font-size]="fontSize">
+	<div class="flex mt-[20px]" [style.font-size]="fontSize">
 		<p>Welcome,</p>
 		&nbsp;
-		<b>{{ user.username | titlecase }}</b>
+		<b class="text-white ml-[20px]">{{ user.username | titlecase }}</b>
 	</div>
 </div>
