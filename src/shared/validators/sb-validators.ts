@@ -12,6 +12,6 @@ export class SbValidators {
 
 	static validateEmail: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
 		const emailControl = control.get('email');
-		return /^[\w-\]+@([\w-]+\)+[\w-]{2,4}$/g.test(emailControl?.value) ? null : { inCorrect: true };
+		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailControl?.value) ? null : { inCorrect: true };
 	};
 }

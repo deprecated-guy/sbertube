@@ -21,3 +21,135 @@
 </div>
 
 <sb-user-page-switche></sb-user-page-switche>
+<div class="flex w-full mx-auto">
+	<div class="ml-0 w-[50%] flex-col" [@open]="settingsState">
+		<header class="w-full bg-gray-200 py-[10px]">
+			<span class="flex max-w-[400px] justify-center mx-auto" (click)="changeSettingsState()">
+				<sb-icon name="complete" icon="user" [fillColor]="'#ccc'" [width]="24" [height]="24"></sb-icon>
+				<span class="ml-[20px] text-gray-400" *ngIf="settingsState == 'open'">Account Settings</span>
+			</span>
+		</header>
+		<div class="w-full h-[370px] overflow-y-auto bg-gray-400 flex justify-center text-gray-300">
+			<ul class="list-none h-full flex-col w-[400px] mx-auto" *ngIf="settingsState == 'open'">
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Your Email</span><span>{{ currentUser().email }}</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Your Username</span
+					><sb-control
+						type="text"
+						[inputValue]="currentUser().username"
+						[placeholder]="currentUser().username"
+						[width]="150"
+						[height]="30"
+						[isDisabled]="true"
+					></sb-control>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Your Password</span
+					><sb-control
+						[inputValue]="currentUser().password"
+						[isDisabled]="true"
+						type="password"
+						[width]="150"
+					></sb-control>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Uploads Count</span><span>{{ currentUser().videos.length }}</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Watched videos count</span><span>{{ currentUser().watchedVideos.length }}</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Comments Count</span><span>{{ currentUser().comments.length }}</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>All Time Watch</span><span>{{ allWatchedTime }} min</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Avatar Background Color</span
+					><sb-control
+						[inputValue]="currentUser().avatarBackground"
+						type="color"
+						[isDisabled]="true"
+						[width]="150"
+					></sb-control>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Banner Background Color</span>
+					<sb-control
+						[inputValue]="currentUser().bannerBackground"
+						type="color"
+						[isDisabled]="true"
+						[width]="150"
+					></sb-control>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="ml-0 w-[50%] flex-col" [@open]="settingsState">
+		<header class="w-full bg-gray-200 py-[10px]">
+			<span class="flex max-w-[400px] justify-center mx-auto" (click)="changeSettingsState()">
+				<sb-icon name="complete" icon="user" [fillColor]="'#ccc'" [width]="24" [height]="24"></sb-icon>
+				<span class="ml-[20px] text-gray-400" *ngIf="settingsState == 'open'">Account Settings</span>
+			</span>
+		</header>
+		<div class="w-full h-[370px] overflow-y-auto bg-gray-400 flex justify-center text-gray-300">
+			<ul class="list-none h-full flex-col w-[400px] mx-auto" *ngIf="settingsState == 'open'">
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Your Email</span><span>{{ currentUser().email }}</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Your Username</span
+					><sb-control
+						type="text"
+						[inputValue]="currentUser().username"
+						[placeholder]="currentUser().username"
+						[width]="150"
+						[height]="30"
+						[isDisabled]="true"
+					></sb-control>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Your Password</span
+					><sb-control
+						[inputValue]="currentUser().password"
+						[isDisabled]="true"
+						type="password"
+						[width]="150"
+					></sb-control>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Uploads Count</span><span>{{ currentUser().videos.length }}</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Watched videos count</span><span>{{ currentUser().watchedVideos.length }}</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Comments Count</span><span>{{ currentUser().comments.length }}</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>All Time Watch</span><span>{{ allWatchedTime }} min</span>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Avatar Background Color</span
+					><sb-control
+						[inputValue]="currentUser().avatarBackground"
+						type="color"
+						[isDisabled]="true"
+						[width]="150"
+					></sb-control>
+				</li>
+				<li class="my-[10px] py-[10px] flex w-full justify-between">
+					<span>Banner Background Color</span>
+					<sb-control
+						[inputValue]="currentUser().bannerBackground"
+						type="color"
+						[isDisabled]="true"
+						[width]="150"
+					></sb-control>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IconComponent } from '@ui';
-
 @Component({
 	selector: 'sb-user-page-switche',
 	standalone: true,

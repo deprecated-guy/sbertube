@@ -37,6 +37,7 @@ function convertToPx(v: number) {
 			[style.padding-top]="paddingY"
 			[style.padding-bottom]="paddingY"
 			[style.font-size]="fontSize"
+			[disabled]="isDisabled"
 			[placeholder]="placeholder"
 			(input)="updateValue($event)"
 			[attr.aria-autocomplete]="enableAutocomplete"
@@ -83,6 +84,7 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 	@Input({ transform: (v: number) => convertToPx(v) }) height = 30;
 
 	@Input({ transform: (v: number) => convertToPx(v) }) width = 30;
+	@Input() isDisabled = false;
 
 	@Input() control!: AbstractControl;
 

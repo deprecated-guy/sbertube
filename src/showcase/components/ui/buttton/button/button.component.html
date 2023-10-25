@@ -8,10 +8,9 @@
 		background: isHovered ? hoverBgColor : '',
 		'background-color': isActive ? btnActiveBg : ''
 	}"
-	style=":active"
 	draggable="true"
-	class="bg-{{ background }} min-w-[40px]  flex justify-center relative overflow-hidden py-[3px] "
+	class="bg-{{ background }} min-w-[40px] px-[10px] flex justify-center relative overflow-hidden py-[3px] "
 >
 	<sb-icon [class]="class" [icon]="icon" [name]="name" [width]="width" [height]="height"></sb-icon>
-	<span class="ml-[10px] font-semibold z-1"><ng-content></ng-content></span>
+	<span class="ml-[10px] font-semibold"><ng-content></ng-content></span>
 </button>

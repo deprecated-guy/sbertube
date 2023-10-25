@@ -16,8 +16,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npx lint-staged & stylelint **/*.sccs",
-      "pre-push": "npx lint-staged & stylelint **/*.sccs"
+      "pre-commit": "npx lint-staged & npx stylelint **/*.sccs",
+      "pre-push": "npx lint-staged & npx stylelint **/*.sccs"
     }
   },
   "lint-staged": {
@@ -27,7 +27,7 @@
       "git add . -f "
     ],
     "*.scss": [
-      "stylelint **/*.scss"
+      "npx stylelint **/*.scss"
     ]
   },
   "private": true,
