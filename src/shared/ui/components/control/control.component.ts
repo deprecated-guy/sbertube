@@ -113,7 +113,9 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 	}
 
 	protected onChange = (v: unknown) => {};
+
 	protected onTouch = () => {};
+
 	registerOnChange(fn: (v: unknown) => void): void {
 		this.onChange = fn;
 	}

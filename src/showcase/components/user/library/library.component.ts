@@ -113,7 +113,7 @@ export class LibraryComponent {
 					.sendVideo(data)
 					.pipe(takeUntilDestroyed(this._destroyRef))
 					.subscribe({
-						next: (user) => {
+						next: () => {
 							this._toastRef.createToast({ type: 'success', text: 'Updated Successfully', status: 200 });
 						},
 						error: (err: BackendErrors) => {
