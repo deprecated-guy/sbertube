@@ -1,7 +1,7 @@
 .sidebar {
-	z-index: 2;
-
+	z-index: 3;
 	animation: sidebar-in 0.3s ease-in-out;
+	bottom: 0;
 }
 
 .sidebar.sidebar-out {
@@ -11,14 +11,16 @@
 }
 
 .back-drop {
-	position: absolute;
+	position: fixed;
 	z-index: 1;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
 
+	min-height: 10vh;
 	background: rgba(#000, 0.4);
+	height: 100d;
 }
 
 @keyframes sidebar-in {

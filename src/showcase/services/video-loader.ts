@@ -6,7 +6,7 @@ import { map, Observable } from 'rxjs';
 @Injectable({
 	providedIn: 'root',
 })
-export class VideoLoaderService {
+export class VideoLoader {
 	private httpRoute = 'http://localhost:3001/video/';
 	private http = inject(HttpClient);
 	private destroy = inject(DestroyRef);

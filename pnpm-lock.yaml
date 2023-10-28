@@ -20,6 +20,9 @@ dependencies:
   '@angular/forms':
     specifier: ^17.0.0-rc.0
     version: 17.0.0-rc.0(@angular/common@17.0.0-rc.0)(@angular/core@17.0.0-rc.0)(@angular/platform-browser@17.0.0-rc.0)(rxjs@7.8.1)
+  '@angular/language-service':
+    specifier: ^16.2.11
+    version: 16.2.11
   '@angular/platform-browser':
     specifier: ^17.0.0-rc.0
     version: 17.0.0-rc.0(@angular/animations@17.0.0-rc.0)(@angular/common@17.0.0-rc.0)(@angular/core@17.0.0-rc.0)
@@ -32,12 +35,18 @@ dependencies:
   '@commitlint/config-conventional':
     specifier: ^18.0.0
     version: 18.0.0
+  '@types/ffmpeg':
+    specifier: ^1.0.6
+    version: 1.0.6
   '@types/hammerjs':
     specifier: ^2.0.43
     version: 2.0.43
   '@videogular/ngx-videogular':
     specifier: ^8.0.0
     version: 8.0.0(@angular/common@17.0.0-rc.0)(@angular/core@17.0.0-rc.0)(@angular/platform-browser-dynamic@17.0.0-rc.0)(core-js@3.33.1)(rxjs@7.8.1)(zone.js@0.14.0)
+  date-fns:
+    specifier: ^2.30.0
+    version: 2.30.0
   eslint-config-prettier:
     specifier: ^9.0.0
     version: 9.0.0(eslint@8.51.0)
@@ -112,6 +121,12 @@ devDependencies:
   '@angular/compiler-cli':
     specifier: ^17.0.0-rc.0
     version: 17.0.0-rc.0(@angular/compiler@17.0.0-rc.0)(typescript@5.2.2)
+  '@ffmpeg/core':
+    specifier: ^0.12.4
+    version: 0.12.4
+  '@ffmpeg/ffmpeg':
+    specifier: ^0.12.7
+    version: 0.12.7
   '@html-eslint/eslint-plugin':
     specifier: ^0.20.0
     version: 0.20.0
@@ -136,6 +151,9 @@ devDependencies:
   eslint-plugin-unused-imports:
     specifier: ^3.0.0
     version: 3.0.0(@typescript-eslint/eslint-plugin@5.62.0)(eslint@8.51.0)
+  ffmpeg:
+    specifier: ^0.0.4
+    version: 0.0.4
   jasmine-core:
     specifier: ~4.6.0
     version: 4.6.0
@@ -576,6 +594,11 @@ packages:
       '@angular/platform-browser': 17.0.0-rc.0(@angular/animations@17.0.0-rc.0)(@angular/common@17.0.0-rc.0)(@angular/core@17.0.0-rc.0)
       rxjs: 7.8.1
       tslib: 2.6.2
+    dev: false
+
+  /@angular/language-service@16.2.11:
+    resolution: {integrity: sha512-rzZcqeBvgByu27gZk/f0K1VuwIYbScOG3sJYyWXBdSMmjqnl3ARwEEI/zyQT7I6uU6I9SwmoJhy44pQlrDDD7g==}
+    engines: {node: ^16.14.0 || >=18.10.0}
     dev: false
 
   /@angular/platform-browser-dynamic@17.0.0-rc.0(@angular/common@17.0.0-rc.0)(@angular/compiler@17.0.0-rc.0)(@angular/core@17.0.0-rc.0)(@angular/platform-browser@17.0.0-rc.0):
@@ -1754,7 +1777,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
-    dev: true
 
   /@babel/template@7.22.15:
     resolution: {integrity: sha512-QPErUVm4uyJa60rkI73qneDacvdvzxshT3kksGqlGWYdOTIUOwJ7RDUL8sGqslY1uXWSL6xMFKEXDS3ox2uF0w==}
@@ -2433,6 +2455,23 @@ packages:
     resolution: {integrity: sha512-HxjQ8Qn+4SI3/AFv6sOrDB+g6PpUTDwSJiQqOrnneEk8L71161srI9gjzzZvYVbzHiVg/BvcH95+cK/zfIt4pg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
+  /@ffmpeg/core@0.12.4:
+    resolution: {integrity: sha512-m+H+P66TSEPlf1vK5WwVDr+Uksd1GULi7jk4o/447X5HQouTLaZjicAXC00C/IrrmyqJ8YX/8cfhqMryvNZGSg==}
+    engines: {node: '>=16.x'}
+    dev: true
+
+  /@ffmpeg/ffmpeg@0.12.7:
+    resolution: {integrity: sha512-Uw9h1tNU4/Q4YRrgBKvnKiH5gpL+nl8h4HRfvSK0K93MqVOan6Qs3Lj82l9i1qj6xQLPramXw0Wl6g65W4pfnA==}
+    engines: {node: '>=18.x'}
+    dependencies:
+      '@ffmpeg/types': 0.12.2
+    dev: true
+
+  /@ffmpeg/types@0.12.2:
+    resolution: {integrity: sha512-NJtxwPoLb60/z1Klv0ueshguWQ/7mNm106qdHkB4HL49LXszjhjCCiL+ldHJGQ9ai2Igx0s4F24ghigy//ERdA==}
+    engines: {node: '>=16.x'}
+    dev: true
+
   /@html-eslint/eslint-plugin@0.20.0:
     resolution: {integrity: sha512-P5DeuqL5TmIGIiWjeezGDZPM3rXzL715MEU0QR9xOOmqNTshG3yLsk7fkfLsLiDjm0x6r4e13/5mUCbEQTek7Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -2938,6 +2977,10 @@ packages:
       '@types/qs': 6.9.9
       '@types/serve-static': 1.15.4
     dev: true
+
+  /@types/ffmpeg@1.0.6:
+    resolution: {integrity: sha512-57/Vl/BJNDaYHvTzf/pjSrhkRi3zNSFzzjM4e7I3oSfopl7JOIX4XgGnYutDePEsoGXpWatzEadtvJ9SO8CgyQ==}
+    dev: false
 
   /@types/hammerjs@2.0.43:
     resolution: {integrity: sha512-wqxfwHk83RS7+6OpytGdo5wqkqtvx+bGaIs1Rwm5NrtQHUfL4OgWs/5p0OipmjmT+fexePh37Ek+mqIpdNjQKA==}
@@ -4478,6 +4521,13 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /date-fns@2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.23.2
+    dev: false
+
   /date-format@4.0.14:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==}
     engines: {node: '>=4.0'}
@@ -5294,6 +5344,12 @@ packages:
     engines: {node: '>=0.8.0'}
     dependencies:
       websocket-driver: 0.7.4
+    dev: true
+
+  /ffmpeg@0.0.4:
+    resolution: {integrity: sha512-3TgWUJJlZGQn+crJFyhsO/oNeRRnGTy6GhgS98oUCIfZrOW5haPPV7DUfOm3xJcHr5q3TJpjk2GudPutrNisRA==}
+    dependencies:
+      when: 3.7.8
     dev: true
 
   /figures@3.2.0:
@@ -8239,7 +8295,6 @@ packages:
 
   /regenerator-runtime@0.14.0:
     resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==}
-    dev: true
 
   /regenerator-transform@0.15.2:
     resolution: {integrity: sha512-hfMp2BoF0qOk3uc5V20ALGDS2ddjQaLrdl7xrGXvAIow7qeWRM2VA2HuCHkUKk9slq3VwEwLNK3DFBqDfPGYtg==}
@@ -9849,6 +9904,10 @@ packages:
   /websocket-extensions@0.1.4:
     resolution: {integrity: sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==}
     engines: {node: '>=0.8.0'}
+    dev: true
+
+  /when@3.7.8:
+    resolution: {integrity: sha512-5cZ7mecD3eYcMiCH4wtRPA5iFJZ50BJYDfckI5RRpQiktMiYTcn0ccLTZOvcbBume+1304fQztxeNzNS9Gvrnw==}
     dev: true
 
   /which@1.3.1:

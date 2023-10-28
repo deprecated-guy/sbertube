@@ -42,12 +42,12 @@ export const LOGIN_FORM = new InjectionToken<FormGroup>('LOGIN', {
 	factory: () => formFactory(['username', 'password'], [Validators.pattern(/[A-Za-z0-9]/gi)]),
 });
 
-export const VIDEO_UPLOAD_FORM = new InjectionToken<FormGroup>('LOGIN', {
+export const VIDEO_UPLOAD_FORM = new InjectionToken<FormGroup>('UPLOAD', {
 	providedIn: 'root',
 	factory: () => formFactory(['title', 'body', 'shortBody'], [], false),
 });
 
-export const COMMENT_FORM = new InjectionToken<FormGroup>('LOGIN', {
+export const COMMENT_FORM = new InjectionToken<FormGroup>('COMMENT', {
 	providedIn: 'root',
 	factory: () => formFactory(['title', 'body'], [], false),
 });

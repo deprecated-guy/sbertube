@@ -9,8 +9,15 @@
 		'background-color': isActive ? btnActiveBg : ''
 	}"
 	draggable="true"
-	class="bg-{{ background }} min-w-[40px] px-[10px] flex justify-center relative overflow-hidden py-[3px] "
+	class="bg-{{ background }} min-w-[40px] px-[10px] overflow-hidden flex justify-center relative  py-[3px] "
 >
-	<sb-icon [class]="class" [icon]="icon" [name]="name" [width]="width" [height]="height"></sb-icon>
+	<sb-icon
+		[fillColor]="fillColor"
+		[class]="class"
+		[icon]="icon"
+		[name]="name"
+		[width]="width"
+		[height]="height"
+	></sb-icon>
 	<span class="ml-[10px] font-semibold"><ng-content></ng-content></span>
 </button>

@@ -11,13 +11,14 @@ export class SnackbarRef {
 	private _component!: ComponentRef<SnackbarOptions>;
 
 	public showSnackbar(options: SnackbarOptions) {
-		if (this._component) return;
+		console.log(this._component);
 		const injector = Injector.create([]);
 
 		const componentRef = this._portal.createPortal(SnackbarComponent, injector) as ComponentRef<SnackbarOptions>;
 		componentRef.instance.template = options.template;
 		componentRef.instance.message = options.message;
 		componentRef.changeDetectorRef.detectChanges();
+		this._component = componentRef;
 	}
 
 	public hideSnackbar() {

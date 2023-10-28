@@ -43,7 +43,7 @@ import { VideoDirective } from '@shared/ui/directives';
 })
 export class PlayerComponent implements OnDestroy {
 	@ViewChild('myMedia', { static: true, read: ElementRef<HTMLVideoElement> })
-	private media!: ElementRef<HTMLVideoElement>;
+	private _media!: ElementRef<HTMLVideoElement>;
 	protected api = inject(VgAPI);
 	private aoiSub$!: Subscription;
 

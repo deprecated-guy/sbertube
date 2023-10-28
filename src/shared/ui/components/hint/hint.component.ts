@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 })
 export class HintComponent {
 	@Input() templateRef!: TemplateRef<unknown>;
+	@Input({ transform: (v: number) => v + 'px' }) left = 0;
+	@Input({ transform: (v: number) => v + 'px' }) top = 0;
 
 	@HostListener('mouseenter')
 	onMouseEnter() {

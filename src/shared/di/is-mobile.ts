@@ -24,6 +24,7 @@ export const IS_MOBILE = new InjectionToken<Observable<boolean>>('', {
 
 const checkIsLandscape = () => {
 	const isLandscape = new BehaviorSubject<boolean>(window.matchMedia('(orientation: landscape)').matches);
+
 	fromEvent(window, 'orientationchange')
 		.pipe(
 			map(() => window.matchMedia('(orientation: landscape)').matches),

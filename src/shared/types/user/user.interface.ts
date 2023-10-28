@@ -10,5 +10,9 @@ export interface User {
 	watchedVideos: VideoResponse[];
 	activationCode: string;
 	bannerBackground: string;
+	bannerBackgroundImage: string;
 	avatarBackground: string;
+	avatarBackgroundImage: string;
+	registerDate: string;
+	userAbout: string;
 }

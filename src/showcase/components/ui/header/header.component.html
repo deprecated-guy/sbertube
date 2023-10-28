@@ -1,122 +1,103 @@
 <header class="w-full z-10 h-[60px] bg-purple-600 flex fixed">
-	<ng-container *ngIf="!(IS_MOBILE$ | async) && !(IS_LANDSCAPE$ | async); then full; else mobile"></ng-container>
-	<ng-template #full>
-		<div class="max-w-[900px] flex w-full items-center px-[20px] mx-auto">
-			<nav class="flex w-full">
-				<button
-					draggable="true"
-					(click)="open(sidebar)"
-					class="text-white bg-transparent min-w-[40px] flex px-[10px] relative overflow-hidden py-[5px] items-center text-center"
-				>
-					<sb-icon [class]="'flex items-center '" [name]="'complete'" icon="bars-2" [width]="24" [height]="24">
-					</sb-icon>
-				</button>
-				<form class="w-[250px] mx-auto flex" action="" [formGroup]="search">
-					<div class="w-[250px] mx-auto flex">
-						<input formControlName="search" class="px-[10px] py-[5px] rounded-l-md outline-none border-none" />
-						<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
-					</div>
-				</form>
-			</nav>
-			<div class="flex items-center">
-				<ng-container *ngIf="user$ | async as user; else register">
-					<sb-user-avatar [width]="40" [height]="40" [color]="user.avatarBackground" [user]="user"></sb-user-avatar>
-				</ng-container>
-				<ng-template #register>
-					<a routerLink="auth/register" routerLinkActive="active" class="flex items-center text-white cursor-pointer"
-						><span class="material-icons text-white">login</span></a
-					>
-				</ng-template>
-			</div>
-		</div>
-	</ng-template>
+	@if((IS_MOBILE$ | async) ||( IS_LANDSCAPE$ | async)) {
+	<div class="max-w-[600px] z-10 flex w-full items-center px-[10px] mx-auto">
+		<nav class="flex w-full">
+			<button
+				draggable="true"
+				(click)="open(sidebar)"
+				class="text-white bg-transparent min-w-[40px] flex px-[10px] relative overflow-hidden py-[5px] items-center text-center"
+			>
+				<sb-icon [class]="'flex items-center '" [name]="'complete'" icon="bars-2" [width]="24" [height]="24"> </sb-icon>
+			</button>
 
-	<ng-template #mobile>
-		<ng-container *ngIf="IS_MOBILE$ && !(IS_LANDSCAPE$ | async); else landscape">
-			<div class="max-w-[800x] z-10 flex w-full items-center px-[20px] mx-auto">
-				<nav class="flex w-full">
-					<button
-						draggable="true"
-						(click)="open(sidebar)"
-						class="text-white bg-transparent min-w-[40px] flex px-[10px] relative overflow-hidden py-[5px] items-center text-center"
-					>
-						<sb-icon [class]="'flex items-center '" [name]="'complete'" icon="bars-2" [width]="24" [height]="24">
-						</sb-icon>
+			<div class="w-[90px] ml-[30px] flex">
+				<form class="w-[95px] flex" action="" [formGroup]="search">
+					<input
+						formControlName="search"
+						class="px-[10px] py-[5px] rounded-l-md rounded-r-none outline-none border-none"
+					/>
+					<button class="p-[5px] bg-white rounded-l-none rounded-r-md">
+						<span class="material-icons">search</span>
 					</button>
-
-					<div class="w-[250px] mx-auto flex">
-						<form class="w-[250px] mx-auto flex" action="" [formGroup]="search">
-							<input formControlName="search" class="px-[10px] py-[5px] rounded-l-md outline-none border-none" />
-							<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
-						</form>
-					</div>
-				</nav>
-				<div class="flex items-center">
-					<ng-container *ngIf="user$ | async as user; else register">
-						<sb-user-avatar [width]="40" [height]="40" [user]="user" [color]="user.avatarBackground"></sb-user-avatar>
-					</ng-container>
-					<ng-template #register>
-						<a routerLink="auth/register" routerLinkActive="active" class="flex cursor-pointer items-center text-white"
-							><span class="material-icons text-white">login</span></a
-						>
-					</ng-template>
-				</div>
+				</form>
 			</div>
-		</ng-container>
-	</ng-template>
-
-	<ng-template #landscape>
-		<div class="max-w-[700x] z-10 flex w-full items-center px-[20px] mx-auto">
-			<nav class="flex w-full">
-				<button
-					draggable="true"
-					(click)="open(sidebar)"
-					class="text-white bg-transparent min-w-[40px] flex px-[10px] relative overflow-hidden py-[5px] items-center text-center"
-				>
-					<sb-icon [class]="'flex items-center '" [name]="'complete'" icon="bars-2" [width]="24" [height]="24">
-					</sb-icon>
-				</button>
-				<div class="w-[250px] mx-auto flex">
-					<form class="w-[250px] mx-auto flex" action="" [formGroup]="search">
-						<input formControlName="search" class="px-[10px] py-[5px] rounded-l-md outline-none border-none" />
-						<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
-					</form>
-				</div>
-			</nav>
-			<div class="flex items-center">
-				<ng-container *ngIf="user$ | async as user; else register">
-					<sb-user-avatar [width]="40" [height]="40" [color]="user.avatarBackground" [user]="user"></sb-user-avatar>
+			<div class="flex items-center ml-auto">
+				<ng-container *ngIf="user$ | async as user; else reg">
+					<a routerLink="/user/account">
+						<sb-user-avatar [user]="user" [color]="user.avatarBackground" [width]="40" [height]="40"></sb-user-avatar>
+					</a>
 				</ng-container>
-				<ng-template #register>
-					<a routerLink="auth/register" routerLinkActive="active" class="flex items-center cursor-pointer text-white"
-						><span class="material-icons cursor-pointer">login</span></a
-					>
+				<ng-template #reg>
+					<a routerLink="/auth/register"> <span class="material-icons">login</span></a>
 				</ng-template>
 			</div>
-		</div>
-	</ng-template>
+		</nav>
+	</div>
+	} @else {
+	<div class="max-w-[1000px] flex w-full items-center px-[20px] mx-auto">
+		<nav class="flex w-full">
+			<button
+				draggable="true"
+				(click)="open(sidebar)"
+				class="text-white bg-transparent min-w-[40px] flex px-[10px] relative overflow-hidden py-[5px] items-center text-center"
+			>
+				<sb-icon [class]="'flex items-center '" [name]="'complete'" icon="bars-2" [width]="24" [height]="24"> </sb-icon>
+			</button>
+			<form class="w-[250px] mx-auto flex" action="" [formGroup]="search">
+				<div class="w-[250px] mx-auto flex">
+					<input formControlName="search" class="px-[10px] py-[5px] rounded-l-md outline-none border-none" />
+					<button class="p-[5px] bg-white rounded-r-md"><span class="material-icons">search</span></button>
+				</div>
+			</form>
+			<div class="flex items-center ml-auto">
+				<ng-container *ngIf="user$ | async as user; else reg">
+					<a routerLink="/user/account">
+						<sb-user-avatar [user]="user" [color]="user.avatarBackground" [width]="40" [height]="40"></sb-user-avatar>
+					</a>
+				</ng-container>
+				<ng-template #reg>
+					<a routerLink="/auth/register"> <span class="material-icons">login</span></a>
+				</ng-template>
+			</div>
+		</nav>
+	</div>
+
+	}
 </header>
 
 <ng-template #sidebar>
-	<div class="flex flex-col w-full">
-		<ul class="flex justify-between bg-gray-100 border-b border-gray-300 flex-col">
+	<div class="flex flex-col w-full pb-[10px] overflow-y-auto overflow-x-hidden">
+		<ul class="flex bg-gray-100 border-b border-gray-300 min-h-[370px] h-auto pb-[10px] flex-col">
 			<li
-				class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+				class="flex py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-3s00"
 				routerLink="/"
 				routerLinkActive="bg-gray-200"
+				[routerLinkActiveOptions]="{ exact: true }"
 			>
 				Home
 			</li>
-			<li class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200">Trending</li>
-			<li class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200">Subscriptions</li>
+			<li class="flex py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-300">Trending</li>
+			<li class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-300">Subscriptions</li>
 			<li
-				class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+				class="flex py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
 				routerLink="/user/account"
 				routerLinkActive="bg-gray-200"
 			>
 				Library
 			</li>
-			<li class="py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-200">History</li>
+			<li class="flex py-4 px-6 cursor-pointer transition-colors duration-300 hover:bg-gray-300">History</li>
+
+			<div class="flex py-4 px-6 cursor-pointer transition-colors duration-300 active:bg-gray-300" *ngIf="token">
+				<sb-settings></sb-settings>
+			</div>
+
+			<li class="flex py-4 px-6 cursor-pointer transition-colors duration-300 active:bg-gray-200" *ngIf="token">
+				<sb-user-editor></sb-user-editor>
+			</li>
+			<li class="flex py-4 px-6 cursor-pointer transition-colors duration-300 active:bg-gray-200" *ngIf="token">
+				<header>Subscription</header>
+				<!-- TODO -->
+			</li>
 		</ul>
 	</div>
 </ng-template>

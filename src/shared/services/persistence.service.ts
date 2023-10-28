@@ -14,4 +14,8 @@ export class PersistenceService {
 	public removeItem(key: string) {
 		localStorage.removeItem(key);
 	}
+
+	public clean() {
+		localStorage.clear();
+	}
 }

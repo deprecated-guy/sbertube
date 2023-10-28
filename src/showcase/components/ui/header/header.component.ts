@@ -12,6 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { IconComponent, SidebarContainerComponent, SidebarRef } from '@ui';
 import { Portal } from '@cdk';
 import { ButtonComponent, RippleDirective } from '@showcase/components/ui';
+import { SettingsComponent } from '@showcase/components/ui/settings/settings.component';
+import { UserEditorComponent } from '@showcase/components/user/account-menu';
 
 @Component({
 	selector: 'sb-header',
@@ -26,6 +28,8 @@ import { ButtonComponent, RippleDirective } from '@showcase/components/ui';
 		ButtonComponent,
 		RippleDirective,
 		IconComponent,
+		SettingsComponent,
+		UserEditorComponent,
 	],
 	templateUrl: './header.component.html',
 	styleUrls: ['./header.component.scss'],
@@ -41,6 +45,25 @@ export class HeaderComponent implements OnInit {
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 	protected IS_LANDSCAPE$ = inject(IS_MOBILE);
 	protected search = inject(SEARCH_FORM);
+
+	test = new Observable<User>((subscriber) => {
+		subscriber.next({
+			bannerBackgroundImage: '',
+			avatarBackgroundImage: '',
+			activationCode: '',
+			avatarBackground: '',
+			bannerBackground: '',
+			comments: [],
+			email: '',
+			password: '',
+			registerDate: '',
+			token: '',
+			videos: [],
+			watchedVideos: [],
+			username: '123',
+			userAbout: '123',
+		});
+	});
 
 	protected open(templateRef: TemplateRef<unknown>) {
 		this._sidebarRef.open(SidebarContainerComponent, { template: templateRef, width: 250 }, {}).subscribe();

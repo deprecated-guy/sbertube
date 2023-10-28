@@ -1,17 +1,35 @@
-<div class="flex items-center justify-center h-[350px] flex-col py-[20px]" [style.background-color]="color">
-	<div class="mr-auto ml-[20px]">
-		<sb-button
-			[background]="btnBgColor"
-			icon="arrow-left"
-			name="complete"
-			[width]="22"
-			[height]="22"
-			[rippleColor]="rippleColor"
-			[hoverBgColor]="hoverBgColor"
-			[btnActiveBg]="hoverBgColor"
-			routerLink="/"
-			>Back</sb-button
-		>
+<div
+	class="flex items-center justify-center h-[350px] flex-col py-[20px]"
+	[style.background-color]="color"
+	*ngIf="!user.bannerBackgroundImage; else withImage"
+>
+	<div class="flex w-screen justify-between">
+		<div class="">
+			<sb-button
+				[background]="btnBgColor"
+				icon="arrow-left"
+				name="complete"
+				[width]="22"
+				[height]="22"
+				[rippleColor]="rippleColor"
+				[hoverBgColor]="hoverBgColor"
+				[btnActiveBg]="hoverBgColor"
+				routerLink="/"
+				>Back</sb-button
+			>
+		</div>
+		<div class="flex mr-[20px]">
+			<sb-button
+				(click)="openWindow(update)"
+				[class]="'flex-row-reverse text-white'"
+				*ngIf="user.token === token"
+				[rippleColor]="'white'"
+				name="complete"
+				fillColor="white"
+				icon="edit"
+				>Edit Photo</sb-button
+			>
+		</div>
 	</div>
 	<div class="">
 		<ng-content></ng-content>
@@ -22,3 +40,69 @@
 		<b class="text-white ml-[20px]">{{ user.username | titlecase }}</b>
 	</div>
 </div>
+
+<ng-template #withImage>
+	<div
+		class="flex items-center justify-center h-[350px] flex-col py-[20px]"
+		style="background-image:url('http://localhost:3001/user/images/banner/{{
+			user.bannerBackgroundImage
+		}}'); background-repeat: no-repeat; background-size: cover;"
+	>
+		<div class="flex w-screen justify-between">
+			<div class="">
+				<sb-button
+					[background]="btnBgColor"
+					icon="arrow-left"
+					name="complete"
+					[width]="22"
+					[height]="22"
+					[rippleColor]="rippleColor"
+					[hoverBgColor]="hoverBgColor"
+					[btnActiveBg]="hoverBgColor"
+					routerLink="/"
+					>Back</sb-button
+				>
+			</div>
+			<div class="flex mr-[20px]">
+				<sb-button
+					(click)="openWindow(update)"
+					[class]="'flex-row-reverse text-white'"
+					*ngIf="user.token === token"
+					[rippleColor]="'white'"
+					name="complete"
+					[hoverBgColor]="user.bannerBackground"
+					fillColor="white"
+					icon="edit"
+					>Edit Photo</sb-button
+				>
+			</div>
+		</div>
+		<div class="">
+			<ng-content></ng-content>
+		</div>
+		<div class="flex mt-[20px]" [style.font-size]="fontSize">
+			<p>Welcome,</p>
+			&nbsp;
+			<b class="text-white ml-[20px]">{{ user.username | titlecase }}</b>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #update>
+	<div class="w-full h-full flex-col justify-center">
+		<sb-control-file (outputFile)="getFile($event)"></sb-control-file>
+		<div class="flex mt-[10px]">
+			<sb-button
+				[class]="' flex flex-row-reverse text-white'"
+				background="gray-200"
+				*ngIf="user.token === token"
+				[rippleColor]="'white'"
+				name="complete"
+				fillColor="#f21ffe"
+				icon="upload"
+				(click)="uploadImage()"
+				>Edit Photo</sb-button
+			>
+		</div>
+	</div>
+</ng-template>

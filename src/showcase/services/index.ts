@@ -2,7 +2,7 @@ export * from './auth.service';
 export * from './helpers';
 export * from './user.service';
 export * from './mappers';
-export * from './video-loader.service';
+export * from './video-loader';
 export * from './comment.service';
 export * from './http-route';
 export * from './like.service';

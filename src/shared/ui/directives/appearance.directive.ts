@@ -6,7 +6,7 @@ import { Directive, HostBinding, Input } from '@angular/core';
 	exportAs: 'extendedBtn',
 })
 export class AppearanceDirective {
-	@Input() appearance: 'standard' | 'upload' | 'warn' = 'standard';
+	@Input() appearance: 'standard' | 'upload' | 'warn' | 'delete' = 'standard';
 	@Input() rounding: 'full' | 'default' = 'default';
 
 	@HostBinding('class')

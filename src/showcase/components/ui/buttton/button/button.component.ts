@@ -23,8 +23,9 @@ export class ButtonComponent {
 	@Input() btnActiveBg = '';
 	protected isActive = false;
 	protected isHovered = false;
-	@Input() appearance: 'standard' | 'upload' | 'warn' = 'standard';
+	@Input() appearance: 'standard' | 'upload' | 'warn' | 'delete' = 'standard';
 	@Input() rounding: 'default' | 'full' = 'default';
+	@Input() fillColor = 'white';
 
 	@HostListener('mouseenter')
 	onMouseEnter() {

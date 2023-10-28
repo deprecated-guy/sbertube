@@ -19,10 +19,21 @@ export class UserService {
 	}
 
 	public deleteUser() {
-		return this._httpClient.delete(this._httpRoute + 'account/delete');
+		console.log('123');
+		return this._httpClient.delete(this._httpRoute + '/account/delete');
 	}
 
 	public editUser(data: UserEdit): Observable<User> {
 		return this._httpClient.put<UserResponse>(this._httpRoute, data).pipe(map((user) => mapUser(user)));
+	}
+
+	public editBannerImage(data: FormData) {
+		const url = this._httpRoute + '/account/updateBanner';
+		return this._httpClient.put<UserResponse>(url, data).pipe(map((data) => data.user));
+	}
+
+	editAvatarImage(data: FormData) {
+		const url = this._httpRoute + '/account/updateAvatar';
+		return this._httpClient.put<UserResponse>(url, data).pipe(map((data) => data.user));
 	}
 }

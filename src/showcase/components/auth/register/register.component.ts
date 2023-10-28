@@ -11,7 +11,7 @@ import {
 } from '@ui';
 import { REGISTER_FORM } from '@di';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@showcase/services';
 import { BehaviorSubject } from 'rxjs';
 import { ActivationReq, BackendErrors } from '@types';
@@ -52,6 +52,7 @@ export class RegisterComponent {
 	);
 	private _authService = inject(AuthService);
 	private _ngZone = inject(NgZone);
+	private _router = inject(Router);
 	private _dialogRef = inject(DialogRef);
 	protected errors$ = new BehaviorSubject<BackendErrors>({} as BackendErrors);
 	private _destroyRef = inject(DestroyRef);
@@ -92,7 +93,7 @@ export class RegisterComponent {
 		this._dialogRef
 			.open(
 				WindowComponent,
-				{ class: 'mobile', template: template, isBackdrop: true },
+				{ class: 'user-editor', template: template, isBackdrop: true },
 				{ windowName: 'Code verification' },
 			)
 			.subscribe();
@@ -125,13 +126,11 @@ export class RegisterComponent {
 			...this.form.value,
 		};
 
-		console.log(data);
 		this._authService
 			.registerUser(data)
 			.pipe(takeUntilDestroyed(this._destroyRef))
 			.subscribe({
 				next: (v) => {
-					console.log(v);
 					this._persistenceService.setItem('id', String(v.id));
 					this._persistenceService.setItem('code', String(v.activationCode));
 					this._toastRef.createToast({ type: 'success', status: 200, text: 'Register Successful' });

@@ -21,15 +21,125 @@
 </div>
 
 <sb-user-page-switche></sb-user-page-switche>
-
-<div class="max-w-[900px] flex flex-col">
-	<sb-button
-		[class]="'flex ml-[10px]'"
-		rounding="full"
-		appearance="upload"
-		icon="add"
-		name="complete"
-		[width]="40"
-		[height]="40"
-	></sb-button>
+<div class="w-full flex items-center px-[10px]">
+	<ng-container *ngIf="currentUser$ | async as user">
+		@if(user.videos.length > 0) {
+		<ul class="list-none flex flex-col">
+			<li *ngFor="let video of user.videos" class="flex flex-col w-full">
+				<div class="w-full">
+					<sb-player [size]="'lg'" [source]="'http://localhost:3001/video/' + video.video.title"></sb-player>
+				</div>
+				<div class="w-full flex flex-col px-[10px]">
+					<div class="w-full flex justify-between">
+						<span>{{ video.video.title }}</span
+						><span sbHint>...</span>
+					</div>
+				</div>
+			</li>
+		</ul>
+		} @else {
+		<span class="w-full text-center text-gray-600 text-[42px] mt-[30px]">No Video yey</span>
+		}
+	</ng-container>
+	<div class="flex flex-col ml-auto">
+		<sb-button
+			[class]="'flex ml-[10px]'"
+			rounding="full"
+			appearance="upload"
+			icon="add"
+			name="complete"
+			[width]="40"
+			[height]="40"
+			(click)="openWindow(upload)"
+		></sb-button>
+	</div>
 </div>
+<ng-template #upload>
+	<div class="w-full h-full flex">
+		<form [formGroup]="form" class="flex-col w-[300px] flex">
+			<fieldset class="flex flex-col border-none my-[10px]">
+				<div class="flex flex-col">
+					<span class="flex justify-start text-[21px] text-gray-400">Title</span>
+					<sb-control
+						[width]="200"
+						placeholder="Write video title"
+						[control]="form.controls['title']"
+						formControlName="title"
+					></sb-control>
+				</div>
+				<div class="w-full flex -mt-[60px]" *ngIf="title?.touched && title?.errors?.['required']">
+					<sb-form-error error="Those field is required"></sb-form-error>
+				</div>
+			</fieldset>
+			<fieldset class="flex flex-col border-none my-[10px]">
+				<div class="flex flex-col">
+					<span class="flex justify-start text-[21px] text-gray-400">Title</span>
+					<sb-control
+						[width]="200"
+						placeholder="Write video short description"
+						[control]="form.controls['shortBody']"
+						formControlName="shortBody"
+					></sb-control>
+				</div>
+				<div class="w-full flex -mt-[60px]" *ngIf="shortDescription?.touched && shortDescription?.errors?.['required']">
+					<sb-form-error error="Those field is required"></sb-form-error>
+				</div>
+			</fieldset>
+			<fieldset class="flex flex-col border-none my-[10px]">
+				<div class="flex flex-col">
+					<span class="flex justify-start text-[21px] text-gray-400">Title</span>
+					<sb-control
+						[width]="200"
+						placeholder="Write video short description"
+						[control]="form.controls['body']"
+						formControlName="body"
+					></sb-control>
+				</div>
+				<div class="w-full flex -mt-[60px]" *ngIf="description?.touched && description?.errors?.['required']">
+					<sb-form-error error="Those field is required"></sb-form-error>
+				</div>
+			</fieldset>
+			<fieldset class="flex flex-col my-[10px]">
+				<span class="flex justify-start text-[21px] text-gray-400">File</span>
+				<sb-control-file (outputFile)="getFile($event)"></sb-control-file>
+			</fieldset>
+			<fieldset>
+				<div class="flex mt-[10px]">
+					<button
+						[class.disabled]="form.invalid"
+						#button
+						class="flex flex-row-reverse text-white bg-blue-700 px-[10px] py-[5px] rounded-md relative overflow-hidden"
+						(click)="uploadVideo('white')"
+					>
+						<span class="material-cons">upload</span><span>Upload Image</span>
+					</button>
+				</div>
+			</fieldset>
+		</form>
+		<section class="w-[250px] flex flex-col">
+			<div class="w-[200px]">
+				<sb-player size="sm"></sb-player>
+			</div>
+			<form class="flex-col flex">
+				<fieldset class="flex flex-col border-none my-[3px]">
+					<div class="flex flex-col">
+						<span class="flex justify-start text-[21px] text-gray-400">Title</span>
+						<sb-control [width]="300" [isDisabled]="true" [inputValue]="title?.value"></sb-control>
+					</div>
+				</fieldset>
+				<fieldset class="flex flex-col border-none my-[10px]">
+					<div class="flex flex-col">
+						<span class="flex justify-start text-[21px] text-gray-400">Short Description</span>
+						<sb-control [width]="300" [isDisabled]="true" [inputValue]="shortDescription?.value"></sb-control>
+					</div>
+				</fieldset>
+				<fieldset class="flex flex-col border-none my-[10px]">
+					<div class="flex flex-col">
+						<span class="flex justify-start text-[21px] text-gray-400">Description</span>
+						<sb-control [width]="300" [isDisabled]="true" [inputValue]="description?.value"></sb-control>
+					</div>
+				</fieldset>
+			</form>
+		</section>
+	</div>
+</ng-template>

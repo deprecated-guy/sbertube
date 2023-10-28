@@ -24,6 +24,7 @@ export class IconComponent {
 	@Input() fillColor = '#fff';
 
 	protected get iconName() {
+		console.log(this.icon);
 		return `/assets/icons/${this.icon}.svg#${this.name}`;
 	}
 }
