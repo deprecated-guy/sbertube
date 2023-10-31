@@ -17,4 +17,8 @@ export const routes: Routes = [
 		loadChildren: () => import('src/showcase/components/user/routes').then((r) => r.routes),
 		canActivate: [authGuard],
 	},
+	{
+		path: 'video',
+		loadChildren: () => import('src/showcase/components/video/routes').then((r) => r.routes),
+	},
 ];

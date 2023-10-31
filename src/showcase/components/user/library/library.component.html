@@ -1,22 +1,14 @@
 <div class="w-full flex flex-col">
-	@if( currentUser(); as user){
+	@if(currentUser(); as user) {
 	<sb-user-banner
 		[user]="user"
-		[color]="user.bannerBackground"
 		[fontSize]="40"
 		[rippleColor]="user.avatarBackground"
 		hoverBgColor="#f1f1f1"
+		[color]="user.bannerBackground"
 		[btnBgColor]="user.bannerBackground"
 	>
-		<sb-user-avatar
-			[user]="user"
-			[color]="user.avatarBackground"
-			[width]="200"
-			[height]="200"
-			[fontSize]="40"
-		></sb-user-avatar>
 	</sb-user-banner>
-
 	}
 </div>
 
@@ -24,24 +16,91 @@
 <div class="w-full flex items-center px-[10px]">
 	<ng-container *ngIf="currentUser$ | async as user">
 		@if(user.videos.length > 0) {
-		<ul class="list-none flex flex-col">
-			<li *ngFor="let video of user.videos" class="flex flex-col w-full">
-				<div class="w-full">
-					<sb-player [size]="'lg'" [source]="'http://localhost:3001/video/' + video.video.title"></sb-player>
-				</div>
-				<div class="w-full flex flex-col px-[10px]">
-					<div class="w-full flex justify-between">
-						<span>{{ video.video.title }}</span
-						><span sbHint>...</span>
-					</div>
-				</div>
+		<ul class="flex flex-col w-full max-w-[900px] mx-auto mt-10">
+			@for(video of user.videos; track video.video.id) { @if((IS_MOBILE$ | async)){
+			<li class="flex flex-col p-[5px] bg-gray-200 rounded-md mh-[150px] h-auto">
+				<section>
+					<sb-video-preview
+						[class]="'sm'"
+						[source]="'http://localhost:3001/video/t/' + video.video.id"
+						[video]="video.video"
+					></sb-video-preview>
+				</section>
+				<section class="flex flex-col mt-[20px]">
+					<section class="flex">
+						<div class="flex">
+							<span class="text-gray-400 text-[16px]">Title: </span>
+							<span class="ml-[10px] text-gray-400 text-[18px]">{{ video.video.title }}</span>
+						</div>
+						<div class="ml-auto">
+							<sb-button icon="edit" name="complete" [hoverBgColor]="'#83efef'" [rippleColor]="'#8aa3ef'"
+								>Edit</sb-button
+							>
+						</div>
+					</section>
+					<section class="flex mt-[10px]">
+						<span class="text-gray-400 text-[16px]">Description: </span>
+						<span class="ml-[10px] text-gray-400 text-[18px] whitespace-nowrap text-ellipsis">{{
+							video.video.body
+						}}</span>
+					</section>
+					<section class="flex mt-[10px]">
+						<sb-video-action [user]="user" actionType="like" [video]="video.video"></sb-video-action>
+						<sb-video-action
+							[user]="user"
+							actionType="dislike"
+							class="ml-[10px]"
+							[video]="video.video"
+						></sb-video-action>
+					</section>
+				</section>
 			</li>
+			} @else{
+			<li class="flex w-full p-[5px] bg-gray-200 rounded-md min-h-[180px] h-content">
+				<section>
+					<sb-video-preview
+						[class]="'sm'"
+						[source]="'http://localhost:3001/video/t/' + video.video.id"
+						[video]="video.video"
+					></sb-video-preview>
+				</section>
+				<section class="flex flex-col ml-[10px] w-full">
+					<section class="flex">
+						<div class="flex">
+							<span class="text-gray-400 text-[16px]">Title: </span>
+							<span class="ml-[10px] text-gray-400 text-[18px]">{{ video.video.title }}</span>
+						</div>
+						<div class="ml-auto">
+							<sb-button icon="edit" name="complete" [hoverBgColor]="'#83efef'" [rippleColor]="'#8aa3ef'"
+								>Edit</sb-button
+							>
+						</div>
+					</section>
+					<section class="flex mt-[10px]">
+						<span class="text-gray-400 text-[16px]">Description: </span>
+						<span class="ml-[10px] text-gray-400 text-[18px] whitespace-nowrap text-ellipsis">{{
+							video.video.body
+						}}</span>
+					</section>
+					<section class="flex mt-auto ml-auto">
+						<sb-video-action actionType="like" [user]="user" [video]="video.video"></sb-video-action>
+						<sb-video-action
+							class="ml-[10px]"
+							[user]="user"
+							actionType="dislike"
+							[video]="video.video"
+						></sb-video-action>
+					</section>
+				</section>
+			</li>
+			} }
 		</ul>
 		} @else {
 		<span class="w-full text-center text-gray-600 text-[42px] mt-[30px]">No Video yey</span>
 		}
 	</ng-container>
-	<div class="flex flex-col ml-auto">
+	<div class="flex flex-col">
+		@if(!(IS_MOBILE$ | async)) {
 		<sb-button
 			[class]="'flex ml-[10px]'"
 			rounding="full"
@@ -52,6 +111,7 @@
 			[height]="40"
 			(click)="openWindow(upload)"
 		></sb-button>
+		}
 	</div>
 </div>
 <ng-template #upload>
@@ -73,7 +133,7 @@
 			</fieldset>
 			<fieldset class="flex flex-col border-none my-[10px]">
 				<div class="flex flex-col">
-					<span class="flex justify-start text-[21px] text-gray-400">Title</span>
+					<span class="flex justify-start text-[21px] text-gray-400">Short description</span>
 					<sb-control
 						[width]="200"
 						placeholder="Write video short description"
@@ -87,10 +147,10 @@
 			</fieldset>
 			<fieldset class="flex flex-col border-none my-[10px]">
 				<div class="flex flex-col">
-					<span class="flex justify-start text-[21px] text-gray-400">Title</span>
+					<span class="flex justify-start text-[21px] text-gray-400">Description</span>
 					<sb-control
 						[width]="200"
-						placeholder="Write video short description"
+						placeholder="Write video description"
 						[control]="form.controls['body']"
 						formControlName="body"
 					></sb-control>
@@ -106,7 +166,7 @@
 			<fieldset>
 				<div class="flex mt-[10px]">
 					<button
-						[class.disabled]="form.invalid"
+						[class.disabled]="form.invalid && !file"
 						#button
 						class="flex flex-row-reverse text-white bg-blue-700 px-[10px] py-[5px] rounded-md relative overflow-hidden"
 						(click)="uploadVideo('white')"
@@ -118,7 +178,7 @@
 		</form>
 		<section class="w-[250px] flex flex-col">
 			<div class="w-[200px]">
-				<sb-player size="sm"></sb-player>
+				<sb-player [showTime]="false" size="sm" [source]="sourceLink" controls="true"></sb-player>
 			</div>
 			<form class="flex-col flex">
 				<fieldset class="flex flex-col border-none my-[3px]">

@@ -32,7 +32,7 @@
 		</div>
 	</div>
 	<div class="">
-		<ng-content></ng-content>
+		<sb-user-avatar [width]="200" [height]="200" [user]="user" [fontSize]="40"></sb-user-avatar>
 	</div>
 	<div class="flex mt-[20px]" [style.font-size]="fontSize">
 		<p>Welcome,</p>
@@ -90,19 +90,18 @@
 
 <ng-template #update>
 	<div class="w-full h-full flex-col justify-center">
-		<sb-control-file (outputFile)="getFile($event)"></sb-control-file>
-		<div class="flex mt-[10px]">
-			<sb-button
-				[class]="' flex flex-row-reverse text-white'"
-				background="gray-200"
-				*ngIf="user.token === token"
-				[rippleColor]="'white'"
-				name="complete"
-				fillColor="#f21ffe"
-				icon="upload"
+		<div class="flex">
+			<sb-control-file (outputFile)="getFile($event)"></sb-control-file>
+		</div>
+		<div class="flex mt-[100%]">
+			<button
+				sbRipple
 				(click)="uploadImage()"
-				>Edit Photo</sb-button
+				[disabled]="!_file"
+				class="bg-blue-300 text-white flex px-[5px] py-[10px] rounded-md"
 			>
+				<sb-icon fillColor="white" icon="edit" name="complete"></sb-icon><span class="ml-[10px]">Update cover</span>
+			</button>
 		</div>
 	</div>
 </ng-template>

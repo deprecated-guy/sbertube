@@ -19,12 +19,13 @@ export class IconComponent {
 	@Input({ transform: (v: number) => v + 'px' }) width = 24;
 	@Input({ transform: (v: number) => v + 'px' }) height = 24;
 	@Input() name = '';
+	@Input() iconPath = '';
 	@Input() icon = '';
 	@Input() class = '';
 	@Input() fillColor = '#fff';
 
 	protected get iconName() {
-		console.log(this.icon);
-		return `/assets/icons/${this.icon}.svg#${this.name}`;
+		console.log(this.iconPath);
+		return this.iconPath ? this.iconPath + `#${this.name}` : `/assets/icons/${this.icon}.svg#${this.name}`;
 	}
 }

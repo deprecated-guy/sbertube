@@ -6,5 +6,5 @@ export interface ComponentSettings {
 	background?: string;
 	template?: TemplateRef<unknown>;
 	isBackdrop?: boolean;
-	class?: 'sm' | 'lg' | 'full' | 'submit' | 'user-editor';
+	class?: 'sm' | 'lg' | 'full' | 'submit' | 'user-editor' | 'mobile' | 'notify';
 }

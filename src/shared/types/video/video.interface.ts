@@ -1,12 +1,15 @@
-import { User } from '@shared/types';
+import { UserResponse } from '@shared/types';
 import { CommentResponse } from '@shared/types';
 
 export interface Video {
-	author: User;
+	id: number;
+	author: UserResponse;
+	alias: string;
 	title: string;
 	shortBody: string;
 	body: string;
 	path: string;
+	watchDate: string;
 	comments: CommentResponse[];
 	uploadedAt: string;
 	watchedTime: number;

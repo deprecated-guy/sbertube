@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800"
+   height="800"
+   viewBox="0 0 24 24"
+   fill="none"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="bars-2.svg"
+   inkscape:export-filename="ru.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <path
+     id="complete"
+     d="M 4,6 H 20 M 4,12 H 20 M 4,18 h 16"
+     stroke="#000000"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round" />
+  <text
+     xml:space="preserve"
+     style="font-size:0.36px;white-space:pre;inline-size:1.77084;fill:#000000;stroke-width:0.03"
+     x="20.438013"
+     y="2.7712994"
+     id="text1"
+     transform="matrix(6.4465773,0,0,7.3080694,-111.40564,-17.574421)"><tspan
+       x="20.438013"
+       y="2.7712994"
+       id="tspan2">GB</tspan></text>
+</svg>

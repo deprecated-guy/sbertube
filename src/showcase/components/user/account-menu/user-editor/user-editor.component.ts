@@ -14,12 +14,11 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { BackendErrors, User, UserEdit } from '@types';
 import { IS_MOBILE, USER_EDIT_FORM } from '@di';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ControlComponent, DialogRef, FormErrorComponent, IconComponent, ToastRef } from '@ui';
+import { ControlComponent, createRipple, DialogRef, FormErrorComponent, IconComponent, ToastRef } from '@ui';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Portal } from '@cdk';
 import { Router, RouterLink } from '@angular/router';
 import { ButtonComponent, RippleDirective } from '@showcase/components/ui';
-import { fromEvent } from 'rxjs';
 import { PersistenceService } from '@shared/services';
 
 @Component({
@@ -101,25 +100,8 @@ export class UserEditorComponent {
 	}
 
 	protected showConfirmation(rippleColor: string) {
-		fromEvent<MouseEvent>(this._buttonElement.nativeElement, 'mousedown')
-			.pipe(takeUntilDestroyed(this._destroyRef))
-			.subscribe({
-				next: (e) => {
-					const ripple = this._renderer.createElement('div');
-					this._renderer.addClass(ripple, 'ripple');
-					ripple.style.position = 'absolute';
-					ripple.style.left =
-						e.clientX - this._buttonElement.nativeElement.offsetLeft / 0.7 - ripple.offsetWidth / 2 + 'px';
-					ripple.style.background = rippleColor;
-					ripple.style.top =
-						e.clientY - this._buttonElement.nativeElement.offsetTop / 2 - ripple.offsetHeight / 0.7 + 'px';
-					this._renderer.appendChild(this._buttonElement.nativeElement, ripple);
-
-					this._ngZone.runOutsideAngular(() =>
-						setTimeout(() => this._renderer.removeChild(this._buttonElement.nativeElement, ripple), 1000),
-					);
-				},
-			});
+		createRipple(this._renderer, this._destroyRef, rippleColor, this._buttonElement, this._ngZone);
+		this._persistenceService.clean();
 		this._ngZone.runOutsideAngular(() =>
 			setTimeout(async () => {
 				this._userService
@@ -132,8 +114,7 @@ export class UserEditorComponent {
 					});
 
 				await this._router.navigateByUrl('/');
-				this._persistenceService.clean();
-				setTimeout(() => {
+				setTimeout(async () => {
 					window.location.reload();
 				}, 500);
 			}, 1000),

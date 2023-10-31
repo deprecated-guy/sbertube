@@ -1,6 +1,10 @@
 import { CommentResponse, VideoResponse } from '@shared/types';
 
 export interface User {
+	isVideoLiked: boolean;
+	isVideoDisliked: boolean;
+	isCommentDisliked: boolean;
+	isCommentLiked: boolean;
 	email: string;
 	password: string;
 	token: string;

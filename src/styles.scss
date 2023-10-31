@@ -19,3 +19,30 @@ body {
 	display: flex;
 	flex-direction: column;
 }
+
+button {
+	position: relative;
+}
+
+.ripple {
+	position: absolute;
+	animation: ripple ease 0.8s;
+	border-radius: 50%;
+}
+
+@keyframes ripple {
+	from {
+		width: 20px;
+		height: 20px;
+		opacity: 0.4;
+		transform: scale(1.5);
+	}
+	to {
+		transform: scale(100);
+		opacity: 0;
+	}
+}
+.disabled {
+	background: gray;
+	pointer-events: none;
+}

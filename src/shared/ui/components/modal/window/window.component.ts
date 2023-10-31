@@ -23,7 +23,7 @@ export class WindowComponent {
 	@Input({ transform: (v: number) => transformToPx(v) }) height = 200;
 	@Input() template!: TemplateRef<unknown>;
 	@Input() isBackdrop = true;
-	@Input() class: 'sm' | 'lg' | 'full' = 'sm';
+	@Input() class: 'sm' | 'lg' | 'full' | 'notify' = 'sm';
 
 	close() {
 		this.container.classList.add('slide-to-top');

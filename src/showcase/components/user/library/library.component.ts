@@ -1,5 +1,6 @@
 import {
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	DestroyRef,
 	ElementRef,
@@ -10,7 +11,12 @@ import {
 	ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonComponent, UserPageSwitcheComponent } from '@showcase/components/ui';
+import {
+	ButtonComponent,
+	RippleDirective,
+	UserPageSwitcheComponent,
+	VideoPreviewComponent,
+} from '@showcase/components/ui';
 import { UserAvatarComponent, UserBannerComponent } from '@shared/ui/components/user';
 import { UserService, VideoLoader } from '@showcase/services';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
@@ -22,19 +28,24 @@ import {
 	DialogRef,
 	FormErrorComponent,
 	HintDirective,
+	IconComponent,
 	PlayerComponent,
 	ToastRef,
 	WindowComponent,
 } from '@ui';
 import { Portal } from '@cdk';
-import { fromEvent } from 'rxjs';
-import { VIDEO_UPLOAD_FORM } from '@di';
+import { IS_MOBILE, VIDEO_UPLOAD_FORM } from '@di';
 import { ReactiveFormsModule } from '@angular/forms';
+import { createRipple } from '@shared/ui/animations/ripple';
+import { types } from '@shared/types/vide-file-types';
+import { RouterModule } from '@angular/router';
+import { VideoActionComponent } from '@shared/ui/components/video-action/video-action.component';
 
 @Component({
 	selector: 'sb-library',
 	standalone: true,
 	imports: [
+		RouterModule,
 		CommonModule,
 		UserBannerComponent,
 		UserAvatarComponent,
@@ -46,6 +57,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 		ReactiveFormsModule,
 		ControlComponent,
 		FormErrorComponent,
+		VideoPreviewComponent,
+		IconComponent,
+		RippleDirective,
+		VideoActionComponent,
 	],
 	templateUrl: './library.component.html',
 	styleUrls: ['./library.component.scss'],
@@ -60,16 +75,31 @@ export class LibraryComponent {
 	private _userService = inject(UserService);
 	private _videoLoader = inject(VideoLoader);
 	private _dialogRef = inject(DialogRef);
-	private _toastRef = inject(ToastRef);
-	private _file = <File>{};
+
+	private _cdr = inject(ChangeDetectorRef);
 	private _destroyRef = inject(DestroyRef);
+	private _toastRef = inject(ToastRef);
+	protected file!: File;
+	protected sourceLink!: string;
 	protected currentUser$ = this._userService.getCurrentUser();
+	protected IS_MOBILE$ = inject(IS_MOBILE);
 	protected currentUser = toSignal(this.currentUser$, { initialValue: {} as User });
 	protected form = inject(VIDEO_UPLOAD_FORM);
 
 	protected openWindow(templateRef: TemplateRef<unknown>) {
 		this._dialogRef
 			.open(WindowComponent, { class: 'lg', template: templateRef, isBackdrop: true }, { windowName: 'Upload video' })
+			.pipe(takeUntilDestroyed(this._destroyRef))
+			.subscribe();
+	}
+
+	protected openMobileWindow(templateRef: TemplateRef<unknown>) {
+		this._dialogRef
+			.open(
+				WindowComponent,
+				{ class: 'mobile', template: templateRef, isBackdrop: true },
+				{ windowName: 'Upload video' },
+			)
 			.pipe(takeUntilDestroyed(this._destroyRef))
 			.subscribe();
 	}
@@ -88,25 +118,13 @@ export class LibraryComponent {
 
 	protected uploadVideo(rippleColor: string) {
 		const data = new FormData();
-		data.set('file', this._file);
+		data.set('file', this.file);
+		data.set('title', this.title?.value);
+		data.set('shortBody', this.shortDescription?.value);
+		data.set('body', this.description?.value);
 
-		fromEvent<MouseEvent>(this._button.nativeElement, 'mousedown')
-			.pipe(takeUntilDestroyed(this._destroyRef))
-			.subscribe({
-				next: (e) => {
-					const ripple = this._renderer.createElement('div');
-					this._renderer.addClass(ripple, 'ripple');
-					ripple.style.position = 'absolute';
-					ripple.style.left = e.offsetX + 'px';
-					ripple.style.background = rippleColor;
-					ripple.style.top = e.offsetY + 'px';
-					this._renderer.appendChild(this._button.nativeElement, ripple);
+		createRipple(this._renderer, this._destroyRef, rippleColor, this._button, this._ngZone);
 
-					this._ngZone.runOutsideAngular(() =>
-						setTimeout(() => this._renderer.removeChild(this._button.nativeElement, ripple), 400),
-					);
-				},
-			});
 		this._ngZone.runOutsideAngular(() => {
 			setTimeout(() => {
 				this._videoLoader
@@ -127,6 +145,19 @@ export class LibraryComponent {
 	}
 
 	protected getFile(event: File) {
-		this._file = event;
+		const reader = new FileReader();
+		reader.readAsArrayBuffer(event);
+		reader.onload = () => {
+			this.sourceLink = URL.createObjectURL(event);
+			this._cdr.detectChanges();
+			console.log(this.sourceLink);
+		};
+		console.log(types[event.type]);
+		if (!types[event.type]) {
+			this._toastRef.createToast({ text: 'supported only videos', status: 500, type: 'error' });
+			return;
+		} else {
+			this.file = event;
+		}
 	}
 }

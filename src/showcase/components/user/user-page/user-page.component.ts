@@ -8,12 +8,13 @@ import { ButtonComponent, showButtonsAnimation, UserPageSwitcheComponent } from 
 import {
 	ControlComponent,
 	ControlFileComponent,
+	DialogRef,
 	FormErrorComponent,
 	HintDirective,
 	IconComponent,
 	ToastRef,
 } from '@ui';
-import { IS_LANDSCAPE, IS_MOBILE } from '@di';
+import { IS_MOBILE } from '@di';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConvertTimePipe } from '@showcase/components/user/pipes/convert-time.pipe';
 import { Portal } from '@cdk';
@@ -39,7 +40,7 @@ import { Portal } from '@cdk';
 	templateUrl: './user-page.component.html',
 	styleUrls: ['./user-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [Portal, ToastRef],
+	providers: [Portal, ToastRef, DialogRef],
 	animations: [showButtonsAnimation],
 })
 export class UserPageComponent {
@@ -49,7 +50,7 @@ export class UserPageComponent {
 	private _ngZone = inject(NgZone);
 	private _toastRef = inject(ToastRef);
 	protected IS_MOBILE$ = inject(IS_MOBILE);
-	protected IS_LANDSCAPE$ = inject(IS_LANDSCAPE);
+
 	protected currentUser$ = this._userService.getCurrentUser();
 	protected currentUser = toSignal(this.currentUser$, { initialValue: {} as User });
 	protected form = this._formBuilder.group({

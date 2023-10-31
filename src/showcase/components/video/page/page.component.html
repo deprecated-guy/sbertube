@@ -1,0 +1,62 @@
+<div class="max-w-[1200px] w-full mx-auto mt-[5px] flex flex-col">
+	<section>
+		<ng-container *ngIf="video() as video">
+			<sb-player [source]="'http://localhost:3001/video/t/' + video.id" [size]="'full'"></sb-player>
+		</ng-container>
+	</section>
+	<ng-container *ngIf="video$ | async as video">
+		<section class="flex w-full flex-col bg-gray-200 p-5">
+			<section class="flex w-full">
+				<div class="flex">
+					<span class="flex text-[16px]">Title: </span>
+					<span class="ml-[10px]">{{ video.title | titlecase }}</span>
+				</div>
+				<div class="flex w-full flex-row-reverse ml-auto">
+					<div>
+						<sb-button
+							icon="edit"
+							name="complete"
+							[hoverBgColor]="'#4396ea'"
+							*ngIf="user().token === video.author.user.token"
+							>Edit video</sb-button
+						>
+					</div>
+					<div><sb-video-action [user]="video.author.user" actionType="like" [video]="video"></sb-video-action></div>
+					<div><sb-video-action [user]="video.author.user" actionType="dislike" [video]="video"></sb-video-action></div>
+				</div>
+			</section>
+			<section class="flex cursor-pointer w-full" (click)="openFull()">
+				<span class="flex">Description: </span>
+				<span
+					[ngClass]="{
+						'text-ellipsis': !isOpenFull,
+						'whitespace-nowrap': !isOpenFull
+					}"
+					class="cursor-pointer ml-[10px] text-left justify-start w-full"
+					>{{ video.body }}</span
+				>
+			</section>
+		</section>
+	</ng-container>
+</div>
+<section class="max-w-[800px] w-full mx-auto p-[20px]">
+	<form class="flex flex-col">
+		<fieldset>
+			<div>
+				<sb-control text="comment"></sb-control>
+			</div>
+		</fieldset>
+	</form>
+</section>
+
+@if(video().comments; as comments) {
+<ng-container *ngIf="comments.length > 0; else empty">
+	@for(comment of comments; track comment.comment.id) {
+	<li>{{ comment.comment | json }}</li>
+	}
+</ng-container>
+}
+
+<ng-template #empty>
+	<span class="text-gray text-3xl mt-[20px] text-gray-500 flex justify-center">No comments yet</span>
+</ng-template>

@@ -31,7 +31,15 @@
 			"@ui": ["./src/shared/ui"],
 			"@types": ["./src/shared/types"],
 			"@interceptors": ["./src/interceptors"],
-			"@showcase/*": ["./src/showcase/*"]
+      "@showcase/*": [
+        "./src/showcase/*"
+      ],
+      "event-plugins": [
+        "dist/event-plugins"
+      ],
+      "events": [
+        "dist/events"
+      ]
 
 		}
 	},

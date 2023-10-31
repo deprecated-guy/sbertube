@@ -35,6 +35,12 @@ button {
 		//background: #e2ecfa;
 		color: #5f6368;
 	}
+
+	&.disabled {
+		pointer-events: none;
+		background: gray;
+		color: white;
+	}
 }
 
 .ripple {

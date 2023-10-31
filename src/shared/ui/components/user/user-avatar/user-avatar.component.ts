@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { BackendErrors, User } from '@shared/types';
 import {
 	ControlFileComponent,
+	createRipple,
 	DialogRef,
 	IconComponent,
 	SkeletonLoaderComponent,
@@ -22,17 +23,13 @@ import {
 	WindowComponent,
 } from '@shared/ui';
 import { IS_MOBILE } from '@di';
-import { colorParser, UserService } from '@showcase/services';
+import { UserService } from '@showcase/services';
 import { PersistenceService } from '@shared/services';
 import { Portal } from '@cdk';
 import { ButtonComponent, RippleDirective } from '@showcase/components/ui';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { fromEvent } from 'rxjs';
 const makeAsPx = (v: number) => v + 'px';
-const makeColorString = (v: string) => {
-	const color = colorParser(v);
-	return `rgb(${color.r}, ${color.g}, ${color.b})`;
-};
+
 @Component({
 	selector: 'sb-user-avatar',
 	standalone: true,
@@ -58,7 +55,6 @@ export class UserAvatarComponent {
 	@Input({ required: true }) user!: User;
 	@Input({ required: true, transform: (v: number) => makeAsPx(v) }) width = 20;
 	@Input({ transform: (v: number) => makeAsPx(v) }) height = 20;
-	@Input({ transform: (v: string) => makeColorString(v) }) color!: string;
 	@Input({ transform: (v: number) => makeAsPx(v) }) fontSize = 16;
 	private _dialogRef = inject(DialogRef);
 	private _toastRef = inject(ToastRef);
@@ -71,6 +67,10 @@ export class UserAvatarComponent {
 	private _ngZone = inject(NgZone);
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 	protected token = this._persistenceService.getItem('token');
+
+	onTap(template: TemplateRef<unknown>) {
+		this.openWindow(template);
+	}
 
 	@HostListener('mouseenter')
 	onMouseEnter() {
@@ -105,23 +105,7 @@ export class UserAvatarComponent {
 		const data = new FormData();
 		data.set('file', this._file);
 
-		fromEvent<MouseEvent>(this._button.nativeElement, 'mousedown')
-			.pipe(takeUntilDestroyed(this._destroyRef))
-			.subscribe({
-				next: (e) => {
-					const ripple = this._renderer.createElement('div');
-					this._renderer.addClass(ripple, 'ripple');
-					ripple.style.position = 'absolute';
-					ripple.style.left = e.offsetX + 'px';
-					ripple.style.background = rippleColor;
-					ripple.style.top = e.offsetY + 'px';
-					this._renderer.appendChild(this._button.nativeElement, ripple);
-
-					this._ngZone.runOutsideAngular(() =>
-						setTimeout(() => this._renderer.removeChild(this._button.nativeElement, ripple), 400),
-					);
-				},
-			});
+		createRipple(this._renderer, this._destroyRef, rippleColor, this._button, this._ngZone);
 		this._ngZone.runOutsideAngular(() => {
 			setTimeout(() => {
 				this._userService

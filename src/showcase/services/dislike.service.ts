@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PersistenceService } from '@shared/services';
-import { LikeRequest, LikeResponseInterface } from '@types';
+import { LikeRequest, DislikeResponse } from '@types';
 
 import { map, tap } from 'rxjs';
 
@@ -9,24 +9,22 @@ import { map, tap } from 'rxjs';
 	providedIn: 'root',
 })
 export class DislikeService {
-	private httpRoute = 'http://localhost:3001/dislike/';
-	private httpClient = inject(HttpClient);
-	private persistenceService = inject(PersistenceService);
+	private _httpRoute = 'http://localhost:3001/dislike/';
+	private _httpClient = inject(HttpClient);
+	private _persistenceService = inject(PersistenceService);
 
 	public createDislike(data: LikeRequest) {
-		return this.httpClient.post<LikeResponseInterface>(this.httpRoute, data).pipe(
-			map((v) => v.like),
-
-			tap((v) => this.persistenceService.setItem('likeId', `${v.id}`)),
+		return this._httpClient.post<DislikeResponse>(this._httpRoute, data).pipe(
+			tap((v) => console.log(v)),
+			map((v) => v.dislike),
+			tap((v) => console.log(v)),
+			tap((v) => this._persistenceService.setItem('dislikeId', v.id.toString())),
 		);
 	}
 
-	public deleteDislikeFromComment(commentId?: number) {
-		const likeId = this.persistenceService.getItem('dislikeId');
-		return this.httpClient.delete(this.httpRoute + `comment/${commentId}?=${likeId}`);
-	}
-	public deleteDislikeFromVideo(videoId?: number) {
-		const likeId = this.persistenceService.getItem('likeId');
-		return this.httpClient.delete(this.httpRoute + `video/${videoId}?=${likeId}`);
+	public removeDislikeFromVideo(videoId: number) {
+		const id = this._persistenceService.getItem('dislikeId') as string;
+		const route = this._httpRoute + `video/${videoId}?likeId=${id}`;
+		return this._httpClient.delete<string>(route).pipe(tap(console.log));
 	}
 }

@@ -1,137 +1,137 @@
 <div class="w-full flex max-h-[500px] flex-col overflow-y-auto">
-	@if(!(IS_MOBILE$ | async)) {
+	<ng-container *ngIf="currentUser$ | async as user">
+		@if(!(IS_MOBILE$ | async)) {
 
-	<div class="w-full h-auto">
-		<header class="flex" (click)="changeSettingsAnimationState()">User Setting</header>
+		<div class="w-full h-auto">
+			<header class="flex" (click)="changeSettingsAnimationState()">User Setting</header>
 
-		<div
-			class="w-full overflow-x-hidden overflow-y-auto flex justify-center h-full text-black flex-col"
-			[@openDown]="settingsAnimationState"
-		>
-			<ul class="list-none h-full flex-col w-full mx-auto overflow-y-auto">
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Your Email</span><span>{{ currentUser().email }}</span>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Your Username</span
-					><sb-control
-						type="text"
-						[inputValue]="currentUser().username"
-						[placeholder]="currentUser().username"
-						[width]="250"
-						[height]="30"
-						[isDisabled]="true"
-					></sb-control>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Your Password</span
-					><sb-control
-						[inputValue]="currentUser().password"
-						[isDisabled]="true"
-						type="password"
-						[width]="250"
-					></sb-control>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Uploads Count</span><span class="flex justify-end">{{ currentUser().videos.length }}</span>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Watched videos count</span
-					><span class="flex justify-end">{{ currentUser().watchedVideos.length }}</span>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Comments Count</span><span class="flex justify-end">{{ currentUser().comments.length }}</span>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>All Time Watch</span><span class="flex justify-end"> {{ allWatchedTime }} min</span>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Avatar Background Color</span
-					><sb-control
-						[inputValue]="currentUser().avatarBackground"
-						type="color"
-						[isDisabled]="true"
-						[width]="250"
-					></sb-control>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col justify-between">
-					<span>Banner Background Color</span>
-					<sb-control
-						[inputValue]="currentUser().bannerBackground"
-						type="color"
-						[isDisabled]="true"
-						[width]="250"
-					></sb-control>
-				</li>
-			</ul>
+			<div
+				class="w-full overflow-x-hidden overflow-y-auto flex justify-center h-full text-black flex-col"
+				[@openDown]="settingsAnimationState"
+			>
+				<ul class="list-none h-full flex-col w-full mx-auto overflow-y-auto">
+					<li class="my-[10px] py-[10px] flex w-full flex-col justify-start">
+						<span>Your Email</span>
+						<span class="flex justify-start">{{ currentUser().email }}</span>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Your Username</span
+						><sb-control
+							type="text"
+							[inputValue]="user.username"
+							[placeholder]="user.username"
+							[width]="200"
+							[height]="30"
+							[isDisabled]="true"
+						></sb-control>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Your Password</span
+						><sb-control [inputValue]="user.password" [isDisabled]="true" type="password" [width]="250"></sb-control>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col justify-start">
+						<span>Uploads Count</span><span>Your Email</span>
+						<div class="flex justify-start">
+							<sb-control
+								type="text"
+								[inputValue]="user.videos.length"
+								[width]="200"
+								[height]="30"
+								[isDisabled]="true"
+							></sb-control>
+						</div>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Watched videos count</span><span class="flex justify-end">{{ user.watchedVideos.length }}</span>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Comments Count</span><span class="flex justify-end">{{ user.comments.length }}</span>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>All Time Watch</span><span class="flex justify-end"> {{ allWatchedTime }} min</span>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Avatar Background Color</span
+						><sb-control
+							[inputValue]="user.avatarBackground"
+							type="color"
+							[isDisabled]="true"
+							[width]="250"
+						></sb-control>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col justify-between">
+						<span>Banner Background Color</span>
+						<sb-control
+							[inputValue]="user.bannerBackground"
+							type="color"
+							[isDisabled]="true"
+							[width]="250"
+						></sb-control>
+					</li>
+				</ul>
+			</div>
 		</div>
-	</div>
-	}@else {
-	<div class="w-full h-auto">
-		<header class="flex mt-[5px]" (click)="changeSettingsAnimationState()">User Setting</header>
+		}@else {
+		<div class="w-full h-auto">
+			<header class="flex mt-[5px]" (click)="changeSettingsAnimationState()">User Setting</header>
 
-		<div
-			class="w-full overflow-x-hidden flex justify-center text-black flex-col overflow-y-auto"
-			[@openDown]="settingsAnimationState"
-		>
-			<ul class="list-none h-full flex-col w-[400px] mx-auto">
-				<li class="my-[10px] py-[10px] flex w-full flex-col justify-between">
-					<span>Your Email</span><span class="flex justify-end">{{ currentUser().email }}</span>
-				</li>
-				<li class="my-[10px] w-[400px] py-[10px] flex flex-col">
-					<span class="flex">Your Username</span
-					><sb-control
-						class="flex"
-						type="text"
-						[inputValue]="currentUser().username"
-						[placeholder]="currentUser().username"
-						[width]="250"
-						[height]="30"
-						[isDisabled]="true"
-					></sb-control>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Your Password</span
-					><sb-control
-						[inputValue]="currentUser().password"
-						[isDisabled]="true"
-						type="password"
-						[width]="250"
-					></sb-control>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Uploads Count</span><span class="flex justify-end">{{ currentUser().videos.length }}</span>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-[120px] flex-col">
-					<span>Watched videos count</span
-					><span class="flex justify-end">{{ currentUser().watchedVideos.length }}</span>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Comments Count</span><span class="flex justify-end">{{ currentUser().comments.length }}</span>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>All Time Watch</span><span class="flex justify-end">{{ allWatchedTime }} min</span>
-				</li>
-				<li class="my-[10px] py-[10px] flex flex-col w-full">
-					<span>Avatar Background Color</span
-					><sb-control
-						[inputValue]="currentUser().avatarBackground"
-						type="color"
-						[isDisabled]="true"
-						[width]="250"
-					></sb-control>
-				</li>
-				<li class="my-[10px] py-[10px] flex w-full flex-col">
-					<span>Banner Background Color</span>
-					<sb-control
-						[inputValue]="currentUser().bannerBackground"
-						type="color"
-						[isDisabled]="true"
-						[width]="250"
-					></sb-control>
-				</li>
-			</ul>
+			<div
+				class="w-full overflow-x-hidden flex justify-center text-black flex-col overflow-y-auto"
+				[@openDown]="settingsAnimationState"
+			>
+				<ul class="list-none h-full flex-col w-[400px] mx-auto">
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Your Email</span><span class="flex justify-start">{{ currentUser().email }}</span>
+					</li>
+					<li class="my-[10px] w-[400px] py-[10px] flex flex-col">
+						<span class="flex">Your Username</span
+						><sb-control
+							class="flex"
+							type="text"
+							[inputValue]="user.username"
+							[placeholder]="user.username"
+							[width]="250"
+							[height]="30"
+							[isDisabled]="true"
+						></sb-control>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Your Password</span
+						><sb-control [inputValue]="user.password" [isDisabled]="true" type="password" [width]="250"></sb-control>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Uploads Count</span><span class="flex justify-end">{{ user.videos.length }}</span>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-[120px] flex-col">
+						<span>Watched videos count</span><span class="flex justify-end">{{ user.watchedVideos.length }}</span>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Comments Count</span><span class="flex justify-end">{{ user.comments.length }}</span>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>All Time Watch</span><span class="flex justify-end">{{ allWatchedTime }} min</span>
+					</li>
+					<li class="my-[10px] py-[10px] flex flex-col w-full">
+						<span>Avatar Background Color</span
+						><sb-control
+							[inputValue]="user.avatarBackground"
+							type="color"
+							[isDisabled]="true"
+							[width]="250"
+						></sb-control>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Banner Background Color</span>
+						<sb-control
+							[inputValue]="user.bannerBackground"
+							type="color"
+							[isDisabled]="true"
+							[width]="250"
+						></sb-control>
+					</li>
+				</ul>
+			</div>
 		</div>
-	</div>
-	}
+		}
+	</ng-container>
 </div>

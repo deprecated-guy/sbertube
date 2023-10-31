@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlComponent, FormErrorComponent, IconComponent } from '@ui';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +23,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 		]),
 	],
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
 	protected editorAnimationState = 'closed';
 	protected settingsAnimationState = 'closed';
 	private _userService = inject(UserService);
@@ -61,5 +61,9 @@ export class SettingsComponent {
 	}
 	protected changeEditorAnimationState() {
 		this.editorAnimationState = this.editorAnimationState == 'closed' ? 'open' : 'closed';
+	}
+
+	ngOnInit() {
+		console.log(this.currentUser());
 	}
 }

@@ -4,6 +4,7 @@ import {
 	ElementRef,
 	forwardRef,
 	HostBinding,
+	HostListener,
 	inject,
 	Input,
 	OnInit,
@@ -13,6 +14,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ShowPasswordDirective } from '@shared/ui/directives';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 function convertToPx(v: number) {
 	return v + 'px';
@@ -21,8 +23,16 @@ function convertToPx(v: number) {
 @Component({
 	selector: 'sb-control',
 	standalone: true,
+	animations: [
+		trigger('moveUp', [
+			state('void', style({ transform: 'translateY(0)' })), // Исходное состояние элемента
+			state('*', style({ transform: 'translateY(-20px)', fontSize: 10 })),
+			transition('void<=>*', [animate('200ms')]),
+		]),
+	],
 	imports: [CommonModule, ShowPasswordDirective],
-	template: `<div>
+	template: `<div class="relative">
+		<span class="absolute" [@moveUp]="state">{{ text }}</span>
 		<input
 			[class.error]="control?.touched && control?.dirty && control?.errors"
 			[class.valid]="control?.valid"
@@ -40,6 +50,8 @@ function convertToPx(v: number) {
 			[disabled]="isDisabled"
 			[placeholder]="placeholder"
 			(input)="updateValue($event)"
+			(focus)="onFocus($event)"
+			(blur)="onBlur($event)"
 			[attr.aria-autocomplete]="enableAutocomplete"
 		/>
 
@@ -62,36 +74,28 @@ function convertToPx(v: number) {
 })
 export class ControlComponent implements ControlValueAccessor, OnInit {
 	@ViewChild('input', { read: ElementRef<HTMLInputElement> })
-	private input!: ElementRef<HTMLInputElement>;
+	private _input!: ElementRef<HTMLInputElement>;
 
 	@Input() placeholder = '';
-
 	@Input() type = 'text';
 	@Input() enableAutocomplete: 'none' | 'list' | 'inline' = 'none';
-
+	@Input() text = '';
 	@Input() inputName: 'password' | 'repeat' | '' = '';
-
 	@Input() canSeePassword = false;
-
 	@Input({ transform: (v: number) => convertToPx(v) }) paddingX = 0;
-
 	@Input({ transform: (v: number) => convertToPx(v) }) paddingY = 5;
-
 	@Input({ transform: (v: number) => convertToPx(v) }) fontSize = 15;
-
 	@Input() inputValue: unknown = '';
-
 	@Input({ transform: (v: number) => convertToPx(v) }) height = 30;
-
 	@Input({ transform: (v: number) => convertToPx(v) }) width = 30;
 	@Input() isDisabled = false;
 
 	@Input() control!: AbstractControl;
-
-	private elRef = inject(ElementRef);
-	private hidePass = false;
-	private renderer = inject(Renderer2);
-	public value = '';
+	protected state = 'void';
+	private _elRef = inject(ElementRef);
+	private _hidePass = false;
+	private _renderer = inject(Renderer2);
+	protected value = '';
 
 	@HostBinding('attr.aria-name')
 	get name() {
@@ -116,6 +120,9 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 
 	protected onTouch = () => {};
 
+	@HostListener('document:click', ['$event'])
+	onDocumentClick(e: MouseEvent) {}
+
 	registerOnChange(fn: (v: unknown) => void): void {
 		this.onChange = fn;
 	}
@@ -125,7 +132,7 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 	}
 
 	setDisabledState(isDisabled: boolean): void {
-		this.renderer.setProperty(this.elRef.nativeElement, 'disabled', isDisabled);
+		this._renderer.setProperty(this._elRef.nativeElement, 'disabled', isDisabled);
 	}
 
 	writeValue(obj: string): void {
@@ -142,16 +149,24 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 	protected onClick() {
 		if (this.control) this.control.setValue('');
 		this.value = '';
-		this.input.nativeElement.value = '';
+		this._input.nativeElement.value = '';
 	}
 
 	handleClick(event: MouseEvent) {
 		event.preventDefault();
 		event.stopPropagation();
-		this.hidePass = !this.hidePass;
+		this._hidePass = !this._hidePass;
 	}
 	ngOnInit() {
-		this.elRef.nativeElement.style.width = this.width;
-		this.elRef.nativeElement.style.height = this.height;
+		this._elRef.nativeElement.style.width = this.width;
+		this._elRef.nativeElement.style.height = this.height;
+	}
+
+	onFocus(event: FocusEvent) {
+		this.state = '*';
+	}
+
+	onBlur(event: Event) {
+		this.state = 'void';
 	}
 }

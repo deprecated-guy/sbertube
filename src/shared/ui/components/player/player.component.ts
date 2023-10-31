@@ -7,7 +7,6 @@ import {
 	Input,
 	OnDestroy,
 	Output,
-	ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -42,26 +41,25 @@ import { VideoDirective } from '@shared/ui/directives';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerComponent implements OnDestroy {
-	@ViewChild('myMedia', { static: true, read: ElementRef<HTMLVideoElement> })
-	private _media!: ElementRef<HTMLVideoElement>;
-	protected api = inject(VgAPI);
-	private aoiSub$!: Subscription;
+	protected _api = inject(VgAPI);
+	private _apiSub$!: Subscription;
+	private _elRef = inject(ElementRef);
 
-	@Input({ required: true }) size: 'sm' | 'lg' | 'full' | 'md' = 'lg';
+	@Input({ required: true }) size: 'sm' | 'lg' | 'full' | 'md' | 'mobile' | 'history' = 'lg';
 	@Input() source = '';
 	@Output() duration = new EventEmitter<number>();
+	@Input() showTime = true;
 	formatedDuration = 0;
 
 	public onPlayerReady(api: VgAPI) {
-		this.api = api;
-		this.aoiSub$ = this.api.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.playVideo.bind(this));
+		this._api = api;
 	}
 
 	public playVideo() {
-		this.api.play();
+		this._api.play();
 	}
 	ngOnDestroy() {
-		this.aoiSub$.unsubscribe();
+		this._apiSub$.unsubscribe();
 	}
 
 	getDuration(event: number) {

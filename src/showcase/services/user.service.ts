@@ -13,6 +13,7 @@ export class UserService {
 
 	public getCurrentUser(): Observable<User> {
 		return this._httpClient.get<UserResponse>(this._httpRoute + '/account').pipe(
+			tap(console.log),
 			map((user) => mapUser(user)),
 			tap((user) => console.log(user)),
 		);

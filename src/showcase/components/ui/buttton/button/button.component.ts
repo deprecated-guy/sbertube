@@ -13,6 +13,7 @@ import { AppearanceDirective, IconComponent } from '@ui';
 })
 export class ButtonComponent {
 	@Input() background = 'transparent';
+	@Input() imagePath = '';
 	@Input() icon = '';
 	@Input() width = 24;
 	@Input() height = 24;
@@ -50,5 +51,9 @@ export class ButtonComponent {
 	@HostListener('mouseup')
 	onMouseUp() {
 		this.isActive = false;
+	}
+
+	protected get iconPath() {
+		return this.imagePath ? this.imagePath : this.icon;
 	}
 }

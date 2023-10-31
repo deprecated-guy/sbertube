@@ -2,12 +2,14 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input, Template
 import { CommonModule } from '@angular/common';
 import { BackendErrors, User } from '@shared/types';
 import { colorParser, UserService } from '@showcase/services';
-import { ButtonComponent } from '@showcase/components/ui';
+import { ButtonComponent, RippleDirective } from '@showcase/components/ui';
 import { RouterLink } from '@angular/router';
 import { PersistenceService } from '@shared/services';
 import { Portal } from '@cdk';
-import { ControlFileComponent, DialogRef, ToastRef, WindowComponent } from '@ui';
+import { ControlFileComponent, DialogRef, IconComponent, ToastRef, WindowComponent } from '@ui';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { IS_MOBILE } from '@di';
+import { UserAvatarComponent } from '@shared/ui/components/user';
 
 const makeColorString = (v: string) => {
 	const color = colorParser(v);
@@ -17,7 +19,15 @@ const convertToPx = (v: number) => `${v}px`;
 @Component({
 	selector: 'sb-user-banner',
 	standalone: true,
-	imports: [CommonModule, ButtonComponent, RouterLink, ControlFileComponent],
+	imports: [
+		CommonModule,
+		ButtonComponent,
+		RouterLink,
+		ControlFileComponent,
+		RippleDirective,
+		IconComponent,
+		UserAvatarComponent,
+	],
 	templateUrl: './user-banner.component.html',
 	styleUrls: ['./user-banner.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,13 +41,13 @@ export class UserBannerComponent {
 	@Input() rippleColor = '';
 	@Input() hoverBgColor = '';
 	@Input() btnBgColor = '';
-
-	private _file: File = {} as File;
+	protected _file!: File;
 	private _persistenceService = inject(PersistenceService);
 	private _dialogRef = inject(DialogRef);
 	private _toastRef = inject(ToastRef);
 	private _userService = inject(UserService);
 	private _destroyRef = inject(DestroyRef);
+	protected IS_MOBILE$ = inject(IS_MOBILE);
 	protected token = this._persistenceService.getItem('token');
 	protected imageName = '';
 
@@ -48,7 +58,7 @@ export class UserBannerComponent {
 		this._dialogRef
 			.open(
 				WindowComponent,
-				{ class: 'sm', template: templateRef, isBackdrop: true },
+				{ class: 'mobile', template: templateRef, isBackdrop: true },
 				{ windowName: 'Update Banner Window' },
 			)
 			.pipe(takeUntilDestroyed(this._destroyRef))

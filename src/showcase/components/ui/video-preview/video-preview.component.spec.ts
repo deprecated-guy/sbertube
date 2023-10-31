@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SliderRangeComponent } from './slider-range.component';
+import { VideoPreviewComponent } from './video-preview.component';
 
-describe('SliderRangeComponent', () => {
-  let component: SliderRangeComponent;
-  let fixture: ComponentFixture<SliderRangeComponent>;
+describe('VideoPreviewComponent', () => {
+  let component: VideoPreviewComponent;
+  let fixture: ComponentFixture<VideoPreviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SliderRangeComponent]
+      imports: [VideoPreviewComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(SliderRangeComponent);
+    fixture = TestBed.createComponent(VideoPreviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
