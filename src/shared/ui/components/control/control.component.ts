@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ShowPasswordDirective } from '@shared/ui/directives';
+import { InputExtensionDirective, ShowPasswordDirective } from '@shared/ui/directives';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 function convertToPx(v: number) {
@@ -25,18 +25,19 @@ function convertToPx(v: number) {
 	standalone: true,
 	animations: [
 		trigger('moveUp', [
-			state('void', style({ transform: 'translateY(0)' })), // Исходное состояние элемента
-			state('*', style({ transform: 'translateY(-20px)', fontSize: 10 })),
+			state('void', style({ transform: 'translateY(0) translateX(0)' })), // Исходное состояние элемента
+			state('*', style({ transform: 'translateY(-19px) translateX(5px)', fontSize: 10 })),
 			transition('void<=>*', [animate('200ms')]),
 		]),
 	],
-	imports: [CommonModule, ShowPasswordDirective],
-	template: `<div class="relative">
+	imports: [CommonModule, ShowPasswordDirective, InputExtensionDirective],
+	template: `<div class="relative" #container sbInputExtension [appearance]="appearance">
 		<span class="absolute" [@moveUp]="state">{{ text }}</span>
+
 		<input
 			[class.error]="control?.touched && control?.dirty && control?.errors"
 			[class.valid]="control?.valid"
-			class="border-none outline-none"
+			class=""
 			#input
 			[autocomplete]="enableAutocomplete"
 			[value]="inputValue"
@@ -48,14 +49,21 @@ function convertToPx(v: number) {
 			[style.padding-bottom]="paddingY"
 			[style.font-size]="fontSize"
 			[disabled]="isDisabled"
-			[placeholder]="placeholder"
+			[placeholder]="state === '*' ? placeholder : ''"
 			(input)="updateValue($event)"
 			(focus)="onFocus($event)"
 			(blur)="onBlur($event)"
 			[attr.aria-autocomplete]="enableAutocomplete"
 		/>
 
-		<button class="material-icons absolute ml-[89%]" *ngIf="input.value.length > 0 && !inputValue" (click)="onClick()">
+		<button
+			class="material-icons ml-[95%] z-1 absolute "
+			*ngIf="input.value.length > 0 && !inputValue"
+			(click)="onClick(input)"
+			[ngClass]="{
+				'ml-[89%]': canSeePassword
+			}"
+		>
 			clear
 		</button>
 		<button
@@ -75,6 +83,8 @@ function convertToPx(v: number) {
 export class ControlComponent implements ControlValueAccessor, OnInit {
 	@ViewChild('input', { read: ElementRef<HTMLInputElement> })
 	private _input!: ElementRef<HTMLInputElement>;
+	@ViewChild('container', { read: ElementRef<HTMLDivElement> })
+	private _container!: ElementRef<HTMLInputElement>;
 
 	@Input() placeholder = '';
 	@Input() type = 'text';
@@ -89,6 +99,7 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 	@Input({ transform: (v: number) => convertToPx(v) }) height = 30;
 	@Input({ transform: (v: number) => convertToPx(v) }) width = 30;
 	@Input() isDisabled = false;
+	@Input() appearance: 'primitive' | 'floated' = 'primitive';
 
 	@Input() control!: AbstractControl;
 	protected state = 'void';
@@ -146,27 +157,31 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 		this.onTouch();
 	}
 
-	protected onClick() {
+	protected onClick(element: HTMLInputElement) {
 		if (this.control) this.control.setValue('');
 		this.value = '';
 		this._input.nativeElement.value = '';
+		element.value = '';
+		this.onBlur();
 	}
 
-	handleClick(event: MouseEvent) {
+	protected handleClick(event: MouseEvent) {
 		event.preventDefault();
 		event.stopPropagation();
 		this._hidePass = !this._hidePass;
 	}
-	ngOnInit() {
-		this._elRef.nativeElement.style.width = this.width;
-		this._elRef.nativeElement.style.height = this.height;
-	}
 
-	onFocus(event: FocusEvent) {
+	protected onFocus(event: FocusEvent) {
 		this.state = '*';
 	}
 
-	onBlur(event: Event) {
+	onBlur(event?: Event) {
+		if (this._input.nativeElement.value) return;
 		this.state = 'void';
+	}
+
+	ngOnInit() {
+		this._elRef.nativeElement.style.width = this.width;
+		this._elRef.nativeElement.style.height = this.height;
 	}
 }

@@ -49,7 +49,7 @@ export const VIDEO_UPLOAD_FORM = new InjectionToken<FormGroup>('UPLOAD', {
 
 export const COMMENT_FORM = new InjectionToken<FormGroup>('COMMENT', {
 	providedIn: 'root',
-	factory: () => formFactory(['title', 'body'], [], false),
+	factory: () => formFactory(['body'], [Validators.maxLength(255)], false),
 });
 
 export const SEARCH_FORM = new InjectionToken<FormGroup>('', {

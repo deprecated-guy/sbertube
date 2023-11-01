@@ -40,11 +40,29 @@
 	</ng-container>
 </div>
 <section class="max-w-[800px] w-full mx-auto p-[20px]">
-	<form class="flex flex-col">
+	<form class="flex flex-col" [formGroup]="form">
 		<fieldset>
 			<div>
-				<sb-control text="comment"></sb-control>
+				<sb-control
+					formControlName="body"
+					[control]="form.controls['body']"
+					placeholder="Write your comment"
+					appearance="primitive"
+					text="comment"
+				></sb-control>
 			</div>
+			<div>
+				<sb-form-error *ngIf="body?.errors?.['required'] && body?.touched" error="This field required"></sb-form-error>
+				<sb-form-error
+					*ngIf="body?.errors?.['maxlength'] && body?.dirty"
+					error="Max length 255 symbols"
+				></sb-form-error>
+			</div>
+		</fieldset>
+		<fieldset class="ml-auto mt-[20px]">
+			<sb-button [class.disabled]="form.invalid" [hoverBgColor]="'#66bef5'" icon="upload" name="complete"
+				>send</sb-button
+			>
 		</fieldset>
 	</form>
 </section>

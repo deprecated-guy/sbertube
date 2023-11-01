@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlComponent, PlayerComponent } from '@ui';
+import { ControlComponent, FormErrorComponent, PlayerComponent } from '@ui';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
 import { UserService, VideoLoader } from '@showcase/services';
@@ -8,11 +8,21 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { User, Video } from '@types';
 import { VideoActionComponent } from '@shared/ui/components/video-action/video-action.component';
 import { ButtonComponent } from '@showcase/components/ui';
+import { COMMENT_FORM } from '@di';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'sb-page',
 	standalone: true,
-	imports: [CommonModule, PlayerComponent, VideoActionComponent, ButtonComponent, ControlComponent],
+	imports: [
+		CommonModule,
+		PlayerComponent,
+		VideoActionComponent,
+		ButtonComponent,
+		ControlComponent,
+		FormErrorComponent,
+		ReactiveFormsModule,
+	],
 	templateUrl: './page.component.html',
 	styleUrls: ['./page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,6 +37,11 @@ export class PageComponent implements OnInit {
 	protected currentUser$ = this._userService.getCurrentUser();
 	protected user = toSignal(this.currentUser$, { initialValue: <User>{} });
 	protected isOpenFull = false;
+	protected form = inject(COMMENT_FORM);
+
+	protected get body() {
+		return this.form.get('body');
+	}
 
 	protected openFull() {
 		this.isOpenFull = !this.isOpenFull;
