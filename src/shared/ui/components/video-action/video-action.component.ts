@@ -36,8 +36,6 @@ export class VideoActionComponent implements OnInit {
 		if (this.video.isLiked) {
 			return;
 		}
-		if (video.dislikesCount > 0 && localStorage.getItem('videoDislikeId')) {
-		}
 
 		this._likeService
 			.addLikeToVideo(data)
@@ -66,8 +64,7 @@ export class VideoActionComponent implements OnInit {
 		if (this.video.isDisliked) {
 			return;
 		}
-		if (video.likesCount > 0 && localStorage.getItem('videoLikeId')) {
-		}
+
 		this._dislikeService.addDislikeToVideo(data).pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
 		this.videoSig.update((video) => {
 			return {

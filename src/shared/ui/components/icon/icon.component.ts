@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+const convertToPx = (v: number) => `${v}px`;
 
 @Component({
 	selector: 'sb-icon',
@@ -16,8 +17,8 @@ import { CommonModule } from '@angular/common';
 	</svg>`,
 })
 export class IconComponent {
-	@Input({ transform: (v: number) => v + 'px' }) width = 24;
-	@Input({ transform: (v: number) => v + 'px' }) height = 24;
+	@Input({ transform: (v: number) => convertToPx(v) }) width = 24;
+	@Input({ transform: (v: number) => convertToPx(v) }) height = 24;
 	@Input() name = '';
 	@Input() iconPath = '';
 	@Input() icon = '';
