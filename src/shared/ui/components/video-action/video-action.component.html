@@ -1,0 +1,27 @@
+<ng-container *ngIf="actionType === 'dislike'; else like">
+	<button
+		sbRipple
+		draggable="true"
+		[class.disabled]="isDisabled"
+		[rippleColor]="'#f56161'"
+		(click)="addDislike(video)"
+		[class.disliked]="video.isDisliked"
+		class="min-w-[40px] px-[10px] overflow-hidden flex-row-reverse items-center transition-all hover:bg-red-400 flex justify-center relative py-[3px] bg-gray-100 rounded-[6px] font-semibold"
+	>
+		<span class="ml-[10px]"><sb-icon [class]="'rotate-y-180'" name="complete" icon="dislike"></sb-icon></span
+		>{{ videoSig().dislikesCount }}
+	</button>
+</ng-container>
+<ng-template #like>
+	<button
+		[class.disabled]="isDisabled"
+		sbRipple
+		(click)="addLike(video)"
+		[class.liked]="video.isLiked"
+		draggable="true"
+		[rippleColor]="'#70a3ea'"
+		class="min-w-[40px] ml-[10px] transition-all px-[10px] hover:bg-blue-300 items-center overflow-hidden flex justify-center relative py-[3px] bg-gray-100 rounded-[6px] font-semibold"
+	>
+		<span class="mr-[10px]"><sb-icon name="complete" icon="like"></sb-icon></span>{{ videoSig().likesCount }}
+	</button>
+</ng-template>

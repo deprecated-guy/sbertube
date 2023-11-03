@@ -1,0 +1,78 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": ["unused-imports"],
+	"overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+				"prettier"
+      ],
+      "rules": {
+				"indent": [
+					"error", "tab", { "offsetTernaryExpressions": true }
+				],
+				"no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+				"@typescript-eslint/no-empty-function": "off",
+				"@angular-eslint/template/interactive-supports-focus": "off","no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
+				"unused-imports/no-unused-imports": "error",
+				"unused-imports/no-unused-vars": [
+					"warn",
+					{ "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+				],
+			"@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "sb",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "sb",
+            "style": "kebab-case"
+          }
+        ],
+				"prettier/prettier": [
+					"error",{
+						"tabWidth": 2
+					}
+				]
+      }
+    },
+    {
+			"files": [
+				"*.html"
+			],
+			"plugins": [
+				"html",
+				"prettier"
+			],
+			"extends": [
+				"plugin:@angular-eslint/template/recommended",
+				"plugin:@angular-eslint/template/accessibility",
+				"plugin:prettier/recommended",
+				"prettier"
+			],
+      "rules": {
+				"prettier/prettier": ["off"],
+				"@angular-eslint/template/click-events-have-key-events": "off"
+			}
+    }
+  ]
+}

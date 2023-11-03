@@ -1,0 +1,27 @@
+button {
+	position: relative;
+	p {
+		z-index: 1;
+	}
+	&:active {
+		color: white;
+	}
+}
+.ripple {
+	position: absolute;
+	animation: ripple 1s;
+	border-radius: 50%;
+}
+
+@keyframes ripple {
+	from {
+		width: 20px;
+		height: 20px;
+		opacity: 0.4;
+		transform: scale(1.5);
+	}
+	to {
+		transform: scale(100);
+		opacity: 0;
+	}
+}

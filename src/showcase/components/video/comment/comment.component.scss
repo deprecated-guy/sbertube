@@ -1,0 +1,32 @@
+.hint-ul {
+	sb-icon {
+		--icon-color: white;
+	}
+}
+
+sb-button {
+	color: #7c7c7c;
+	--icon-color: #727070;
+	&:hover {
+		color: white;
+		--icon-color: #727070;
+	}
+}
+
+.editable {
+	user-select: all;
+	pointer-events: all;
+	border: #2e84f4 2px solid;
+	outline: none;
+}
+::ng-deep sb-button {
+	margin-right: 10px;
+	.disabled {
+		background: #ababab;
+		pointer-events: none;
+		color: #f2f2f2;
+	}
+}
+.cancel {
+	background: #d94f4f;
+}

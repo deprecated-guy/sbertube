@@ -1,0 +1,14 @@
+.loader {
+	background: #f2f2f2;
+	border-radius: 5px;
+	animation: loading infinite 1s alternate;
+}
+@keyframes loading {
+	from {
+		opacity: 0.6;
+	}
+
+	to {
+		opacity: 1;
+	}
+}

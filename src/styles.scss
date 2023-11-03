@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*:after,
+*:before {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body,
+html {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+button {
+	position: relative;
+}
+
+.ripple {
+	position: absolute;
+	animation: ripple ease 0.8s;
+	border-radius: 50%;
+}
+
+@keyframes ripple {
+	from {
+		width: 20px;
+		height: 20px;
+		opacity: 0.4;
+		transform: scale(1.5);
+	}
+	to {
+		transform: scale(100);
+		opacity: 0;
+	}
+}
+.disabled {
+	background: gray;
+	pointer-events: none;
+}
