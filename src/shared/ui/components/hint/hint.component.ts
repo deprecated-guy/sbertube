@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+const transformToPx = (v: number) => `${v}px`;
 
 @Component({
 	selector: 'sb-hint',
@@ -18,6 +19,6 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 })
 export class HintComponent {
 	@Input() templateRef!: TemplateRef<unknown>;
-	@Input({ transform: (v: number) => v + 'px' }) left = 0;
-	@Input({ transform: (v: number) => v + 'px' }) top = 0;
+	@Input({ transform: (v: number) => transformToPx(v) }) left = 0;
+	@Input({ transform: (v: number) => transformToPx(v) }) top = 0;
 }

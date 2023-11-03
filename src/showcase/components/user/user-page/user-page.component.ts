@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, NgZone } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { UserService } from '@showcase/services';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
@@ -48,7 +48,6 @@ export class UserPageComponent {
 	private _userService = inject(UserService);
 	private _formBuilder = inject(FormBuilder);
 	private _destroyRef = inject(DestroyRef);
-	private _ngZone = inject(NgZone);
 	private _toastRef = inject(ToastRef);
 	private _router = inject(Router);
 	protected IS_MOBILE$ = inject(IS_MOBILE);
@@ -76,7 +75,6 @@ export class UserPageComponent {
 
 	protected saveNewBio(area: HTMLTextAreaElement) {
 		const fieldData = this.userAbout?.value as string;
-		console.log(fieldData);
 		const data: UserEdit = {
 			userAbout: fieldData,
 			avatarBackGround: this.currentUser().avatarBackground,
@@ -85,7 +83,6 @@ export class UserPageComponent {
 			email: this.currentUser().email,
 			password: this.currentUser().password,
 		};
-		console.log(data);
 
 		this._userService
 			.editUser(data)
@@ -102,7 +99,7 @@ export class UserPageComponent {
 			});
 	}
 
-	unlogin() {
+	protected unLogin() {
 		localStorage.clear();
 		this._router.parseUrl('/');
 	}

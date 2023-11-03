@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+const transformPx = (v) => `${v}px`;
+
 @Component({
 	selector: 'sb-spinner',
 	standalone: true,
@@ -10,5 +12,5 @@ import { CommonModule } from '@angular/common';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpinnerComponent {
-	@Input({ transform: (v: number) => v + 'px' }) width = 30;
+	@Input({ transform: (v: number) => transformPx(v) }) width = 30;
 }

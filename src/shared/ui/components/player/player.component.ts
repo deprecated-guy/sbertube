@@ -32,9 +32,6 @@ import { VideoDirective } from '@shared/ui/directives';
 })
 export class PlayerComponent {
 	protected _api = inject(VgAPI);
-
-	p;
-
 	@Input({ required: true }) size: 'sm' | 'lg' | 'full' | 'md' | 'mobile' | 'history' = 'lg';
 	@Input() source = '';
 	@Output() duration = new EventEmitter<number>();
