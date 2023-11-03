@@ -10,6 +10,10 @@
 		&:hover {
 			cursor: pointer;
 		}
+		.active {
+			background: #a6a6a6;
+			border-radius: 10px;
+		}
 	}
 }
 

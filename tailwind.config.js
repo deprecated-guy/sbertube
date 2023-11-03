@@ -8,6 +8,12 @@ const rotateX = plugin(function ({ addUtilities }) {
 		'.h-content': {
 			height: 'max-content',
 		},
+		'.translate-z-10': {
+			transform: 'translateZ(20px)',
+			boxShadow: 'black 1px 2px 3px ',
+			background: 'black',
+			perspective: 16,
+		},
 	});
 });
 

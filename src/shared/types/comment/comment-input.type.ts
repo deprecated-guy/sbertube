@@ -1,7 +1,11 @@
 export type CommentInput = {
 	videoTitle: string;
 	body: string;
-	id: number;
+};
+
+export type CommentEdit = {
+	body: string;
+	id?: number;
 	isEdited: boolean;
 	editedAt: string;
 };

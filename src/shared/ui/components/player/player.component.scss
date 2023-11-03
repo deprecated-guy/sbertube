@@ -34,3 +34,6 @@
 		border-radius: 10px;
 	}
 }
+::ng-deep vg-player {
+	z-index: 1;
+}

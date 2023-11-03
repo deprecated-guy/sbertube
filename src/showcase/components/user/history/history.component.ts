@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '@showcase/services';
 import { PlayerComponent } from '@ui';
@@ -25,9 +25,13 @@ import { User } from '@types';
 	styleUrls: ['./history.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HistoryComponent {
+export class HistoryComponent implements OnInit {
 	private _userService = inject(UserService);
 	protected currentUser$ = this._userService.getCurrentUser();
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 	protected user = toSignal(this.currentUser$, { initialValue: <User>{} });
+
+	ngOnInit() {
+		console.log(this.user());
+	}
 }

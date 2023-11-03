@@ -1,12 +1,12 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RippleDirective } from '@showcase/components/ui';
-import { AppearanceDirective, IconComponent } from '@ui';
+import { AppearanceDirective, IconComponent, SpinnerComponent } from '@ui';
 
 @Component({
 	selector: 'sb-button',
 	standalone: true,
-	imports: [CommonModule, RippleDirective, IconComponent, AppearanceDirective],
+	imports: [CommonModule, RippleDirective, IconComponent, AppearanceDirective, SpinnerComponent],
 	templateUrl: './button.component.html',
 	styleUrls: ['./button.component.scss'],
 	hostDirectives: [{ directive: AppearanceDirective, inputs: ['appearance', 'rounding'] }],
@@ -27,6 +27,7 @@ export class ButtonComponent {
 	@Input() appearance: 'standard' | 'upload' | 'warn' | 'delete' = 'standard';
 	@Input() rounding: 'default' | 'full' = 'default';
 	@Input() fillColor = 'white';
+	@Input() isLoading = false;
 
 	@HostListener('mouseenter')
 	onMouseEnter() {

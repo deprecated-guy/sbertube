@@ -18,6 +18,7 @@ import { IS_MOBILE } from '@di';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConvertTimePipe } from '@showcase/components/user/pipes/convert-time.pipe';
 import { Portal } from '@cdk';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'sb-user-page',
@@ -49,6 +50,7 @@ export class UserPageComponent {
 	private _destroyRef = inject(DestroyRef);
 	private _ngZone = inject(NgZone);
 	private _toastRef = inject(ToastRef);
+	private _router = inject(Router);
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 
 	protected currentUser$ = this._userService.getCurrentUser();
@@ -98,5 +100,10 @@ export class UserPageComponent {
 				error: (err: BackendErrors) =>
 					this._toastRef.createToast({ type: 'error', text: 'Successfully edited', status: err.statusCode }),
 			});
+	}
+
+	unlogin() {
+		localStorage.clear();
+		this._router.parseUrl('/');
 	}
 }

@@ -13,6 +13,7 @@ export interface Comment {
 	author: UserResponse;
 	likes: Like[];
 	likesCount: number;
+	dislikesCount: number;
 	isLiked: boolean;
 	isDisliked: boolean;
 }

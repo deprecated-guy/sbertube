@@ -28,7 +28,7 @@ export class VideoLoader {
 	}
 
 	public updateVideo(data: EditVideo) {
-		return this._http.put<VideoResponse>(this._httpRoute + data.title, data).pipe(
+		return this._http.put<VideoResponse>(this._httpRoute + data.id, data).pipe(
 			tap(console.log),
 			map((res) => res.video),
 		);
@@ -37,7 +37,7 @@ export class VideoLoader {
 	public getVideoByTitle(title$: Observable<string>): Observable<Video> {
 		const title = toSignal(title$, { initialValue: '' });
 		console.log(title);
-		const route = this._httpRoute + `a/${title()}`;
+		const route = this._httpRoute + `v/${title()}`;
 		return this._http.get<VideoResponse>(route).pipe(
 			tap(console.log),
 			map((value) => value.video),

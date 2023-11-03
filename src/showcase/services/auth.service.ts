@@ -28,8 +28,9 @@ export class AuthService {
 	}
 
 	public logIn(data: UserLogin): Observable<User> {
-		return this._httpClient.post<UserResponse>(this._httpRoute + 'auth/login', data).pipe(
+		return this._httpClient.post<UserResponse>(this._httpRoute + '/login', data).pipe(
 			map((data: UserResponse) => mapUser(data)),
+			tap(this._persistenceService.clean),
 			tap((data: User) => this._persistenceService.setItem('token', data.token)),
 		);
 	}

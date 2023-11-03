@@ -1,15 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlComponent, FormErrorComponent, PlayerComponent } from '@ui';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs';
-import { UserService, VideoLoader } from '@showcase/services';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { User, Video } from '@types';
+import { ControlComponent, FormErrorComponent, HintDirective, IconComponent, PlayerComponent, ToastRef } from '@ui';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { map, Observable } from 'rxjs';
+import { CommentService, UserService, VideoLoader } from '@showcase/services';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BackendErrors, CommentInput, CommentResponse, User, Video } from '@types';
 import { VideoActionComponent } from '@shared/ui/components/video-action/video-action.component';
 import { ButtonComponent } from '@showcase/components/ui';
 import { COMMENT_FORM } from '@di';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Portal } from '@cdk';
+import { UserAvatarComponent } from '@shared/ui/components/user';
+import { TimeAgoPipe } from '@showcase/components/video/pipes/time-ago.pipe';
+import { PersistenceService } from '@shared/services';
+import { CommentComponent } from '@showcase/components/video/comment/comment.component';
 
 @Component({
 	selector: 'sb-page',
@@ -22,22 +27,36 @@ import { ReactiveFormsModule } from '@angular/forms';
 		ControlComponent,
 		FormErrorComponent,
 		ReactiveFormsModule,
+		UserAvatarComponent,
+		TimeAgoPipe,
+		IconComponent,
+		HintDirective,
+		CommentComponent,
+		RouterLink,
 	],
 	templateUrl: './page.component.html',
 	styleUrls: ['./page.component.scss'],
+	providers: [Portal, ToastRef],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageComponent implements OnInit {
 	private _videoLoader = inject(VideoLoader);
+	private _toastRef = inject(ToastRef);
 	private _route = inject(ActivatedRoute);
 	private _userService = inject(UserService);
+	private _commentService = inject(CommentService);
+	private _destroyRef = inject(DestroyRef);
+	private _persistenceService = inject(PersistenceService);
 	protected videoTitle$ = this._route.paramMap.pipe(map((param) => param.get('title') as string));
 	protected video$ = this._videoLoader.getVideoByTitle(this.videoTitle$);
-	protected video = toSignal(this.video$, { initialValue: {} as Video });
-	protected currentUser$ = this._userService.getCurrentUser();
-	protected user = toSignal(this.currentUser$, { initialValue: <User>{} });
+	protected video = signal({} as Video);
+	protected currentUser$!: Observable<User>;
+	protected user = signal({} as User);
+	protected comments = signal(this.video().comments as CommentResponse[]);
 	protected isOpenFull = false;
 	protected form = inject(COMMENT_FORM);
+	protected token = this._persistenceService.getItem('token');
+	private router = inject(Router);
 
 	protected get body() {
 		return this.form.get('body');
@@ -47,7 +66,40 @@ export class PageComponent implements OnInit {
 		this.isOpenFull = !this.isOpenFull;
 	}
 
+	protected sendComment() {
+		const data: CommentInput = {
+			videoTitle: this.video().title,
+			body: this.body?.value,
+		};
+		this._commentService
+			.createComment(data)
+			.pipe(takeUntilDestroyed(this._destroyRef))
+			.subscribe({
+				next: (comment) => {
+					this.comments.update((comments) => [...comments, comment]);
+				},
+				error: (err: BackendErrors) =>
+					this._toastRef.createToast({ type: 'error', status: err.statusCode, text: 'error while commenting' }),
+			});
+	}
+
 	ngOnInit() {
-		console.log(this.video());
+		this.video$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe({
+			next: (v) => {
+				this.comments.set(v.comments);
+				this.video.set(v);
+			},
+		});
+		if (this.token) {
+			this.currentUser$ = this._userService.getCurrentUser();
+			this.currentUser$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe({
+				next: (v) => this.user.set(v),
+			});
+		}
+	}
+
+	protected navigateToEditor() {
+		const video = this.video();
+		this.router.navigateByUrl('/video-editor', { state: { video: video } });
 	}
 }

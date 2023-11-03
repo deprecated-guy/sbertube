@@ -1,6 +1,6 @@
 export interface EditVideo {
+	id?: number;
 	title: string;
-	shortBody: string;
 	isViewed: boolean;
 	body: string;
 	timeToWatch: number;

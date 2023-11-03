@@ -13,18 +13,21 @@ export class DislikeService {
 	private _httpClient = inject(HttpClient);
 	private _persistenceService = inject(PersistenceService);
 
-	public createDislike(data: LikeRequest) {
-		return this._httpClient.post<DislikeResponse>(this._httpRoute, data).pipe(
+	public addDislikeToVideo(data: LikeRequest) {
+		return this._httpClient.post<DislikeResponse>(this._httpRoute + `dislikeVideo/${data.videoId}`, {}).pipe(
 			tap((v) => console.log(v)),
 			map((v) => v.dislike),
 			tap((v) => console.log(v)),
-			tap((v) => this._persistenceService.setItem('dislikeId', v.id.toString())),
+			tap((v) => this._persistenceService.setItem('videoDislikeId', v.id.toString())),
 		);
 	}
 
-	public removeDislikeFromVideo(videoId: number) {
-		const id = this._persistenceService.getItem('dislikeId') as string;
-		const route = this._httpRoute + `video/${videoId}?likeId=${id}`;
-		return this._httpClient.delete<string>(route).pipe(tap(console.log));
+	public addDislikeToComment(data: LikeRequest) {
+		return this._httpClient.post<DislikeResponse>(this._httpRoute + `dislikeComment/${data.commentId}`, {}).pipe(
+			tap((v) => console.log(v)),
+			map((v) => v.dislike),
+			tap((v) => console.log(v)),
+			tap((v) => this._persistenceService.setItem('commentDislikeId', v.id.toString())),
+		);
 	}
 }

@@ -56,6 +56,7 @@ export const SEARCH_FORM = new InjectionToken<FormGroup>('', {
 	providedIn: 'root',
 	factory: () => formFactory(['search'], [], false),
 });
+
 export const USER_EDIT_FORM = new InjectionToken<FormGroup>('', {
 	providedIn: 'root',
 	factory: () =>
@@ -64,4 +65,14 @@ export const USER_EDIT_FORM = new InjectionToken<FormGroup>('', {
 			[Validators.required, Validators.pattern(/[A-Za-z0-9]/g)],
 			false,
 		),
+});
+
+export const COMMENT_EDIT = new InjectionToken<FormGroup>('', {
+	providedIn: 'root',
+	factory: () => formFactory(['body'], [Validators.required], false),
+});
+
+export const Video_EDIT = new InjectionToken<FormGroup>('', {
+	providedIn: 'root',
+	factory: () => formFactory(['body', 'title'], [Validators.required], false),
 });

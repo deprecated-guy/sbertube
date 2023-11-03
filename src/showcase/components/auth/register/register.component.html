@@ -4,12 +4,14 @@
 		<div class="w-full">
 			<label for="name" class="block font-semibold">Email</label>
 			<sb-control
+				text="email"
 				[control]="form.controls['email']"
+				appearance="floated"
 				type="text"
 				id="name"
 				[width]="300"
 				class="w-full border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
-				placeholder="Enter your name"
+				placeholder="Enter your email"
 				formControlName="email"
 			/>
 		</div>
@@ -32,12 +34,14 @@
 		<div class="w-full">
 			<label for="email" class="block font-semibold">Username</label>
 			<sb-control
+				appearance="floated"
+				text="username"
 				[control]="form.controls['username']"
 				type="email"
 				id="email"
 				[width]="300"
 				class="w-full border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
-				placeholder="Enter your email"
+				placeholder="Enter your usernanme"
 				formControlName="username"
 			/>
 		</div>
@@ -58,6 +62,8 @@
 		<div class="w-full">
 			<label for="password" class="block font-semibold">Password</label>
 			<sb-control
+				text="password"
+				appearance="floated"
 				[canSeePassword]="true"
 				type="password"
 				inputName="password"
@@ -84,6 +90,8 @@
 		<div class="w-full">
 			<label for="check" class="block font-semibold">Repeat Password</label>
 			<sb-control
+				text="repeat"
+				appearance="floated"
 				[enableAutocomplete]="'none'"
 				[control]="form.controls['checkPassword']"
 				[width]="300"
@@ -92,7 +100,7 @@
 				type="password"
 				id="check"
 				class="w-full border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
-				placeholder="Enter your password"
+				placeholder="repeat password"
 				formControlName="checkPassword"
 			/>
 			<div>
@@ -121,7 +129,12 @@
 			Register
 		</button>
 	</fieldset>
-
+	<fieldset>
+		<p class="flex flex-col">
+			if you already have an account
+			<a routerLink="/auth/login" class="text-gray-300 hover:text-blue-300 transition-all">login to account</a>
+		</p>
+	</fieldset>
 	<fieldset *ngIf="errors$ | async as errors">
 		<sb-server-errors [error]="errors"></sb-server-errors>
 	</fieldset>

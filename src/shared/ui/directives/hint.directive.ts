@@ -18,11 +18,11 @@ export class HintDirective {
 			const instance = this.componentRef.instance;
 
 			instance.templateRef = this.templateRef;
-			instance.left = e.clientX - 20;
-			instance.top = e.clientY - 20;
+			instance.left = e.pageX;
+			instance.top = e.pageY - 50;
 			this.componentRef.changeDetectorRef.detectChanges();
 		}
-		console.log(this.componentRef);
+
 		return;
 	}
 

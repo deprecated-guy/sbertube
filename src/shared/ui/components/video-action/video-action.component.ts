@@ -23,6 +23,7 @@ export class VideoActionComponent implements OnInit {
 	protected videoSig = signal({} as Video);
 	protected userSig = signal({} as User);
 	@Input({ required: true }) actionType: 'like' | 'dislike' = 'like';
+	@Input() isDisabled = false;
 
 	protected isLiked = false;
 
@@ -35,11 +36,11 @@ export class VideoActionComponent implements OnInit {
 		if (this.video.isLiked) {
 			return;
 		}
-
-		this._dislikeService.removeDislikeFromVideo(video.id).pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
+		if (video.dislikesCount > 0 && localStorage.getItem('videoDislikeId')) {
+		}
 
 		this._likeService
-			.createLike(data)
+			.addLikeToVideo(data)
 			.pipe(takeUntilDestroyed(this._destroyRef))
 			.subscribe(() => {});
 		this.videoSig.update((video) => {
@@ -52,20 +53,22 @@ export class VideoActionComponent implements OnInit {
 			};
 		});
 		console.log('signal value ', this.videoSig());
+		console.log(this.video);
 	}
 
 	protected addDislike(video: Video) {
 		const data: LikeRequest = {
 			videoId: video.id,
 		};
-
+		console.log(data);
 		this.isLiked = false;
 
 		if (this.video.isDisliked) {
 			return;
 		}
-
-		this._dislikeService.createDislike(data).pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
+		if (video.likesCount > 0 && localStorage.getItem('videoLikeId')) {
+		}
+		this._dislikeService.addDislikeToVideo(data).pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
 		this.videoSig.update((video) => {
 			return {
 				...video,
@@ -74,8 +77,8 @@ export class VideoActionComponent implements OnInit {
 				dislikesCount: (video.dislikesCount += 1),
 				likesCount: video.likesCount > 0 ? (video.likesCount -= 1) : video.likesCount,
 			};
-		}),
-			this._likeService.deleteLikeFromVideo(video.id).pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
+		});
+		console.log(this.video);
 	}
 
 	ngOnInit() {

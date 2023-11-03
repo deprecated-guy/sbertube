@@ -12,24 +12,23 @@ export class LikeService {
 	private _httpClient = inject(HttpClient);
 	private _persistenceService = inject(PersistenceService);
 
-	public createLike(data: LikeRequest) {
-		return this._httpClient.post<LikeResponseInterface>(this._httpRoute, data).pipe(
+	public addLikeToVideo(data: LikeRequest) {
+		return this._httpClient.post<LikeResponseInterface>(this._httpRoute + `likeVideo/${data.videoId}`, {}).pipe(
 			tap(console.log),
 			map((v) => v.like),
 			tap(console.log),
 			tap((v) => console.log(v.id)),
-			tap((v) => this._persistenceService.setItem('likeId', `${v.id}`)),
+			tap((v) => this._persistenceService.setItem('videoLikeId', `${v.id}`)),
 		);
 	}
 
-	public deleteLikeFromComment(commentId?: number) {
-		const likeId = this._persistenceService.getItem('likeId');
-		return this._httpClient.delete(this._httpRoute + `comment/${commentId}?likeId=${likeId}`);
-	}
-
-	public deleteLikeFromVideo(videoId: number) {
-		const likeId = this._persistenceService.getItem('likeId');
-		const route = this._httpRoute + `video/${videoId}?likeId=${likeId}`;
-		return this._httpClient.delete<string>(route).pipe(tap(console.log));
+	public addLikeToComment(data: LikeRequest) {
+		return this._httpClient.post<LikeResponseInterface>(this._httpRoute + `likeComment/${data.commentId}`, {}).pipe(
+			tap(console.log),
+			map((v) => v.like),
+			tap(console.log),
+			tap((v) => console.log(v.id)),
+			tap((v) => this._persistenceService.setItem('commentLikeId', `${v.id}`)),
+		);
 	}
 }

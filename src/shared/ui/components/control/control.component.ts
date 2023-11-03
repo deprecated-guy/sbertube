@@ -25,7 +25,7 @@ function convertToPx(v: number) {
 	standalone: true,
 	animations: [
 		trigger('moveUp', [
-			state('void', style({ transform: 'translateY(0) translateX(0)' })), // Исходное состояние элемента
+			state('void', style({ transform: 'translateY(0) translateX(0)' })),
 			state('*', style({ transform: 'translateY(-19px) translateX(5px)', fontSize: 10 })),
 			transition('void<=>*', [animate('200ms')]),
 		]),
@@ -57,18 +57,19 @@ function convertToPx(v: number) {
 		/>
 
 		<button
-			class="material-icons ml-[95%] z-1 absolute "
+			class=" flex material-icons ml-[75%]  z-2 absolute "
 			*ngIf="input.value.length > 0 && !inputValue"
 			(click)="onClick(input)"
 			[ngClass]="{
-				'ml-[89%]': canSeePassword
+				'ml-[76%]': canSeePassword,
+				'ml-[76%] mt-[5px]': appearance === 'floated'
 			}"
 		>
 			clear
 		</button>
 		<button
 			*ngIf="canSeePassword"
-			class="show-pass absolute z-1 ml-[75%] cursor-pointer"
+			class="show-pass absolute z-1 mt-[5px] ml-[85%] cursor-pointer"
 			(click)="handleClick($event)"
 			[name]="inputName"
 			sbShowPassword

@@ -1,13 +1,4 @@
-import {
-	ChangeDetectionStrategy,
-	Component,
-	ElementRef,
-	EventEmitter,
-	inject,
-	Input,
-	OnDestroy,
-	Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
 	VgAPI,
@@ -19,7 +10,6 @@ import {
 } from 'ngx-videogular';
 import { VgStreamingModule } from '@videogular/ngx-videogular/streaming';
 import { VgModuloModule } from '@videogular/ngx-videogular/modulo';
-import { Subscription } from 'rxjs';
 import { VideoDirective } from '@shared/ui/directives';
 
 @Component({
@@ -40,30 +30,21 @@ import { VideoDirective } from '@shared/ui/directives';
 	styleUrls: ['./player.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerComponent implements OnDestroy {
+export class PlayerComponent {
 	protected _api = inject(VgAPI);
-	private _apiSub$!: Subscription;
-	private _elRef = inject(ElementRef);
+
+	p;
 
 	@Input({ required: true }) size: 'sm' | 'lg' | 'full' | 'md' | 'mobile' | 'history' = 'lg';
 	@Input() source = '';
 	@Output() duration = new EventEmitter<number>();
 	@Input() showTime = true;
-	formatedDuration = 0;
 
 	public onPlayerReady(api: VgAPI) {
 		this._api = api;
 	}
 
-	public playVideo() {
-		this._api.play();
-	}
-	ngOnDestroy() {
-		this._apiSub$.unsubscribe();
-	}
-
 	getDuration(event: number) {
 		this.duration.emit(event);
-		this.formatedDuration = event;
 	}
 }

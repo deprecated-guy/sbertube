@@ -4,7 +4,7 @@
 		<ul class="flex flex-col w-full max-w-[900px] mx-auto mt-10">
 			@for(video of videos; track video.id) { @if((IS_MOBILE$ | async)){
 			<li class="flex flex-col p-[5px] bg-gray-200 rounded-md mh-[150px] h-auto">
-				<a [routerLink]="['video', video.alias]">
+				<a [routerLink]="['/video', video.alias]">
 					<section>
 						<sb-video-preview
 							[class]="'sm'"
@@ -24,8 +24,14 @@
 							<span class="ml-[10px] text-gray-400 text-[18px] whitespace-nowrap text-ellipsis">{{ video.body }}</span>
 						</section>
 						<section class="flex mt-[10px]">
-							<sb-video-action [user]="user()" actionType="like" [video]="video"></sb-video-action>
-							<sb-video-action [user]="user()" class="ml-[10px]" actionType="dislike" [video]="video"></sb-video-action>
+							<sb-video-action [isDisabled]="true" [user]="user()" actionType="like" [video]="video"></sb-video-action>
+							<sb-video-action
+								[isDisabled]="true"
+								[user]="user()"
+								class="ml-[10px]"
+								actionType="dislike"
+								[video]="video"
+							></sb-video-action>
 						</section>
 					</section>
 				</a>

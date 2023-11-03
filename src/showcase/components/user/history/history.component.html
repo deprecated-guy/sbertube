@@ -61,8 +61,14 @@
 							}}</span>
 						</section>
 						<section class="flex mt-auto ml-auto">
-							<sb-video-action actionType="like" [user]="user" [video]="video.video"></sb-video-action>
 							<sb-video-action
+								[isDisabled]="true"
+								actionType="like"
+								[user]="user"
+								[video]="video.video"
+							></sb-video-action>
+							<sb-video-action
+								[isDisabled]="true"
 								class="ml-[10px]"
 								[user]="user"
 								actionType="dislike"
