@@ -1,7 +1,7 @@
 {
   "name": "s-tube",
   "packageManager": "pnpm@8.9.2",
-  "version": "1.0.31-dev.1",
+  "version": "1.0.32",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
