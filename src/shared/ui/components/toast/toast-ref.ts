@@ -1,18 +1,17 @@
 import { ComponentRef, inject, Injectable, Injector } from '@angular/core';
 import { Portal } from '@cdk';
-import { ToastSettings } from '@components/ui/toast/types/toast-settings.interface';
-import { COMPONENT_DATA } from '@components/ui/sidebar/token/COMPONENT_DATA';
-import { ToastComponent } from '@ui';
+
+import { COMPONENT_DATA, ToastComponent, ToastSettings } from '@ui';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ToastRef {
 	private portal = inject(Portal);
-	private toast!: ComponentRef<unknown>;
+	private toast!: ComponentRef<ToastSettings>;
 	public createToast(settings: ToastSettings) {
 		const injector = Injector.create([{ provide: COMPONENT_DATA, useValue: '123' }]);
-		const componentRef = this.portal.createPortal(ToastComponent, injector);
+		const componentRef = this.portal.createPortal(ToastComponent, injector) as ComponentRef<ToastSettings>;
 		const instance = componentRef.instance;
 		instance.type = settings.type;
 		instance.text = settings.text;

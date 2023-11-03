@@ -1,14 +1,21 @@
-import { User } from '../user/user.interface';
-import { CommentResponse } from '../comment/comment-response.type';
+import { UserResponse } from '@shared/types';
+import { CommentResponse } from '@shared/types';
 
 export interface Video {
-	author: User;
+	id: number;
+	author: UserResponse;
+	alias: string;
 	title: string;
 	shortBody: string;
 	body: string;
 	path: string;
+	watchDate: string;
 	comments: CommentResponse[];
+	uploadedAt: string;
 	watchedTime: number;
 	timeToWatch: number;
 	likesCount: number;
+	dislikesCount: number;
+	isLiked: boolean;
+	isDisliked: boolean;
 }

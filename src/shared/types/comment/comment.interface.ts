@@ -1,6 +1,6 @@
-import { UserResponse } from '../user/user-response.interface';
-import { VideoResponse } from '../video/video-response.type';
-import { Like } from '../like/like-response.interface';
+import { UserResponse } from '@shared/types';
+import { VideoResponse } from '@shared/types';
+import { Like } from '@shared/types';
 
 export interface Comment {
 	id: number;
@@ -13,6 +13,7 @@ export interface Comment {
 	author: UserResponse;
 	likes: Like[];
 	likesCount: number;
+	dislikesCount: number;
 	isLiked: boolean;
 	isDisliked: boolean;
 }

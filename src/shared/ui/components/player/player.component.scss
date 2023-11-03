@@ -4,8 +4,8 @@
 
 	&.sm {
 		margin: 5px;
-		width: 400px;
-		height: 250px;
+		width: 300px;
+		height: 200px;
 	}
 
 	&.lg {
@@ -22,4 +22,18 @@
 		width: 500px;
 		height: 350px;
 	}
+
+	&.mobile {
+		width: 200px;
+		height: 150px;
+	}
+
+	&.history {
+		width: 300px;
+		height: 150px;
+		border-radius: 10px;
+	}
+}
+::ng-deep vg-player {
+	z-index: 1;
 }

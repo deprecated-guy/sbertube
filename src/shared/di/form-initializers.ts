@@ -8,7 +8,7 @@ const formFactory = (controls: string[], validators: ValidatorFn[], isRegForm?: 
 		{},
 		isRegForm
 			? {
-					validators: [SbValidators.passwordsValidator],
+					validators: [SbValidators.passwordsValidator, SbValidators.validateEmail],
 			  }
 			: {},
 	);
@@ -42,20 +42,21 @@ export const LOGIN_FORM = new InjectionToken<FormGroup>('LOGIN', {
 	factory: () => formFactory(['username', 'password'], [Validators.pattern(/[A-Za-z0-9]/gi)]),
 });
 
-export const VIDEO_UPLOAD_FORM = new InjectionToken<FormGroup>('LOGIN', {
+export const VIDEO_UPLOAD_FORM = new InjectionToken<FormGroup>('UPLOAD', {
 	providedIn: 'root',
 	factory: () => formFactory(['title', 'body', 'shortBody'], [], false),
 });
 
-export const COMMENT_FORM = new InjectionToken<FormGroup>('LOGIN', {
+export const COMMENT_FORM = new InjectionToken<FormGroup>('COMMENT', {
 	providedIn: 'root',
-	factory: () => formFactory(['title', 'body'], [], false),
+	factory: () => formFactory(['body'], [Validators.maxLength(255)], false),
 });
 
 export const SEARCH_FORM = new InjectionToken<FormGroup>('', {
 	providedIn: 'root',
 	factory: () => formFactory(['search'], [], false),
 });
+
 export const USER_EDIT_FORM = new InjectionToken<FormGroup>('', {
 	providedIn: 'root',
 	factory: () =>
@@ -69,4 +70,13 @@ export const USER_EDIT_FORM = new InjectionToken<FormGroup>('', {
 export const USER_ACTIVATION = new InjectionToken<FormGroup>('', {
 	providedIn: 'root',
 	factory: () => formFactory(['activation'], [SbValidators.codeValidator], false),
+});
+export const COMMENT_EDIT = new InjectionToken<FormGroup>('', {
+	providedIn: 'root',
+	factory: () => formFactory(['body'], [Validators.required], false),
+});
+
+export const Video_EDIT = new InjectionToken<FormGroup>('', {
+	providedIn: 'root',
+	factory: () => formFactory(['body', 'title'], [Validators.required], false),
 });

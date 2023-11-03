@@ -1,0 +1,104 @@
+<section class="flex flex-col px-[10px] py-[5px]">
+	<div class="flex w-full">
+		<section class="flex">
+			<div class="flex items-center">
+				<sb-user-avatar [width]="40" [height]="40" [user]="comment.comment.author.user"></sb-user-avatar>
+				<span class="ml-[10px] flex">{{ comment.comment.author.user.username }}</span>
+			</div>
+		</section>
+		<section class="flex ml-auto">
+			<div class="flex">
+				<span class="flex"> {{ comment.comment.createdAt | timeAgo }}</span>
+			</div>
+		</section>
+		<section class="flex ml-auto mr-[10px]">
+			<div>
+				<span *ngIf="comment.comment.isEdited" class="text-gray"
+					><span class="material-icons mr-[5px]">edit</span>(edited)</span
+				>
+				<span class="text-gray cursor-pointer relative"
+					><span class="mr-[5px]" sbHint [templateRef]="hint"
+						><sb-icon icon="more" name="complete" [width]="16"></sb-icon></span
+				></span>
+			</div>
+		</section>
+	</div>
+
+	<section class="w-full flex my-[5px] h-full">
+		<form [formGroup]="form" class="w-full h-[100px]">
+			<textarea
+				formControlName="body"
+				#area
+				class="w-full bg-gray-200 h-full outline-0 resize-none select-none px-[15px] pointer-events-none border-none"
+				[value]="comment.comment.body"
+			></textarea>
+			<div *ngIf="form.controls['body']?.touched">
+				<sb-form-error error="this field is required"></sb-form-error>
+			</div>
+		</form>
+	</section>
+	<section class="my-[50px] flex">
+		<div class="flex ml-auto">
+			<button
+				sbRipple
+				(click)="likeComment(comment.comment)"
+				[class.liked]="comment.comment.isLiked"
+				draggable="true"
+				[rippleColor]="'#70a3ea'"
+				class="min-w-[40px] mr-[10px] transition-all px-[10px] hover:bg-blue-300 items-center overflow-hidden flex justify-center relative py-[3px] bg-gray-100 rounded-[6px] font-semibold"
+			>
+				<span class="mr-[10px]"><sb-icon name="complete" icon="like"></sb-icon></span>{{ commentSig().likesCount }}
+			</button>
+			<button
+				sbRipple
+				draggable="true"
+				[rippleColor]="'#f56161'"
+				(click)="addDislike(comment.comment)"
+				[class.disliked]="comment.comment.isDisliked"
+				class="min-w-[40px] px-[10px] overflow-hidden flex-row-reverse items-center transition-all hover:bg-red-400 flex justify-center relative py-[3px] bg-gray-100 rounded-[6px] font-semibold"
+			>
+				<span class="ml-[10px]"><sb-icon [class]="'rotate-y-180'" name="complete" icon="dislike"></sb-icon></span
+				>{{ commentSig().dislikesCount }}
+			</button>
+		</div>
+		<div @showButtons *ngIf="isEditable" class="flex ml-auto">
+			<sb-button
+				[hoverBgColor]="'#ea6b6b'"
+				[rippleColor]="'#f39c9c'"
+				icon="cancel"
+				(click)="makeEditable()"
+				class="cancel"
+				[background]="'red-200'"
+				name="complete"
+				>cancel</sb-button
+			>
+			<sb-button
+				[class.disabled]="form.invalid"
+				(click)="editComment(comment.comment)"
+				[hoverBgColor]="'#95ea5d'"
+				[rippleColor]="'#beee99'"
+				[class]="'mr-[10px]'"
+				icon="accept"
+				name="complete"
+				>send</sb-button
+			>
+		</div>
+	</section>
+</section>
+
+<ng-template #hint>
+	<ul class="hint-ul rounded-[10px]" *ngIf="comment.comment.author.user.token === token">
+		<li
+			class="flex py-[5px] rounded-t-[10px] items-center hover:bg-black hover:shadow-black justify-between px-[5px] transition-all"
+			(mousedown)="makeEditable()"
+		>
+			<sb-icon [width]="16" icon="edit" name="complete"></sb-icon><span class="ml-[5px] text-white">edit</span>
+		</li>
+		<li
+			(mousedown)="deleteComment(comment.comment)"
+			class="flex py-[5px] px-[5px] items-center justify-between hover:bg-black hover:shadow transition-all"
+		>
+			<sb-icon [width]="16" icon="cancel" name="complete"></sb-icon><span class="ml-[5px] text-white">Delete</span>
+		</li>
+	</ul>
+</ng-template>

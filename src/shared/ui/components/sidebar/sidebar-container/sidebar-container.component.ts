@@ -1,13 +1,4 @@
-import {
-	ChangeDetectionStrategy,
-	Component,
-	ElementRef,
-	HostListener,
-	inject,
-	Input,
-	NgZone,
-	TemplateRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, Input, NgZone, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../sidebar';
 import { HAMMER_GESTURE_CONFIG, HammerModule } from '@angular/platform-browser';
@@ -27,11 +18,6 @@ export class SidebarContainerComponent {
 
 	private elRef = inject(ElementRef<HTMLDivElement>);
 	private ngZone = inject(NgZone);
-
-	@HostListener('click')
-	onClick() {
-		this.close();
-	}
 
 	private get container() {
 		return this.elRef.nativeElement.querySelector('.sidebar') as HTMLDivElement;

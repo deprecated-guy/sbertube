@@ -1,21 +1,9 @@
-.user-banner {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-	justify-content: center;
+button:disabled {
+	background: gray;
+	pointer-events: none;
+	color: white;
+}
 
-	width: 100%;
-	height: 250px;
-	padding: 20px 0;
-
-	text-align: center;
-
-	.user-info {
-		display: flex;
-
-		margin-top: 20px;
-		b {
-			color: white;
-		}
-	}
+sb-icon {
+	--icon-color: white;
 }

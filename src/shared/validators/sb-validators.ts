@@ -9,4 +9,9 @@ export class SbValidators {
 	static passwordsValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
 		return control.get('password')?.value === control.get('checkPassword')?.value ? null : { passwordsNotMatch: true };
 	};
+
+	static validateEmail: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+		const emailControl = control.get('email');
+		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailControl?.value) ? null : { inCorrect: true };
+	};
 }

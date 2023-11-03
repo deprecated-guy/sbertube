@@ -9,15 +9,15 @@
         "@schematics/angular:component": {
           "style": "scss",
           "standalone": true,
-					"changeDetection": "Default",
-					"prefix": "sb"
-				},
+          "changeDetection": "OnPush",
+          "prefix": "sb"
+        },
         "@schematics/angular:directive": {
           "standalone": true,
-					"prefix": "sb"
-				},
+          "prefix": "sb"
+        },
         "@schematics/angular:pipe": {
-          "standalone": true,
+          "standalone": true
         }
       },
       "root": "",
@@ -118,11 +118,96 @@
           }
         }
       }
+    },
+    "events": {
+      "projectType": "library",
+      "root": "projects/events",
+      "sourceRoot": "projects/events/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/events/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/events/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/events/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/events/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/events/**/*.ts",
+              "projects/events/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "event-plugins": {
+      "projectType": "library",
+      "root": "projects/event-plugins",
+      "sourceRoot": "projects/event-plugins/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/event-plugins/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/event-plugins/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/event-plugins/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/event-plugins/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/event-plugins/**/*.ts",
+              "projects/event-plugins/**/*.html"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {
     "schematicCollections": [
       "@angular-eslint/schematics"
-    ]
+    ],
+    "analytics": false
   }
 }

@@ -11,15 +11,18 @@ export class HintDirective {
 	private componentRef: ComponentRef<any> | null = null;
 
 	@HostListener('mouseenter', ['$event'])
-	onClick() {
+	onClick(e: MouseEvent) {
 		if (!this.componentRef) {
 			this.componentRef = this.vcr.createComponent(HintComponent);
 
 			const instance = this.componentRef.instance;
+
 			instance.templateRef = this.templateRef;
+			instance.left = e.pageX;
+			instance.top = e.pageY - 50;
 			this.componentRef.changeDetectorRef.detectChanges();
 		}
-		console.log(this.componentRef);
+
 		return;
 	}
 

@@ -1,4 +1,4 @@
-import { Comment, User, Video } from '@services';
+import { Comment, User, Video } from '@shared/types';
 
 export interface LikeResponseInterface {
 	like: Like;

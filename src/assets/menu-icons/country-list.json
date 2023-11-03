@@ -1,0 +1,74 @@
+[
+	{
+		"name": "RU",
+		"icon": "ru.svg"
+	},
+	{
+		"name": "UZ",
+		"icon": "uz.svg"
+	},
+	{
+		"name": "GB",
+		"icon": "gb.svg"
+	},
+	{
+		"name": "BY",
+		"icon": "by.svg"
+	},
+	{
+		"name": "DZ",
+		"icon": "dz.svg"
+	},
+	{
+		"name": "UA",
+		"icon": "ua.svg"
+	},
+	{
+		"name": "US",
+		"icon": "us.svg"
+	},
+	{
+		"name": "BB",
+		"icon": "bb.svg"
+	},
+	{
+		"name": "AU",
+		"icon": "au.svg"
+	},
+	{
+		"name": "AO",
+		"icon": "ao.svg"
+	},
+	{
+		"name": "AE",
+		"icon": "ae.svg"
+	},
+	{
+		"name": "AT",
+		"icon": "at.svg"
+	},
+	{
+		"name": "AM",
+		"icon": "am.svg"
+	},
+	{
+		"name": "AF",
+		"icon": "af.svg"
+	},
+	{
+		"name": "AL",
+		"icon": "al.svg"
+	},
+	{
+		"name": "AG",
+		"icon": "ag.svg"
+	},
+	{
+		"name": "AD",
+		"icon": "ad.svg"
+	},
+	{
+		"name": "AB",
+		"icon": "ab.svg"
+	}
+]

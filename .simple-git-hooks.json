@@ -1,4 +1,4 @@
 {
-	"pre-commit": "npx lint-staged & npx stylelint **/*.scss",
-	"pre-push": "npx lint-staged & npx stylelint **/*.scss"
+	"pre-commit": "npx lint-staged & stylelint **/*.scss",
+	"pre-push": "npx lint-staged & stylelint **/*.scss"
 }

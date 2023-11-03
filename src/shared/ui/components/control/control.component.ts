@@ -4,29 +4,42 @@ import {
 	ElementRef,
 	forwardRef,
 	HostBinding,
+	HostListener,
 	inject,
 	Input,
+	OnInit,
 	Renderer2,
 	ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ShowPasswordDirective } from '@ui';
+import { InputExtensionDirective, ShowPasswordDirective } from '@shared/ui/directives';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 function convertToPx(v: number) {
 	return v + 'px';
 }
-// eslint-disable-next-line @angular-eslint/template/interactive-supports-focus
+
 @Component({
 	selector: 'sb-control',
 	standalone: true,
-	imports: [CommonModule, ShowPasswordDirective],
-	template: `<div [style.height]="height" [style.width]="width">
+	animations: [
+		trigger('moveUp', [
+			state('void', style({ transform: 'translateY(0) translateX(0)' })),
+			state('*', style({ transform: 'translateY(-19px) translateX(5px)', fontSize: 10 })),
+			transition('void<=>*', [animate('200ms')]),
+		]),
+	],
+	imports: [CommonModule, ShowPasswordDirective, InputExtensionDirective],
+	template: `<div class="relative" #container sbInputExtension [appearance]="appearance">
+		<span class="absolute" [@moveUp]="state">{{ text }}</span>
+
 		<input
 			[class.error]="control?.touched && control?.dirty && control?.errors"
 			[class.valid]="control?.valid"
-			class="border-none outline-none"
+			class=""
 			#input
+			[autocomplete]="enableAutocomplete"
 			[value]="inputValue"
 			[type]="type"
 			[name]="inputName"
@@ -35,16 +48,28 @@ function convertToPx(v: number) {
 			[style.padding-top]="paddingY"
 			[style.padding-bottom]="paddingY"
 			[style.font-size]="fontSize"
-			[placeholder]="placeholder"
+			[disabled]="isDisabled"
+			[placeholder]="state === '*' ? placeholder : ''"
 			(input)="updateValue($event)"
+			(focus)="onFocus($event)"
+			(blur)="onBlur($event)"
+			[attr.aria-autocomplete]="enableAutocomplete"
 		/>
 
-		<button class="material-icons absolute ml-[89%]" *ngIf="input.value.length > 0 && !inputValue" (click)="onClick()">
+		<button
+			class=" flex material-icons ml-[75%]  z-2 absolute "
+			*ngIf="input.value.length > 0 && !inputValue"
+			(click)="onClick(input)"
+			[ngClass]="{
+				'ml-[76%]': canSeePassword,
+				'ml-[76%] mt-[5px]': appearance === 'floated'
+			}"
+		>
 			clear
 		</button>
 		<button
 			*ngIf="canSeePassword"
-			class="show-pass absolute z-1 ml-[75%] cursor-pointer"
+			class="show-pass absolute z-1 mt-[5px] ml-[85%] cursor-pointer"
 			(click)="handleClick($event)"
 			[name]="inputName"
 			sbShowPassword
@@ -56,36 +81,33 @@ function convertToPx(v: number) {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: forwardRef(() => ControlComponent) }],
 })
-export class ControlComponent implements ControlValueAccessor {
+export class ControlComponent implements ControlValueAccessor, OnInit {
 	@ViewChild('input', { read: ElementRef<HTMLInputElement> })
-	private input!: ElementRef<HTMLInputElement>;
+	private _input!: ElementRef<HTMLInputElement>;
+	@ViewChild('container', { read: ElementRef<HTMLDivElement> })
+	private _container!: ElementRef<HTMLInputElement>;
 
 	@Input() placeholder = '';
-
 	@Input() type = 'text';
-
+	@Input() enableAutocomplete: 'none' | 'list' | 'inline' = 'none';
+	@Input() text = '';
 	@Input() inputName: 'password' | 'repeat' | '' = '';
-
 	@Input() canSeePassword = false;
-
 	@Input({ transform: (v: number) => convertToPx(v) }) paddingX = 0;
-
 	@Input({ transform: (v: number) => convertToPx(v) }) paddingY = 5;
-
 	@Input({ transform: (v: number) => convertToPx(v) }) fontSize = 15;
-
 	@Input() inputValue: unknown = '';
-
 	@Input({ transform: (v: number) => convertToPx(v) }) height = 30;
-
 	@Input({ transform: (v: number) => convertToPx(v) }) width = 30;
+	@Input() isDisabled = false;
+	@Input() appearance: 'primitive' | 'floated' = 'primitive';
 
 	@Input() control!: AbstractControl;
-
-	private elRef = inject(ElementRef);
-	private hidePass = false;
-	private renderer = inject(Renderer2);
-	public value = '';
+	protected state = 'void';
+	private _elRef = inject(ElementRef);
+	private _hidePass = false;
+	private _renderer = inject(Renderer2);
+	protected value = '';
 
 	@HostBinding('attr.aria-name')
 	get name() {
@@ -96,9 +118,23 @@ export class ControlComponent implements ControlValueAccessor {
 	get class() {
 		return 'sb-control';
 	}
+	@HostBinding('attr.aria-autocomplete')
+	get ariaAutocomplete() {
+		return 'off';
+	}
+
+	@HostBinding('aria-autocomplete')
+	get autocomplete() {
+		return 'off';
+	}
 
 	protected onChange = (v: unknown) => {};
+
 	protected onTouch = () => {};
+
+	@HostListener('document:click', ['$event'])
+	onDocumentClick(e: MouseEvent) {}
+
 	registerOnChange(fn: (v: unknown) => void): void {
 		this.onChange = fn;
 	}
@@ -108,7 +144,7 @@ export class ControlComponent implements ControlValueAccessor {
 	}
 
 	setDisabledState(isDisabled: boolean): void {
-		this.renderer.setProperty(this.elRef.nativeElement, 'disabled', isDisabled);
+		this._renderer.setProperty(this._elRef.nativeElement, 'disabled', isDisabled);
 	}
 
 	writeValue(obj: string): void {
@@ -122,15 +158,31 @@ export class ControlComponent implements ControlValueAccessor {
 		this.onTouch();
 	}
 
-	protected onClick() {
+	protected onClick(element: HTMLInputElement) {
 		if (this.control) this.control.setValue('');
 		this.value = '';
-		this.input.nativeElement.value = '';
+		this._input.nativeElement.value = '';
+		element.value = '';
+		this.onBlur();
 	}
 
-	handleClick(event: MouseEvent) {
+	protected handleClick(event: MouseEvent) {
 		event.preventDefault();
 		event.stopPropagation();
-		this.hidePass = !this.hidePass;
+		this._hidePass = !this._hidePass;
+	}
+
+	protected onFocus(event: FocusEvent) {
+		this.state = '*';
+	}
+
+	onBlur(event?: Event) {
+		if (this._input.nativeElement.value) return;
+		this.state = 'void';
+	}
+
+	ngOnInit() {
+		this._elRef.nativeElement.style.width = this.width;
+		this._elRef.nativeElement.style.height = this.height;
 	}
 }

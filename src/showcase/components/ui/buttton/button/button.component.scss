@@ -1,0 +1,63 @@
+button {
+	position: relative;
+	border-radius: 4px;
+	transition: all 0.2s;
+	span {
+		z-index: 1;
+	}
+	&.sb-appearance-upload {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		justify-items: center;
+		background: blue;
+		width: 60px;
+		height: 60px;
+	}
+	&.delete {
+		background: transparent;
+		border: 1px solid #f54d4d;
+		color: #f54d4d;
+		padding: 3px 5px;
+		display: flex;
+		text-align: center;
+		justify-content: center;
+		transition: 0.3s all ease-in-out;
+		&:hover {
+			background: #f54d4d;
+			color: white;
+		}
+	}
+	&.sb-rounding-full {
+		border-radius: 50%;
+	}
+	&:active {
+		//background: #e2ecfa;
+		color: #5f6368;
+	}
+
+	&.disabled {
+		pointer-events: none;
+		background: gray;
+		color: white;
+	}
+}
+
+.ripple {
+	position: absolute;
+	animation: ripple ease 1.2s;
+	border-radius: 50%;
+}
+
+@keyframes ripple {
+	from {
+		width: 20px;
+		height: 20px;
+		opacity: 0.7;
+		transform: scale(1.5);
+	}
+	to {
+		transform: scale(20);
+		opacity: 0;
+	}
+}

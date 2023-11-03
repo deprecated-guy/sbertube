@@ -1,0 +1,183 @@
+<div class="w-full h-full">
+	@if(!(IS_MOBILE$ | async)) {
+	<div class="w-full h-[400px]" [@openDown]="editorMobileAnimationState">
+		<header class="flex mt-[-5px]" (click)="changeEditorMobileAnimationState()">Account Editor</header>
+
+		<div class="w-full h-full flex justify-center text-black overflow-y-auto" [@openDown]="editorMobileAnimationState">
+			<form action="" [formGroup]="form" *ngIf="editorMobileAnimationState === 'open'">
+				<ul class="list-none h-full flex-col w-full">
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>Your Email</span><span>{{ currentUser().email }}</span>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<div class="flex flex-col">
+							<span>Your Username</span
+							><sb-control
+								type="text"
+								[control]="form.controls['username']"
+								[inputValue]="currentUser().username"
+								[placeholder]="currentUser().username"
+								[width]="150"
+								[height]="30"
+								[enableAutocomplete]="'none'"
+								formControlName="username"
+							></sb-control>
+						</div>
+						<div class="flex ml-auto mt-[-10px]">
+							<sb-form-error
+								*ngIf="form.controls['username'].touched && form.controls['username']?.errors?.['required']"
+								error="those field required"
+							></sb-form-error>
+						</div>
+					</li>
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>New Password</span
+						><sb-control
+							[control]="form.controls['password']"
+							[inputValue]="currentUser().password"
+							type="password"
+							[width]="150"
+							formControlName="password"
+						></sb-control>
+					</li>
+
+					<li class="my-[10px] py-[10px] flex w-full flex-col">
+						<span>New Avatar Background Color</span
+						><sb-control
+							[control]="form.controls['avatarBackground']"
+							[inputValue]="currentUser().avatarBackground"
+							type="color"
+							[width]="150"
+							formControlName="avatarBackground"
+						></sb-control>
+					</li>
+					<li class="my-[10px] py-[10px] flex flex w-full flex-col">
+						<span>Banner Background Color</span>
+						<sb-control
+							[control]="form.controls['bannerBackground']"
+							[inputValue]="currentUser().bannerBackground"
+							type="color"
+							[width]="150"
+							formControlName="bannerBackground"
+						></sb-control>
+					</li>
+					<li class="mt-[5px] flex w-full flex-col">
+						<button
+							draggable="true"
+							type="submit"
+							#button
+							class="relative overflow-hidden flex justify-center bg-transparent border-red-400 border rounded-md mb-[5px] text-red-400 active:bg-red-200 active:text-white"
+							(click)="showConfirmation('#f68a8a')"
+						>
+							<p>or &nbsp;&nbsp;<b class="text-red-500">delete</b>&nbsp;&nbsp; account</p>
+						</button>
+						<button
+							[ngClass]="{
+								'bg-red-400 text-white pointer-events-none': username?.invalid
+							}"
+							class="rounded-md flex w-full justify-center px-[10px] py-[5px] bg-blue-600 items-center text-center text-white"
+						>
+							Submit
+						</button>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+	} @else {
+	<div class="w-full h-[450px]">
+		<div class="w-full flex flex-col" [@openDown]="editorMobileAnimationState">
+			<header class="flex mt-[-5px]" (click)="changeEditorMobileAnimationState()">Account Editor</header>
+			<div class="w-full h-full flex text-black overflow-y-auto" [@openDown]="editorMobileAnimationState">
+				<form action="" [formGroup]="form">
+					<ul class="list-none h-full flex-col w-full" *ngIf="editorMobileAnimationState === 'open'">
+						<li class="my-[10px] py-[10px] flex w-full flex-col">
+							<span>Your Email</span
+							><sb-control
+								type="text"
+								[inputValue]="currentUser().email"
+								[placeholder]="currentUser().email"
+								[width]="150"
+								[height]="30"
+								[isDisabled]="true"
+								formControlName="email"
+							></sb-control>
+						</li>
+						<li class="my-[10px] py-[10px] flex w-full flex-col">
+							<div class="flex flex-col">
+								<span>Your Username</span
+								><sb-control
+									type="text"
+									[control]="form.controls['username']"
+									[inputValue]="currentUser().username"
+									[placeholder]="currentUser().username"
+									[width]="150"
+									[height]="30"
+									[enableAutocomplete]="'none'"
+									formControlName="username"
+								></sb-control>
+							</div>
+							<div class="flex ml-auto mt-[-10px]">
+								<sb-form-error
+									*ngIf="form.controls['username'].touched && form.controls['username']?.errors?.['required']"
+									error="those field required"
+								></sb-form-error>
+							</div>
+						</li>
+						<li class="mt-[5px] py-[10px] flex w-full flex-col">
+							<span>New Password</span
+							><sb-control
+								[control]="form.controls['password']"
+								[inputValue]="currentUser().password"
+								type="password"
+								[width]="150"
+								formControlName="password"
+							></sb-control>
+						</li>
+
+						<li class="my-[10px] py-[10px] flex w-full flex-col">
+							<span>New Avatar Background Color</span
+							><sb-control
+								[control]="form.controls['avatarBackground']"
+								[inputValue]="currentUser().avatarBackground"
+								type="color"
+								[width]="150"
+								formControlName="avatarBackground"
+							></sb-control>
+						</li>
+						<li class="mt-[10px] mb-[5px] py-[10px] flex w-full flex-col">
+							<span>Banner Background Color</span>
+							<sb-control
+								[control]="form.controls['bannerBackground']"
+								[inputValue]="currentUser().bannerBackground"
+								type="color"
+								[width]="150"
+								formControlName="bannerBackground"
+							></sb-control>
+						</li>
+						<li class="flex w-full flex-col">
+							<button
+								draggable="true"
+								type="submit"
+								#button
+								class="relative overflow-hidden flex justify-center bg-transparent border-red-400 border text-center px-[15px] py-[3px] rounded-md mb-[10px] text-red-400 active:bg-red-200 active:text-white"
+								(click)="showConfirmation('#f68a8a')"
+							>
+								<p>or &nbsp;&nbsp;<b class="text-red-500">delete</b>&nbsp;&nbsp; account</p>
+							</button>
+							<button
+								[ngClass]="{
+									'bg-red-400 text-white pointer-events-none': username?.invalid
+								}"
+								class="rounded-md flex w-full justify-center px-[10px] py-[5px] bg-blue-600 items-center text-center text-white"
+							>
+								Submit
+							</button>
+						</li>
+					</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+	}
+</div>

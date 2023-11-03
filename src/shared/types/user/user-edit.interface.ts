@@ -1,9 +1,8 @@
-import { Color } from '@services';
-
 export interface UserEdit {
 	username: string;
 	email: string;
 	password: string;
-	bannerBackground: Color;
-	avatarBackGround: Color;
+	bannerBackground: string;
+	avatarBackGround: string;
+	userAbout: string;
 }

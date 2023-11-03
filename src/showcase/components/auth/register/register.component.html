@@ -1,0 +1,192 @@
+<form class="max-w-sm mx-auto p-6 bg-white rounded shadow-md" [formGroup]="form" (ngSubmit)="onSubmit($event)">
+	<h2 class="text-2xl font-bold mb-6">Register</h2>
+	<fieldset class="border-none mb-4 flex flex-col">
+		<div class="w-full">
+			<label for="name" class="block font-semibold">Email</label>
+			<sb-control
+				text="email"
+				[control]="form.controls['email']"
+				appearance="floated"
+				type="text"
+				id="name"
+				[width]="300"
+				class="w-full border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+				placeholder="Enter your email"
+				formControlName="email"
+			/>
+		</div>
+		<div>
+			<sb-form-error
+				*ngIf="emailField!.touched && emailField?.getError('minlength')"
+				error="minimum value length: 3 symbols"
+			></sb-form-error>
+			<sb-form-error
+				*ngIf="emailField!.touched && emailField!.errors?.['required']"
+				error="Those field required"
+			></sb-form-error>
+			<sb-form-error
+				*ngIf="emailField!.touched && form!.errors?.['inCorrect']"
+				error="email must be answered to pattern"
+			></sb-form-error>
+		</div>
+	</fieldset>
+	<fieldset class="border-none mb-4 flex flex-col">
+		<div class="w-full">
+			<label for="email" class="block font-semibold">Username</label>
+			<sb-control
+				appearance="floated"
+				text="username"
+				[control]="form.controls['username']"
+				type="email"
+				id="email"
+				[width]="300"
+				class="w-full border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+				placeholder="Enter your usernanme"
+				formControlName="username"
+			/>
+		</div>
+		<sb-form-error
+			*ngIf="username!.touched && username?.getError('minlength')"
+			error="minimum value length: 3 symbols"
+		></sb-form-error>
+		<sb-form-error
+			*ngIf="username!.touched && username!.errors?.['required']"
+			error="Those field required"
+		></sb-form-error>
+		<sb-form-error
+			*ngIf="username!.touched && username!.errors?.['pattern']"
+			error="Username must be contain only english symbols and numbers "
+		></sb-form-error>
+	</fieldset>
+	<fieldset class="border-none mb-4 flex flex-col">
+		<div class="w-full">
+			<label for="password" class="block font-semibold">Password</label>
+			<sb-control
+				text="password"
+				appearance="floated"
+				[canSeePassword]="true"
+				type="password"
+				inputName="password"
+				id="password"
+				[width]="300"
+				class="w-full border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+				placeholder="Enter your password"
+				[control]="form.controls['password']"
+				formControlName="password"
+			/>
+		</div>
+		<div>
+			<sb-form-error
+				*ngIf="password!.touched && password.getError('minlength')"
+				error="minimum value length: 3 symbols"
+			></sb-form-error>
+			<sb-form-error
+				*ngIf="password!.touched && password!.errors?.['required']"
+				error="Those field required"
+			></sb-form-error>
+		</div>
+	</fieldset>
+	<fieldset class="border-none mb-4 w-full flex flex-col">
+		<div class="w-full">
+			<label for="check" class="block font-semibold">Repeat Password</label>
+			<sb-control
+				text="repeat"
+				appearance="floated"
+				[enableAutocomplete]="'none'"
+				[control]="form.controls['checkPassword']"
+				[width]="300"
+				[canSeePassword]="true"
+				inputName="repeat"
+				type="password"
+				id="check"
+				class="w-full border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+				placeholder="repeat password"
+				formControlName="checkPassword"
+			/>
+			<div>
+				<sb-form-error
+					*ngIf="checkPassword!.touched && form.getError('passwordsNotMatch')"
+					error="this field must match the password"
+					[value]="checkPasswordValue"
+				></sb-form-error>
+				<sb-form-error
+					*ngIf="checkPassword!.touched && checkPassword!.errors?.['required']"
+					error="Those field required"
+				></sb-form-error>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset>
+		<button
+			[ngClass]="{
+				'bg-gray-500': form.invalid
+			}"
+			(click)="openWindow(window)"
+			type="submit"
+			[disabled]="form.invalid"
+			class="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring focus:border-blue-300"
+		>
+			Register
+		</button>
+	</fieldset>
+	<fieldset>
+		<p class="flex flex-col">
+			if you already have an account
+			<a routerLink="/auth/login" class="text-gray-300 hover:text-blue-300 transition-all">login to account</a>
+		</p>
+	</fieldset>
+	<fieldset *ngIf="errors$ | async as errors">
+		<sb-server-errors [error]="errors"></sb-server-errors>
+	</fieldset>
+</form>
+
+<ng-template #window>
+	<form [formGroup]="verifyForm" class="mt-4 flex flex-col justify-center" (submit)="submitCode(snack)">
+		<fieldset class="flex flex-col">
+			<div class="flex flex-col">
+				<input
+					mask="000-000"
+					formControlName="code"
+					placeholder="000-000"
+					placeHolderCharacter="_"
+					class="mx-auto p-2 border border-gray-300 rounded-md text-center focus:outline-none focus:border-blue-500"
+				/>
+				<span class="text-[21px] uppercase">Input your activation code here</span>
+			</div>
+			<div>
+				<sb-form-error
+					*ngIf="activation?.touched && activation?.getError('required')"
+					[error]="'This field required'"
+					class="text-red-500 mt-1"
+				></sb-form-error>
+				<sb-form-error
+					*ngIf="activation?.dirty && verifyForm.getError('activation') && !isCorrectCode"
+					[error]="'Incorrect activation Code'"
+					class="text-red-500 mt-1"
+				></sb-form-error>
+			</div>
+		</fieldset>
+		<fieldset>
+			<button [disabled]="form.invalid" class="rounded-md px-[15px] py-[5px] flex bg-blue-500 text-white">
+				Activate!
+			</button>
+		</fieldset>
+	</form>
+</ng-template>
+
+<ng-template #snack>
+	<div class="flex">
+		<button
+			routerLink="../../user/account"
+			class="text-center flex text-purple-800 bg-transparent px-[10px] py-[5px] border-none outline-none"
+		>
+			YES
+		</button>
+		<button
+			routerLink="/"
+			class="text-center ml-[20px] flex bg-transparent px-[10px] text-purple-800 py-[5px] border-none outline-none"
+		>
+			NO
+		</button>
+	</div>
+</ng-template>

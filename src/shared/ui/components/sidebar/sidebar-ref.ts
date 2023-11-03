@@ -26,7 +26,7 @@ export class SidebarRef {
 		return new Observable((subscriber) => {
 			const injector = Injector.create([{ provide: COMPONENT_DATA, useValue: this._data }]);
 
-			const componentRef: ComponentRef<unknown> = this.portal.createPortal(component, injector);
+			const componentRef = this.portal.createPortal(component, injector) as ComponentRef<ComponentSettings>;
 			this._component = componentRef;
 
 			this.getInstanceAndAssignData(componentRef, settings);
@@ -61,7 +61,7 @@ export class SidebarRef {
 		});
 	}
 
-	private getInstanceAndAssignData(componentRef: ComponentRef<any>, settings: ComponentSettings) {
+	private getInstanceAndAssignData(componentRef: ComponentRef<ComponentSettings>, settings: ComponentSettings) {
 		const instance = componentRef.instance;
 		instance.width = settings.width;
 		instance.height = settings.height;

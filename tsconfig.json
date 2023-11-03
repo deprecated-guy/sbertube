@@ -9,7 +9,8 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
+		"noImplicitAny": false,
+		"noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -30,12 +31,23 @@
 			"@ui": ["./src/shared/ui"],
 			"@types": ["./src/shared/types"],
 			"@interceptors": ["./src/interceptors"],
+      "@showcase/*": [
+        "./src/showcase/*"
+      ],
+      "event-plugins": [
+        "dist/event-plugins"
+      ],
+      "events": [
+        "dist/events"
+      ]
+
 		}
 	},
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+		"enableDeferedSyntax": true
   }
 }
