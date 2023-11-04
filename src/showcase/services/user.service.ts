@@ -19,6 +19,10 @@ export class UserService {
 		);
 	}
 
+	public getUserByUsername(username: string) {
+		return this._httpClient.get<UserResponse>(this._httpRoute + `/${username}`).pipe(map(mapUser));
+	}
+
 	public deleteUser() {
 		console.log('123');
 		return this._httpClient.delete(this._httpRoute + '/account/delete');

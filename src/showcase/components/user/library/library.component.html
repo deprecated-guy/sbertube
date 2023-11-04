@@ -12,7 +12,7 @@
 	}
 </div>
 
-<sb-user-page-switche></sb-user-page-switche>
+<sb-user-page-switche [user]="currentUser()" [homePath]="homePath" [libraryPath]="libraryPath"></sb-user-page-switche>
 <div class="w-full flex items-center px-[10px]">
 	<ng-container *ngIf="currentUser$ | async as user">
 		@if(user.videos.length > 0) {
@@ -64,7 +64,7 @@
 					</section>
 				</a>
 			</li>
-			} @else{
+			} @else {
 			<li class="flex w-full p-[5px] bg-gray-200 rounded-md min-h-[180px] h-content">
 				<a class="flex w-full" [routerLink]="['/video', video.video.alias]">
 					<section>

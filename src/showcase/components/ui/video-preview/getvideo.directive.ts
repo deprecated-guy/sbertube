@@ -15,6 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Video } from '@types';
 import { VideoLoader } from '@showcase/services';
 import { EditVideo } from '@shared/types/video/edit-video.interface';
+import { PersistenceService } from '@shared/services';
 
 @Directive({
 	selector: '[sbGetPlayer]',
@@ -27,6 +28,8 @@ export class GetPlayerDirective implements OnInit {
 	private _cdr = inject(ChangeDetectorRef);
 	private _destroyRef = inject(DestroyRef);
 	private _videoLoader = inject(VideoLoader);
+	private _persistenceService = inject(PersistenceService);
+	private _token = this._persistenceService.getItem('token');
 	@Input() video = <Video>{};
 
 	@Output() currentTime = new EventEmitter<number>();
@@ -67,6 +70,7 @@ export class GetPlayerDirective implements OnInit {
 	}
 
 	private updateCurrentTime() {
+		if (!this._token) return;
 		this._currentTime = this.element.currentTime;
 		this._cdr.detectChanges();
 		this.currentTime.emit(this._currentTime);

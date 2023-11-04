@@ -6,6 +6,7 @@ import {
 	ElementRef,
 	inject,
 	NgZone,
+	OnInit,
 	Renderer2,
 	TemplateRef,
 	ViewChild,
@@ -40,6 +41,7 @@ import { createRipple } from '@shared/ui/animations/ripple';
 import { types } from '@shared/types/vide-file-types';
 import { RouterModule } from '@angular/router';
 import { VideoActionComponent } from '@shared/ui/components/video-action/video-action.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
 	selector: 'sb-library',
@@ -67,7 +69,7 @@ import { VideoActionComponent } from '@shared/ui/components/video-action/video-a
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [Portal, ToastRef, DialogRef],
 })
-export class LibraryComponent {
+export class LibraryComponent implements OnInit {
 	@ViewChild('button', { read: ElementRef<HTMLButtonElement> })
 	private _button!: ElementRef<HTMLButtonElement>;
 	private _renderer = inject(Renderer2);
@@ -75,7 +77,7 @@ export class LibraryComponent {
 	private _userService = inject(UserService);
 	private _videoLoader = inject(VideoLoader);
 	private _dialogRef = inject(DialogRef);
-
+	private _titleService = inject(Title);
 	private _cdr = inject(ChangeDetectorRef);
 	private _destroyRef = inject(DestroyRef);
 	private _toastRef = inject(ToastRef);
@@ -114,6 +116,14 @@ export class LibraryComponent {
 
 	protected get description() {
 		return this.form.get('body');
+	}
+
+	protected get homePath() {
+		return `/user/${this.currentUser().username}`;
+	}
+
+	protected get libraryPath() {
+		return `/user/${this.currentUser().username}/library`;
 	}
 
 	protected uploadVideo(rippleColor: string) {
@@ -159,5 +169,9 @@ export class LibraryComponent {
 		} else {
 			this.file = event;
 		}
+	}
+
+	ngOnInit() {
+		this._titleService.setTitle(`Your Library`);
 	}
 }

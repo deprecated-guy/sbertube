@@ -37,9 +37,20 @@
 					>{{ video.body }}</span
 				>
 			</section>
+			<section class="flex w-full mt-[10px]">
+				<span class="flex w-full">Uploaded at: </span>
+				<span class="cursor-pointer ml-[10px] text-left justify-start w-full">{{ video.uploadedAt | timeAgo }}</span>
+			</section>
+			<section class="flex cursor-pointer w-full mt-10">
+				<a class="flex items-center" [routerLink]="['/author', video.author.user.username]">
+					<sb-user-avatar [user]="video.author.user" [width]="40" [height]="40"></sb-user-avatar>
+					<span class="ml-[10px]">{{ video.author.user.username | titlecase }}</span>
+				</a>
+			</section>
 		</section>
 	</ng-container>
 </div>
+
 <section class="max-w-[800px] w-full mx-auto p-[20px]">
 	<form class="flex flex-col" [formGroup]="form" (submit)="sendComment()">
 		<fieldset>

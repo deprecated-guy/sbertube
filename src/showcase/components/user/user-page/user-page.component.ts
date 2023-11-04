@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { UserService } from '@showcase/services';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
@@ -19,6 +19,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConvertTimePipe } from '@showcase/components/user/pipes/convert-time.pipe';
 import { Portal } from '@cdk';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
 	selector: 'sb-user-page',
@@ -44,12 +45,13 @@ import { Router } from '@angular/router';
 	providers: [Portal, ToastRef, DialogRef],
 	animations: [showButtonsAnimation],
 })
-export class UserPageComponent {
+export class UserPageComponent implements OnInit {
 	private _userService = inject(UserService);
 	private _formBuilder = inject(FormBuilder);
 	private _destroyRef = inject(DestroyRef);
 	private _toastRef = inject(ToastRef);
 	private _router = inject(Router);
+	private _titleService = inject(Title);
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 
 	protected currentUser$ = this._userService.getCurrentUser();
@@ -57,6 +59,14 @@ export class UserPageComponent {
 	protected form = this._formBuilder.group({
 		aboutUser: ['', [Validators.required]],
 	});
+
+	protected get homePath() {
+		return `/author/${this.currentUser().username}`;
+	}
+
+	protected get libraryPath() {
+		return `/author/${this.currentUser().username}/library`;
+	}
 
 	protected get userAbout() {
 		return this.form.get('aboutUser');
@@ -102,5 +112,9 @@ export class UserPageComponent {
 	protected unLogin() {
 		localStorage.clear();
 		this._router.parseUrl('/');
+	}
+
+	ngOnInit() {
+		this._titleService.setTitle(`${this.currentUser().username}'s account`);
 	}
 }

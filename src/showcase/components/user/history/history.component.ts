@@ -9,6 +9,7 @@ import { IS_MOBILE } from '@di';
 import { VideoActionComponent } from '@shared/ui/components/video-action/video-action.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { User } from '@types';
+import { Title } from '@angular/platform-browser';
 @Component({
 	selector: 'sb-history',
 	standalone: true,
@@ -26,6 +27,7 @@ import { User } from '@types';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoryComponent implements OnInit {
+	private _titleService = inject(Title);
 	private _userService = inject(UserService);
 	protected currentUser$ = this._userService.getCurrentUser();
 	protected IS_MOBILE$ = inject(IS_MOBILE);
@@ -33,5 +35,6 @@ export class HistoryComponent implements OnInit {
 
 	ngOnInit() {
 		console.log(this.user());
+		this._titleService.setTitle('Views history');
 	}
 }

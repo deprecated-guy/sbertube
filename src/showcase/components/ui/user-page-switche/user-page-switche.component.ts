@@ -5,6 +5,7 @@ import {
 	DestroyRef,
 	ElementRef,
 	inject,
+	Input,
 	NgZone,
 	Renderer2,
 	TemplateRef,
@@ -26,9 +27,10 @@ import {
 import { IS_MOBILE, VIDEO_UPLOAD_FORM } from '@di';
 import { VideoLoader } from '@showcase/services';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BackendErrors } from '@types';
+import { BackendErrors, User } from '@types';
 import { types } from '@shared/types/vide-file-types';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PersistenceService } from '@shared/services';
 
 @Component({
 	selector: 'sb-user-page-switche',
@@ -54,14 +56,19 @@ export class UserPageSwitcheComponent {
 	private _renderer = inject(Renderer2);
 	private _ngZone = inject(NgZone);
 	private _videoLoader = inject(VideoLoader);
+	private _persistenceService = inject(PersistenceService);
 	private _dialogRef = inject(DialogRef);
 	private _cdr = inject(ChangeDetectorRef);
 	private _destroyRef = inject(DestroyRef);
 	private _toastRef = inject(ToastRef);
+	protected token = this._persistenceService.getItem('token');
 	protected file!: File;
 	protected sourceLink!: string;
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 	protected form = inject(VIDEO_UPLOAD_FORM);
+	@Input({ required: true }) homePath = '';
+	@Input({ required: true }) libraryPath = '';
+	@Input({ required: true }) user!: User;
 
 	protected openMobileWindow(templateRef: TemplateRef<unknown>) {
 		this._dialogRef

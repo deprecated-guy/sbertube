@@ -25,7 +25,7 @@ export class Portal {
 		this.componentRefs.push(componentRef);
 		this.vcr.insert(componentRef.hostView);
 
-		this.appRef.attachView(componentRef.hostView);
+		// this.appRef.attachView(componentRef.hostView);
 		return componentRef;
 	}
 

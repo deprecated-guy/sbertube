@@ -15,6 +15,7 @@ import { UserAvatarComponent } from '@shared/ui/components/user';
 import { TimeAgoPipe } from '@showcase/components/video/pipes/time-ago.pipe';
 import { PersistenceService } from '@shared/services';
 import { CommentComponent } from '@showcase/components/video/comment/comment.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
 	selector: 'sb-page',
@@ -43,6 +44,7 @@ export class PageComponent implements OnInit {
 	private _videoLoader = inject(VideoLoader);
 	private _toastRef = inject(ToastRef);
 	private _route = inject(ActivatedRoute);
+	private _titleService = inject(Title);
 	private _userService = inject(UserService);
 	private _commentService = inject(CommentService);
 	private _destroyRef = inject(DestroyRef);
@@ -88,6 +90,7 @@ export class PageComponent implements OnInit {
 			next: (v) => {
 				this.comments.set(v.comments);
 				this.video.set(v);
+				this._titleService.setTitle(`${this.video().title}`);
 			},
 		});
 		if (this.token) {

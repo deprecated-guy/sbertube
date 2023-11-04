@@ -8,6 +8,8 @@ import { formatDistanceToNow } from 'date-fns';
 export class TimeAgoPipe implements PipeTransform {
 	transform(value: string): string {
 		const date = new Date(value);
+		console.log(value);
+
 		return formatDistanceToNow(date, { addSuffix: true });
 	}
 }

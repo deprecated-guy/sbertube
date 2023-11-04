@@ -8,6 +8,7 @@ export const routes: Routes = [
 			import('../showcase/components/welcome-page/welcome-page.component').then((c) => c.WelcomePageComponent),
 	},
 	{ path: 'home', redirectTo: '' },
+
 	{
 		path: 'auth',
 		loadChildren: () => import('src/showcase/components/auth/routes').then((r) => r.routes),
@@ -18,6 +19,7 @@ export const routes: Routes = [
 		loadChildren: () => import('src/showcase/components/user/routes').then((r) => r.routes),
 		canActivate: [authGuard],
 	},
+
 	{
 		path: 'video',
 		loadChildren: () => import('src/showcase/components/video/routes').then((r) => r.routes),
@@ -27,6 +29,10 @@ export const routes: Routes = [
 		loadComponent: () =>
 			import('../showcase/components/video/video-edit/video-edit.component').then((c) => c.VideoEditComponent),
 		canActivate: [authGuard],
+	},
+	{
+		path: 'author',
+		loadChildren: () => import('@showcase/components/author/routes').then((c) => c.routes),
 	},
 	{
 		path: '**',
