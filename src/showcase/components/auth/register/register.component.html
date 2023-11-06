@@ -15,7 +15,7 @@
 				formControlName="email"
 			/>
 		</div>
-		<div>
+		<div class="-mt-[20px]">
 			<sb-form-error
 				*ngIf="emailField!.touched && emailField?.getError('minlength')"
 				error="minimum value length: 3 symbols"
@@ -45,25 +45,27 @@
 				formControlName="username"
 			/>
 		</div>
-		<sb-form-error
-			*ngIf="username!.touched && username?.getError('minlength')"
-			error="minimum value length: 3 symbols"
-		></sb-form-error>
-		<sb-form-error
-			*ngIf="username!.touched && username!.errors?.['required']"
-			error="Those field required"
-		></sb-form-error>
-		<sb-form-error
-			*ngIf="username!.touched && username!.errors?.['pattern']"
-			error="Username must be contain only english symbols and numbers "
-		></sb-form-error>
+		<div>
+			<sb-form-error
+				*ngIf="username!.touched && username?.getError('minlength')"
+				error="minimum value length: 3 symbols"
+			></sb-form-error>
+			<sb-form-error
+				*ngIf="username!.touched && username!.errors?.['required']"
+				error="Those field required"
+			></sb-form-error>
+			<sb-form-error
+				*ngIf="username!.touched && username!.errors?.['pattern']"
+				error="Username must be contain only english symbols and numbers "
+			></sb-form-error>
+		</div>
 	</fieldset>
 	<fieldset class="border-none mb-4 flex flex-col">
 		<div class="w-full">
 			<label for="password" class="block font-semibold">Password</label>
 			<sb-control
 				text="password"
-				appearance="floated"
+				appearance="primitive"
 				[canSeePassword]="true"
 				type="password"
 				inputName="password"
@@ -92,7 +94,7 @@
 			<sb-control
 				text="repeat"
 				appearance="floated"
-				[enableAutocomplete]="'none'"
+				[enableAutocomplete]="'off'"
 				[control]="form.controls['checkPassword']"
 				[width]="300"
 				[canSeePassword]="true"

@@ -85,6 +85,7 @@ function convertToPx(v: number) {
 		>
 			<span class="material-icons">search</span>
 		</button>
+		<i *ngIf="appearance === 'primitive'"></i>
 	</div> `,
 	styleUrls: ['./control.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -98,7 +99,7 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 
 	@Input() placeholder = '';
 	@Input() type = 'text';
-	@Input() enableAutocomplete: 'none' | 'list' | 'inline' = 'none';
+	@Input() enableAutocomplete: 'none' | 'list' | 'inline' | 'off' = 'off';
 	@Input() text = '';
 	@Input() inputName: 'password' | 'repeat' | '' = '';
 	@Input() canSeePassword = false;

@@ -32,43 +32,56 @@ div {
 }
 
 .sb-primitive {
+	position: relative;
+
+	&:focus-within {
+		color: #2e84f4;
+
+		input {
+			color: #000;
+		}
+
+		i:before {
+			width: 100%;
+			background: #2e84f4;
+		}
+	}
+
 	input {
 		background: transparent;
 		width: 100%;
 		position: relative;
 		border: none;
-		border-bottom: solid #c4c4c4;
+
 		display: flex;
 		outline: none;
 		transition: 0.3s all ease-in-out;
 		transform-origin: center;
-
-		&:focus {
-			border-bottom-width: 3px;
-			border-bottom-color: #2e84f4;
-		}
 	}
-}
 
-.sb-primitive {
-	input {
-		background: transparent;
+	i {
+		background: #838181;
+		height: 2px;
+		left: 0;
+		bottom: 0;
+		position: absolute;
 		width: 100%;
-		position: relative;
-		border: none;
-		border-bottom: solid #c4c4c4;
 		display: flex;
-		outline: none;
-		transition: 0.3s all ease-in-out;
+		flex-direction: row-reverse;
 		transform-origin: center;
 
-		&:focus {
-			border-bottom-width: 3px;
-			border-bottom-color: #2e84f4;
+		&:before {
+			background: #a19e9e;
+			position: absolute;
+			width: 0;
+			display: block;
+			content: '';
+			height: 2px;
+			transform-origin: center;
+			transition: 0.3s all;
 		}
 	}
 }
-
 .clear {
 	position: absolute;
 	display: flex;
