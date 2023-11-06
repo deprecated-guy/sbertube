@@ -186,7 +186,7 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 	}
 
 	onBlur(event?: Event) {
-		if (this._input.nativeElement.value) return;
+		if (this._input.nativeElement.value || this.inputValue) return;
 		this.state = 'void';
 	}
 
