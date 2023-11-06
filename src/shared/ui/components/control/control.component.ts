@@ -26,15 +26,24 @@ function convertToPx(v: number) {
 	animations: [
 		trigger('moveUp', [
 			state('void', style({ transform: 'translateY(0) translateX(0)' })),
-			state('*', style({ transform: 'translateY(-19px) translateX(5px)', fontSize: 10 })),
+			state(
+				'*',
+				style({
+					transform: 'translateY(-19px) translateX(5px)',
+					background: 'white',
+					fontSize: 10,
+					padding: '0 3px',
+				}),
+			),
 			transition('void<=>*', [animate('200ms')]),
 		]),
 	],
 	imports: [CommonModule, ShowPasswordDirective, InputExtensionDirective],
 	template: `<div class="relative" #container sbInputExtension [appearance]="appearance">
-		<span class="absolute" [@moveUp]="state">{{ text }}</span>
+		<label for="control" class="absolute" [@moveUp]="state">{{ text }}</label>
 
 		<input
+			id="control"
 			[class.error]="control?.touched && control?.dirty && control?.errors"
 			[class.valid]="control?.valid"
 			class=""
@@ -61,8 +70,8 @@ function convertToPx(v: number) {
 			*ngIf="input.value.length > 0 && !inputValue"
 			(click)="onClick(input)"
 			[ngClass]="{
-				'ml-[76%]': canSeePassword,
-				'ml-[76%] mt-[5px]': appearance === 'floated'
+				'ml-[76%] mt-[6px]': canSeePassword,
+				'ml-[85%] mt-[5px]': appearance === 'floated' && !canSeePassword
 			}"
 		>
 			clear
