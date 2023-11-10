@@ -61,11 +61,11 @@ export class UserPageComponent implements OnInit {
 	});
 
 	protected get homePath() {
-		return `/author/${this.currentUser().username}`;
+		return `/user/account`;
 	}
 
 	protected get libraryPath() {
-		return `/author/${this.currentUser().username}/library`;
+		return `/user/library`;
 	}
 
 	protected get userAbout() {

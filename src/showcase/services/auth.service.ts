@@ -24,13 +24,15 @@ export class AuthService {
 			tap((user) => {
 				this._persistenceService.setItem('token', user.token);
 			}),
+			tap(() => this._persistenceService.removeItem('code')),
+			tap(() => this._persistenceService.removeItem('code')),
 		);
 	}
 
 	public logIn(data: UserLogin): Observable<User> {
 		return this._httpClient.post<UserResponse>(this._httpRoute + '/login', data).pipe(
 			map((data: UserResponse) => mapUser(data)),
-			tap(this._persistenceService.clean),
+			tap(() => this._persistenceService.removeItem('code')),
 			tap((data: User) => this._persistenceService.setItem('token', data.token)),
 		);
 	}

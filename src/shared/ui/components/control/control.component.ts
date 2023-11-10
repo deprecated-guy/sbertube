@@ -184,6 +184,7 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 
 	protected onFocus(event: FocusEvent) {
 		this.state = '*';
+		if (this._elRef.nativeElement.value !== '') this.state = '*';
 	}
 
 	onBlur(event?: Event) {
@@ -195,5 +196,6 @@ export class ControlComponent implements ControlValueAccessor, OnInit {
 		console.log(this.inputValue);
 		this._elRef.nativeElement.style.width = this.width;
 		this._elRef.nativeElement.style.height = this.height;
+		if (this._elRef.nativeElement.value !== '') this.state = '*';
 	}
 }

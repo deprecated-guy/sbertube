@@ -14,10 +14,10 @@
 
 <sb-user-page-switche [user]="currentUser()" [homePath]="homePath" [libraryPath]="libraryPath"></sb-user-page-switche>
 <div class="w-full flex items-center px-[10px]">
-	<ng-container *ngIf="currentUser$ | async as user">
-		@if(user.videos.length > 0) {
+	<ng-container *ngIf="currentUserVideos() as videos">
+		@if(videos.length > 0) {
 		<ul class="flex flex-col w-full max-w-[900px] mx-auto mt-10">
-			@for(video of user.videos; track video.video.id) { @if((IS_MOBILE$ | async)){
+			@for(video of videos; track video.video.id) { @if((IS_MOBILE$ | async)){
 
 			<li class="flex flex-col p-[5px] bg-gray-200 rounded-md mh-[150px] h-auto">
 				<a class="flex w-full" [routerLink]="['/video', video.video.alias]">
@@ -49,13 +49,13 @@
 						<section class="flex mt-[10px]">
 							<sb-video-action
 								[isDisabled]="true"
-								[user]="user"
+								[user]="video.video.author.user"
 								actionType="like"
 								[video]="video.video"
 							></sb-video-action>
 							<sb-video-action
 								[isDisabled]="true"
-								[user]="user"
+								[user]="video.video.author.user"
 								actionType="dislike"
 								class="ml-[10px]"
 								[video]="video.video"
@@ -65,7 +65,7 @@
 				</a>
 			</li>
 			} @else {
-			<li class="flex w-full p-[5px] bg-gray-200 rounded-md min-h-[180px] h-content">
+			<li class="flex w-full p-[5px] mt-[10px] bg-gray-200 rounded-md min-h-[180px] h-content">
 				<a class="flex w-full" [routerLink]="['/video', video.video.alias]">
 					<section>
 						<sb-video-preview
@@ -93,10 +93,14 @@
 							}}</span>
 						</section>
 						<section class="flex mt-auto ml-auto">
-							<sb-video-action actionType="like" [user]="user" [video]="video.video"></sb-video-action>
+							<sb-video-action
+								actionType="like"
+								[user]="video.video.author.user"
+								[video]="video.video"
+							></sb-video-action>
 							<sb-video-action
 								class="ml-[10px]"
-								[user]="user"
+								[user]="video.video.author.user"
 								actionType="dislike"
 								[video]="video.video"
 							></sb-video-action>
@@ -215,3 +219,4 @@
 		</section>
 	</div>
 </ng-template>
+{{ currentUserVideos() | json }}

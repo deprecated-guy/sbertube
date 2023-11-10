@@ -8,6 +8,7 @@ import {
 	NgZone,
 	OnInit,
 	Renderer2,
+	signal,
 	TemplateRef,
 	ViewChild,
 } from '@angular/core';
@@ -21,7 +22,7 @@ import {
 import { UserAvatarComponent, UserBannerComponent } from '@shared/ui/components/user';
 import { UserService, VideoLoader } from '@showcase/services';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { BackendErrors, User } from '@types';
+import { BackendErrors, User, VideoResponse } from '@types';
 
 import {
 	ControlComponent,
@@ -87,6 +88,7 @@ export class LibraryComponent implements OnInit {
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 	protected currentUser = toSignal(this.currentUser$, { initialValue: {} as User });
 	protected form = inject(VIDEO_UPLOAD_FORM);
+	protected currentUserVideos = signal<VideoResponse[]>([]);
 
 	protected openWindow(templateRef: TemplateRef<unknown>) {
 		this._dialogRef
@@ -119,11 +121,11 @@ export class LibraryComponent implements OnInit {
 	}
 
 	protected get homePath() {
-		return `/user/${this.currentUser().username}`;
+		return `/user/account`;
 	}
 
 	protected get libraryPath() {
-		return `/user/${this.currentUser().username}/library`;
+		return `/user/library`;
 	}
 
 	protected uploadVideo(rippleColor: string) {
@@ -141,7 +143,8 @@ export class LibraryComponent implements OnInit {
 					.sendVideo(data)
 					.pipe(takeUntilDestroyed(this._destroyRef))
 					.subscribe({
-						next: () => {
+						next: (value) => {
+							this.currentUserVideos.update((videos) => [...videos, value]);
 							this._toastRef.createToast({ type: 'success', text: 'Updated Successfully', status: 200 });
 						},
 						error: (err: BackendErrors) => {
@@ -173,5 +176,8 @@ export class LibraryComponent implements OnInit {
 
 	ngOnInit() {
 		this._titleService.setTitle(`Your Library`);
+		this.currentUser$
+			.pipe(takeUntilDestroyed(this._destroyRef))
+			.subscribe((value) => this.currentUserVideos.set(value.videos));
 	}
 }

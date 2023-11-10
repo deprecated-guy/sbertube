@@ -16,8 +16,8 @@ export class VideoLoader {
 
 	private _title = signal('');
 
-	public sendVideo(data: FormData): Observable<Video> {
-		return this._http.post<VideoResponse>(this._httpRoute, data).pipe(map((v) => v.video));
+	public sendVideo(data: FormData): Observable<VideoResponse> {
+		return this._http.post<VideoResponse>(this._httpRoute, data).pipe();
 	}
 
 	public getVideos(search?: string) {
