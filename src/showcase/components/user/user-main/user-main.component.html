@@ -1,0 +1,24 @@
+<div class="w-full flex flex-col">
+	@if(currentUser(); as user) {
+	<sb-user-banner
+		[user]="user"
+		[fontSize]="40"
+		[rippleColor]="user.avatarBackground"
+		[rippleColor]="user.avatarBackground"
+		[hoverBgColor]="user.avatarBackground"
+		hoverBgColor="#f1f1f1"
+		[color]="user.bannerBackground"
+		[btnBgColor]="user.bannerBackground"
+	>
+	</sb-user-banner>
+	} @else {
+	<div class="w-full h-[300px] bg-gray-600 flex justify-center">
+		<sb-skeleton-loader width="100%" height="20px" />
+	</div>
+	}
+</div>
+@if(currentUser$ | async; as user) {
+<sb-user-page-switche [user]="user" [homePath]="homePath" [libraryPath]="libraryPath"></sb-user-page-switche>
+}
+
+<router-outlet name="account"></router-outlet>
