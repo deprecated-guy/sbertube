@@ -4,6 +4,7 @@ export interface User {
 	isVideoLiked: boolean;
 	isVideoDisliked: boolean;
 	isCommentDisliked: boolean;
+	bio: string;
 	isCommentLiked: boolean;
 	email: string;
 	password: string;

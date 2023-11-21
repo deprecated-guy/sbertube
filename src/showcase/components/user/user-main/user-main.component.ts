@@ -27,7 +27,7 @@ import { SkeletonLoaderComponent } from '@shared/ui/components';
 })
 export class UserMainComponent implements OnInit {
 	private _userService = inject(UserService);
-	private _store = inject(Store<User>);
+	private _store = inject(Store);
 	private _formBuilder = inject(FormBuilder);
 	private _toastRef = inject(ToastRef);
 	private _errors$ = this._store.select(getCurrentUserFail);
@@ -65,15 +65,14 @@ export class UserMainComponent implements OnInit {
 	}
 
 	protected saveNewBio(area: HTMLTextAreaElement) {
-		const fieldData = this.userAbout?.value as string;
 		const data: UserEdit = {
-			bio: fieldData,
+			bio: String(this.userAbout?.value),
 			avatarBackGround: this.currentUser()?.avatarBackground as string,
 			bannerBackground: this.currentUser()?.bannerBackground as string,
 			username: this.currentUser()?.username as string,
 			email: this.currentUser()?.email as string,
 			password: this.currentUser()?.password as string,
-		};
+		} as UserEdit;
 
 		this._store.dispatch(editUserStart({ data }));
 		this._toastRef.createToast({ type: 'success', text: 'Successfully edited', status: 200 });
@@ -88,7 +87,7 @@ export class UserMainComponent implements OnInit {
 	ngOnInit() {
 		this._store.dispatch(getCurrentUserStart());
 		this.currentUser$ = this._store.select(getCurrentUserSelector);
-		this.currentUser$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((user) => {
+		this.currentUser$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((user: User) => {
 			this._titleService.setTitle(`${user?.username}'s account`);
 			this.form.controls.aboutUser.setValue(user?.bio);
 		});

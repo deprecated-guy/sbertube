@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs';
-import { LikeResponseInterface, LikeRequest } from '@types';
+import { LikeResponse, LikeRequest } from '@types';
 import { PersistenceService } from '@shared/services';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class LikeService {
 	private _persistenceService = inject(PersistenceService);
 
 	public addLikeToVideo(data: LikeRequest) {
-		return this._httpClient.post<LikeResponseInterface>(this._httpRoute + `likeVideo/${data.videoId}`, {}).pipe(
+		return this._httpClient.post<LikeResponse>(this._httpRoute + `likeVideo/${data.videoId}`, {}).pipe(
 			tap(console.log),
 			map((v) => v.like),
 			tap(console.log),
@@ -23,7 +23,7 @@ export class LikeService {
 	}
 
 	public addLikeToComment(data: LikeRequest) {
-		return this._httpClient.post<LikeResponseInterface>(this._httpRoute + `likeComment/${data.commentId}`, {}).pipe(
+		return this._httpClient.post<LikeResponse>(this._httpRoute + `likeComment/${data.commentId}`, {}).pipe(
 			tap(console.log),
 			map((v) => v.like),
 			tap(console.log),

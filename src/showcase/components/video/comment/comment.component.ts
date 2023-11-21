@@ -17,11 +17,13 @@ import { TimeAgoPipe } from '@showcase/components/video/pipes/time-ago.pipe';
 import { PersistenceService } from '@shared/services';
 
 import { ButtonComponent, RippleDirective, showButtonsAnimation } from '@showcase/components/ui';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommentService, DislikeService, LikeService } from '@showcase/services';
 import { COMMENT_EDIT } from '@di';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { commentDeleteStart, updateCommentStart } from '@store/actions/comment';
+import { addDislikeStartAction, addLikeStartAction } from '@store/actions';
 
 @Component({
 	selector: 'sb-comment',
@@ -46,6 +48,7 @@ import { RouterLink } from '@angular/router';
 export class CommentComponent implements OnInit {
 	@ViewChild('area', { read: ElementRef<HTMLTextAreaElement> })
 	private _textArea!: ElementRef<HTMLTextAreaElement>;
+	private store = inject(Store);
 	@Input() comment: CommentResponse = <CommentResponse>{};
 	@Input() video: Video = <Video>{};
 	protected form = inject(COMMENT_EDIT);
@@ -77,7 +80,7 @@ export class CommentComponent implements OnInit {
 		this.isLiked = true;
 
 		if (!comment.isLiked && comment.dislikesCount > 0) {
-			this._likeService.addLikeToComment(data).pipe(takeUntilDestroyed(this._destroyRef)).subscribe(console.log);
+			this.store.dispatch(addLikeStartAction({ data }));
 		}
 		this.commentSig.update((video) => {
 			return {
@@ -103,7 +106,7 @@ export class CommentComponent implements OnInit {
 			return;
 		}
 		if (comment.likesCount > 0 && localStorage.getItem('commentLikeId') && !comment.isDisliked) {
-			this._dislikeService.addDislikeToComment(data).pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
+			this.store.dispatch(addDislikeStartAction({ data }));
 		}
 		this.commentSig.update((video) => {
 			return {
@@ -118,7 +121,7 @@ export class CommentComponent implements OnInit {
 	}
 
 	protected deleteComment(comment: Comment) {
-		this._commentService.deleteComment(comment.id).pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
+		this.store.dispatch(commentDeleteStart({ id: comment.id, videoId: comment.commentedVideo.video.id }));
 	}
 
 	protected editComment(comment: Comment) {
@@ -128,8 +131,7 @@ export class CommentComponent implements OnInit {
 			isEdited: true,
 			editedAt: new Date().toISOString(),
 		};
-
-		this._commentService.editComment(data).pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
+		this.store.dispatch(updateCommentStart({ data }));
 	}
 
 	ngOnInit() {

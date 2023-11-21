@@ -7,6 +7,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { User } from '@types';
 import { IS_MOBILE, USER_EDIT_FORM } from '@di';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Store } from '@ngrx/store';
+import { getCurrentUserStart } from '@store/actions';
+import { getCurrentUserSelector } from '@store/selectors';
 
 @Component({
 	selector: 'sb-settings',
@@ -26,8 +29,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class SettingsComponent implements OnInit {
 	protected editorAnimationState = 'closed';
 	protected settingsAnimationState = 'closed';
+	private store = inject(Store);
 	private _userService = inject(UserService);
-	protected currentUser$ = this._userService.getCurrentUser();
+	protected currentUser$ = this.store.select(getCurrentUserSelector);
 	protected currentUser = toSignal(this.currentUser$, { initialValue: {} as User });
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 
@@ -64,6 +68,7 @@ export class SettingsComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.store.dispatch(getCurrentUserStart());
 		console.log(this.currentUser());
 	}
 }

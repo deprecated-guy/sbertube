@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService, VideoLoader } from '@showcase/services';
 import { CountryLoader, PersistenceService } from '@shared/services';
 import { User } from '@types';
 import { UserAvatarComponent } from '@shared/ui/components/user';
@@ -15,6 +14,9 @@ import { ButtonComponent, RippleDirective } from '@showcase/components/ui';
 import { SettingsComponent } from '@showcase/components/ui/settings/settings.component';
 import { UserEditorComponent } from '@showcase/components/user/account-menu';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
+import { getCurrentUserStart } from '@store/actions';
+import { getVideosStart } from '@store/actions/video';
 
 @Component({
 	selector: 'sb-header',
@@ -37,12 +39,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 	providers: [Portal, SidebarRef],
 })
 export class HeaderComponent implements OnInit {
-	private _userService = inject(UserService);
+	private store = inject(Store);
 	private _persistenceService = inject(PersistenceService);
 	private _sidebarRef = inject(SidebarRef);
 	private _changeDetector = inject(ChangeDetectorRef);
 	private _countryLoader = inject(CountryLoader);
-	private _videoLoader = inject(VideoLoader);
 	private _countries = this._countryLoader.getCountries();
 	protected _countryCode = this._persistenceService.getItem('countryCode') as string;
 	private _lon!: number;
@@ -87,7 +88,7 @@ export class HeaderComponent implements OnInit {
 	}
 
 	protected searchVideo() {
-		this._videoLoader.getVideos(this.searchValue).pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
+		this.store.dispatch(getVideosStart({ search: this.searchValue as string }));
 	}
 
 	ngOnInit() {
@@ -95,7 +96,7 @@ export class HeaderComponent implements OnInit {
 		this.getCountryCode();
 		console.log(this.iconPath);
 		if (this.token) {
-			this.user$ = this._userService.getCurrentUser();
+			this.store.dispatch(getCurrentUserStart());
 		}
 
 		this.route.paramMap.pipe(map((param) => param.get('title') as string)).subscribe(console.log);

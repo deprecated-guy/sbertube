@@ -1,4 +1,4 @@
-import { DestroyRef, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Video, VideoResponse } from '@types';
 import { map, Observable, tap } from 'rxjs';
@@ -12,10 +12,6 @@ export class VideoLoader {
 	private _httpRoute = 'http://localhost:3001/video/';
 	private _http = inject(HttpClient);
 
-	private _destroyRef = inject(DestroyRef);
-
-	private _title = signal('');
-
 	public sendVideo(data: FormData): Observable<VideoResponse> {
 		return this._http.post<VideoResponse>(this._httpRoute, data).pipe();
 	}
@@ -25,6 +21,10 @@ export class VideoLoader {
 			return this._http.get<VideoResponse[]>(this._httpRoute + `?p=${search}`).pipe(map(this.mapVideos));
 		}
 		return this._http.get<VideoResponse[]>(this._httpRoute).pipe(map((v) => this.mapVideos(v)));
+	}
+
+	public getUserVideos(username: string) {
+		return this._http.get<VideoResponse[]>(this._httpRoute + `author/${username}`).pipe(map(this.mapVideos));
 	}
 
 	public updateVideo(data: EditVideo) {
@@ -42,6 +42,10 @@ export class VideoLoader {
 			tap(console.log),
 			map((value) => value.video),
 		);
+	}
+
+	public deleteVideo(id: number) {
+		return this._http.get(this._httpRoute + `${id}`);
 	}
 
 	private mapVideos = (videos: VideoResponse[]) => videos.map((video) => video.video);

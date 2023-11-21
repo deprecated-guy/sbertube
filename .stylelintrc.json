@@ -16,10 +16,22 @@
 			}
 		],
 		"selector-pseudo-element-colon-notation": "single",
+		"no-empty-source": null,
 		"rule-empty-line-before": null,
 		"declaration-empty-line-before": null,
 		"declaration-block-no-redundant-longhand-properties": null,
+		"selector-type-no-unknown": [true, {
+			"ignoreTypes": ["ng-deep"]
+		}],
+		"custom-property-pattern": null,
+		"selector-pseudo-element-no-unknown": [true, { "ignorePseudoElements": ["ng-deep"] }],
+
 		"at-rule-empty-line-before": null,
+		"value-no-vendor-prefix": null,
+		"selector-no-vendor-prefix": null,
+		"property-no-vendor-prefix": null,
+		"media-feature-name-no-vendor-prefix": null,
+		"alpha-value-notation": "number",
 		"order/properties-order": [
 			[],
 			{

@@ -16,7 +16,7 @@ export class CommentService {
 		return this.httpClient.put<CommentResponse>(this.httpRoute, data).pipe(map((v) => v.comment));
 	}
 
-	public deleteComment(id: number): Observable<ArrayBuffer> {
-		return this.httpClient.delete<ArrayBuffer>(this.httpRoute + `/${id}`);
+	public deleteComment(id: number, videoId: number): Observable<ArrayBuffer> {
+		return this.httpClient.delete<ArrayBuffer>(this.httpRoute + `/${id}?videoId=${videoId}`);
 	}
 }

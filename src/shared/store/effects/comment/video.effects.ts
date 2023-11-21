@@ -4,7 +4,6 @@ import { DislikeService, LikeService, VideoLoader } from '@showcase/services';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { BackendErrors } from '@types';
 
-import { PersistenceService } from '@shared/services';
 import {
 	getUserVideosFail,
 	getUserVideosStart,
@@ -37,7 +36,6 @@ export class VideoEffects {
 	private readonly likeService = inject(LikeService);
 	private readonly dislikeService = inject(DislikeService);
 	private readonly actions$ = inject(Actions);
-	private readonly persistenceService = inject(PersistenceService);
 
 	uploadVideo$ = createEffect(
 		() =>
@@ -100,7 +98,7 @@ export class VideoEffects {
 			this.actions$.pipe(
 				ofType(getVideosStart),
 				switchMap((state) =>
-					this.videoLoader.getUserVideos(state.search).pipe(
+					this.videoLoader.getVideos(state.search).pipe(
 						map((videos) => getVideosSuccess({ videos })),
 						catchError((error: BackendErrors) => of(getVideosFail({ error }))),
 					),

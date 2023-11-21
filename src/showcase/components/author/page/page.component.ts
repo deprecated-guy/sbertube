@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent, UserPageSwitcheComponent } from '@showcase/components/ui';
 import { ConvertTimePipe } from '@showcase/components/user';
@@ -10,10 +10,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { IS_MOBILE } from '@di';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { BackendErrors, User, UserEdit } from '@types';
+import { User, UserEdit } from '@types';
 import { map } from 'rxjs';
 import { PersistenceService } from '@shared/services';
 import { Portal } from '@cdk';
+import { Store } from '@ngrx/store';
+import { authorSelector } from '@store/selectors';
+import { editUserFail, editUserStart, getAuthor } from '@store/actions';
 
 @Component({
 	selector: 'sb-page',
@@ -39,6 +42,7 @@ export class PageComponent implements OnInit {
 	private _toastRef = inject(ToastRef);
 	private _destroyRef = inject(DestroyRef);
 	private _route = inject(ActivatedRoute);
+	private store = inject(Store);
 	private _router = inject(Router);
 	private _title$ = this._route.paramMap.pipe(map((param) => param.get('username') as string));
 	private _title = toSignal(this._title$, { initialValue: '' });
@@ -46,7 +50,8 @@ export class PageComponent implements OnInit {
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 	private _persistenceService = inject(PersistenceService);
 	protected token = this._persistenceService.getItem('token');
-	protected currentUser$ = this._userService.getUserByUsername(this._title());
+	protected currentUser$ = this.store.select(authorSelector);
+	private error$ = this.store.select(editUserFail);
 	protected currentUser = toSignal(this.currentUser$, { initialValue: {} as User });
 
 	protected form = this._formBuilder.group({
@@ -71,27 +76,22 @@ export class PageComponent implements OnInit {
 	protected saveNewBio(area: HTMLTextAreaElement) {
 		const fieldData = this.userAbout?.value as string;
 		const data: UserEdit = {
-			userAbout: fieldData,
+			bio: fieldData,
 			avatarBackGround: this.currentUser().avatarBackground,
 			bannerBackground: this.currentUser().bannerBackground,
 			username: this.currentUser().username,
 			email: this.currentUser().email,
 			password: this.currentUser().password,
 		};
-
-		this._userService
-			.editUser(data)
-			.pipe(takeUntilDestroyed(this._destroyRef))
-			.subscribe({
-				next: (user) => {
-					computed(() => (this.currentUser().userAbout = user.userAbout));
-					this._toastRef.createToast({ type: 'success', text: 'Successfully edited', status: 200 });
-					area.contentEditable = 'false';
-					area.classList.remove('edit-field');
-				},
-				error: (err: BackendErrors) =>
-					this._toastRef.createToast({ type: 'error', text: 'Successfully edited', status: err.statusCode }),
+		this.store.dispatch(editUserStart({ data }));
+		this._toastRef.createToast({ type: 'success', text: 'Successfully edited', status: 200 });
+		area.contentEditable = 'false';
+		area.classList.remove('edit-field');
+		if (this.error$) {
+			this.error$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((error) => {
+				this._toastRef.createToast({ type: 'error', text: 'Successfully edited', status: error.error.statusCode });
 			});
+		}
 	}
 
 	protected get homePath() {
@@ -107,6 +107,7 @@ export class PageComponent implements OnInit {
 		this._router.parseUrl('/');
 	}
 	ngOnInit() {
-		this._titleService.setTitle(`${this.currentUser().username}'s account`);
+		this._titleService.setTitle(`${this.currentUser()?.username as string}'s account`);
+		this.store.dispatch(getAuthor({ username: this._title() }));
 	}
 }

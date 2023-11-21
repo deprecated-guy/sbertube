@@ -1,6 +1,6 @@
 import { Comment, User, Video } from '@shared/types';
 
-export interface LikeResponseInterface {
+export interface LikeResponse {
 	like: Like;
 }
 

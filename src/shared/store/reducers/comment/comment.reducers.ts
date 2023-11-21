@@ -30,7 +30,7 @@ export const sendCommentReducer = createReducer(
 	})),
 	on(sendCommentSuccess, (state, { comment }) => ({
 		...state,
-		comment: comment,
+		comment: comment.comment,
 		error: null,
 		isLoading: false,
 	})),

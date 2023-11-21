@@ -13,14 +13,16 @@ import { REGISTER_FORM } from '@di';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@showcase/services';
-import { BehaviorSubject } from 'rxjs';
-import { ActivationReq, BackendErrors } from '@types';
+import { ActivationReq } from '@types';
 import { Portal } from '@cdk';
 import { PersistenceService } from '@shared/services';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { SbValidators } from '@shared/validators';
 import { ButtonComponent } from '@showcase/components/ui';
+import { Store } from '@ngrx/store';
+import { registerStartAction, verifyStartAction } from '@store/actions';
+import { registerFailSelector, verifyFailSelector } from '@store/selectors';
 
 @Component({
 	selector: 'sb-register',
@@ -52,10 +54,12 @@ export class RegisterComponent {
 	);
 	private _authService = inject(AuthService);
 	private _dialogRef = inject(DialogRef);
-	protected errors$ = new BehaviorSubject<BackendErrors>({} as BackendErrors);
 	private _destroyRef = inject(DestroyRef);
 	private _toastRef = inject(ToastRef);
 	private _snackbarRef = inject(SnackbarRef);
+	private store = inject(Store);
+	protected errors$ = this.store.select(registerFailSelector);
+	protected verifyErrors$ = this.store.select(verifyFailSelector);
 
 	private _persistenceService = inject(PersistenceService);
 
@@ -98,21 +102,21 @@ export class RegisterComponent {
 	}
 
 	protected submitCode(template: TemplateRef<unknown>) {
-		const id = this._persistenceService.getItem('id') as string;
+		const id = Number(this._persistenceService.getItem('id'));
 		const code = this.verifyForm?.value;
 		const data: ActivationReq = {
 			code: this.activation?.value as string,
 		};
 		console.log(id);
 		console.log(code);
-		this._authService.activateUser(id, data).subscribe({
-			next: (v) => {
-				this._toastRef.createToast({ type: 'success', status: 200, text: 'Successful' });
-				this._snackbarRef.showSnackbar({ template, message: 'You want to redirect to account?' });
-			},
-			error: (err: BackendErrors) =>
-				this._toastRef.createToast({ type: 'error', text: 'Registration Error', status: err.statusCode }),
-		});
+		this.store.dispatch(verifyStartAction({ id, data }));
+		this._toastRef.createToast({ type: 'success', status: 200, text: 'Successful' });
+		this._snackbarRef.showSnackbar({ template, message: 'You want to redirect to account?' });
+		if (this.verifyErrors$) {
+			this.verifyErrors$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((err) => {
+				this._toastRef.createToast({ type: 'error', text: 'Registration Error', status: err?.statusCode });
+			});
+		}
 	}
 
 	protected onSubmit(event: SubmitEvent) {
@@ -123,20 +127,12 @@ export class RegisterComponent {
 			timeAfterRegister: new Date(Date.now() - Date.now()).toISOString(),
 			...this.form.value,
 		};
-
-		this._authService
-			.registerUser(data)
-			.pipe(takeUntilDestroyed(this._destroyRef))
-			.subscribe({
-				next: (v) => {
-					this._persistenceService.setItem('id', String(v.id));
-					this._persistenceService.setItem('code', String(v.activationCode));
-					this._toastRef.createToast({ type: 'success', status: 200, text: 'Register Successful' });
-				},
-				error: (err: BackendErrors) => {
-					this._toastRef.createToast({ type: 'error', text: 'Error', status: err.statusCode });
-					this.errors$.next(err);
-				},
+		this.store.dispatch(registerStartAction({ data }));
+		this._toastRef.createToast({ type: 'success', status: 200, text: 'Register Successful' });
+		if (this.errors$) {
+			this.errors$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((err) => {
+				this._toastRef.createToast({ type: 'error', text: 'Error', status: err?.statusCode });
 			});
+		}
 	}
 }

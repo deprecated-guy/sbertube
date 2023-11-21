@@ -9,7 +9,10 @@ export const registerSuccessAction = createAction(
 );
 export const registerFailAction = createAction(AuthActionTypes.REGISTER_FAIL, props<{ error: BackendErrors }>());
 
-export const verifyStartAction = createAction(AuthActionTypes.VERIFY_START, props<{ data: ActivationReq }>());
+export const verifyStartAction = createAction(
+	AuthActionTypes.VERIFY_START,
+	props<{ id: number; data: ActivationReq }>(),
+);
 
 export const verifySuccessAction = createAction(AuthActionTypes.VERIFY_SUCCESS, props<{ user: User }>());
 export const verifyFailAction = createAction(AuthActionTypes.VERIFY_FAIL, props<{ error: BackendErrors }>());

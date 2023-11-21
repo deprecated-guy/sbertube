@@ -86,7 +86,7 @@ export class UserPageComponent implements OnInit {
 	protected saveNewBio(area: HTMLTextAreaElement) {
 		const fieldData = this.userAbout?.value as string;
 		const data: UserEdit = {
-			userAbout: fieldData,
+			bio: this.currentUser().bio,
 			avatarBackGround: this.currentUser().avatarBackground,
 			bannerBackground: this.currentUser().bannerBackground,
 			username: this.currentUser().username,

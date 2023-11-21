@@ -18,7 +18,7 @@ export class AuthService {
 		return this._httpClient.post<RegisterResponse>(this._httpRoute + '/register', data).pipe(tap(console.log));
 	}
 
-	public activateUser(id: string, code: ActivationReq) {
+	public activateUser(id: number, code: ActivationReq) {
 		return this._httpClient.post<UserResponse>(this._httpRoute + `/activate/${id}`, code).pipe(
 			map((data) => data.user),
 			tap((user) => {

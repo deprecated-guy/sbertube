@@ -11,7 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { UserService } from '@showcase/services';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { BackendErrors, User, UserEdit } from '@types';
+import { User, UserEdit } from '@types';
 import { IS_MOBILE, USER_EDIT_FORM } from '@di';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ControlComponent, createRipple, DialogRef, FormErrorComponent, IconComponent, ToastRef } from '@ui';
@@ -20,6 +20,9 @@ import { Portal } from '@cdk';
 import { Router, RouterLink } from '@angular/router';
 import { ButtonComponent, RippleDirective } from '@showcase/components/ui';
 import { PersistenceService } from '@shared/services';
+import { Store } from '@ngrx/store';
+import { editCurrentUserFailSelector, getCurrentUserSelector } from '@store/selectors';
+import { deleteUserStart, editUserStart } from '@store/actions';
 
 @Component({
 	selector: 'sb-user-editor',
@@ -52,9 +55,11 @@ export class UserEditorComponent {
 
 	private _ngZone = inject(NgZone);
 	private _renderer = inject(Renderer2);
+	private store = inject(Store);
 	private _userService = inject(UserService);
 	private _persistenceService = inject(PersistenceService);
-	protected currentUser$ = this._userService.getCurrentUser();
+	protected currentUser$ = this.store.select(getCurrentUserSelector);
+	private editionError$ = this.store.select(editCurrentUserFailSelector);
 	private _toastRef = inject(ToastRef);
 	private _destroyRef = inject(DestroyRef);
 	private _router = inject(Router);
@@ -87,16 +92,13 @@ export class UserEditorComponent {
 		const data: UserEdit = {
 			...this.form?.value,
 		};
-		this._userService
-			.editUser(data)
-			.pipe(takeUntilDestroyed(this._destroyRef))
-			.subscribe({
-				next: () => {
-					this._toastRef.createToast({ type: 'success', status: 200, text: 'Account Successfully edited' });
-				},
-				error: (err: BackendErrors) =>
-					this._toastRef.createToast({ type: 'error', text: 'Error during processing data', status: err.statusCode }),
+		this.store.dispatch(editUserStart({ data }));
+		this._toastRef.createToast({ type: 'success', status: 200, text: 'Account Successfully edited' });
+		if (this.editionError$) {
+			this.editionError$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((err) => {
+				this._toastRef.createToast({ type: 'error', text: 'Error during processing data', status: err?.statusCode });
 			});
+		}
 	}
 
 	protected showConfirmation(rippleColor: string) {
@@ -104,17 +106,11 @@ export class UserEditorComponent {
 		this._persistenceService.clean();
 		this._ngZone.runOutsideAngular(() =>
 			setTimeout(async () => {
-				this._userService
-					.deleteUser()
-					.pipe(takeUntilDestroyed(this._destroyRef))
-					.subscribe({
-						next: () => {
-							this._toastRef.createToast({ type: 'success', status: 200, text: 'All ok' });
-						},
-					});
+				this.store.dispatch(deleteUserStart());
+				this._toastRef.createToast({ type: 'success', status: 200, text: 'All ok' });
 
 				await this._router.navigateByUrl('/');
-				setTimeout(async () => {
+				setTimeout(() => {
 					window.location.reload();
 				}, 500);
 			}, 1000),

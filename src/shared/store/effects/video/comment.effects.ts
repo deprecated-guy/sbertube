@@ -16,9 +16,6 @@ import {
 	commendDeleteFail,
 	commentDeleteStart,
 	commentDeleteSuccess,
-	getVideoCommentsFail,
-	getVideoCommentsStart,
-	getVideoCommentsSuccess,
 	sendCommentFail,
 	sendCommentStart,
 	sendCommentSuccess,
@@ -70,20 +67,6 @@ export class CommentEffects {
 					this.commentService.deleteComment(state.id, state.videoId).pipe(
 						map(() => commentDeleteSuccess),
 						catchError((error: BackendErrors) => of(commendDeleteFail({ error }))),
-					),
-				),
-			),
-		{ dispatch: true },
-	);
-
-	getCVideoComments$ = createEffect(
-		() =>
-			this.actions$.pipe(
-				ofType(getVideoCommentsStart),
-				switchMap((state) =>
-					this.commentService.getVideoComments(state.videoId).pipe(
-						map((comments) => getVideoCommentsSuccess({ comments })),
-						catchError((error: BackendErrors) => of(getVideoCommentsFail({ error }))),
 					),
 				),
 			),
