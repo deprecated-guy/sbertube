@@ -14,10 +14,7 @@ export class LikeService {
 
 	public addLikeToVideo(data: LikeRequest) {
 		return this._httpClient.post<LikeResponse>(this._httpRoute + `likeVideo/${data.videoId}`, {}).pipe(
-			tap(console.log),
 			map((v) => v.like),
-			tap(console.log),
-			tap((v) => console.log(v.id)),
 			tap((v) => this._persistenceService.setItem('videoLikeId', `${v.id}`)),
 		);
 	}

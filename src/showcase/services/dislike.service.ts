@@ -15,18 +15,14 @@ export class DislikeService {
 
 	public addDislikeToVideo(data: LikeRequest) {
 		return this._httpClient.post<DislikeResponse>(this._httpRoute + `dislikeVideo/${data.videoId}`, {}).pipe(
-			tap((v) => console.log(v)),
 			map((v) => v.dislike),
-			tap((v) => console.log(v)),
 			tap((v) => this._persistenceService.setItem('videoDislikeId', v.id.toString())),
 		);
 	}
 
 	public addDislikeToComment(data: LikeRequest) {
 		return this._httpClient.post<DislikeResponse>(this._httpRoute + `dislikeComment/${data.commentId}`, {}).pipe(
-			tap((v) => console.log(v)),
 			map((v) => v.dislike),
-			tap((v) => console.log(v)),
 			tap((v) => this._persistenceService.setItem('commentDislikeId', v.id.toString())),
 		);
 	}

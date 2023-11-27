@@ -17,6 +17,8 @@ import { Portal } from '@cdk';
 import { Store } from '@ngrx/store';
 import { authorSelector } from '@store/selectors';
 import { editUserFail, editUserStart, getAuthor } from '@store/actions';
+import { RouteComputationPipe } from '@shared/pipes';
+import { routingConst } from '@showcase/routing';
 
 @Component({
 	selector: 'sb-page',
@@ -30,6 +32,7 @@ import { editUserFail, editUserStart, getAuthor } from '@store/actions';
 		UserAvatarComponent,
 		UserPageSwitcheComponent,
 		UserBannerComponent,
+		RouteComputationPipe,
 	],
 	providers: [Portal, ToastRef, DialogRef],
 	templateUrl: './page.component.html',
@@ -110,4 +113,6 @@ export class PageComponent implements OnInit {
 		this._titleService.setTitle(`${this.currentUser()?.username as string}'s account`);
 		this.store.dispatch(getAuthor({ username: this._title() }));
 	}
+
+	protected readonly routingConst = routingConst;
 }

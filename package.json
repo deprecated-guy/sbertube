@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "lintcheck": "eslint --quiet --ext .js,.ts,.tsx,.astro .",
     "typecheck": "tsc",
-    "prepare": "husky install & npx lint-staged & npx simple-git-hooks",
+    "prepare": "npx husky install & npx lint-staged",
     "commitlint": "commitlint --edit"
   },
   "husky": {

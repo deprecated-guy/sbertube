@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { UserService } from '@showcase/services';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { BackendErrors, User, UserEdit } from '@types';
+import { User, UserEdit } from '@types';
 import { UserAvatarComponent, UserBannerComponent } from '@shared/ui/components/user';
 import { ButtonComponent, showButtonsAnimation, UserPageSwitcheComponent } from '@showcase/components/ui';
 import {
@@ -20,6 +19,10 @@ import { ConvertTimePipe } from '@showcase/components/user/pipes/convert-time.pi
 import { Portal } from '@cdk';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import { editCurrentUserFailSelector, getCurrentUserSelector } from '@store/selectors';
+import { editUserStart, getCurrentUserStart } from '@store/actions';
+import { routingConst } from '@showcase/routing';
 
 @Component({
 	selector: 'sb-user-page',
@@ -46,7 +49,7 @@ import { Title } from '@angular/platform-browser';
 	animations: [showButtonsAnimation],
 })
 export class UserPageComponent implements OnInit {
-	private _userService = inject(UserService);
+	private store = inject(Store);
 	private _formBuilder = inject(FormBuilder);
 	private _destroyRef = inject(DestroyRef);
 	private _toastRef = inject(ToastRef);
@@ -54,8 +57,9 @@ export class UserPageComponent implements OnInit {
 	private _titleService = inject(Title);
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 
-	protected currentUser$ = this._userService.getCurrentUser();
+	protected currentUser$ = this.store.select(getCurrentUserSelector);
 	protected currentUser = toSignal(this.currentUser$, { initialValue: {} as User });
+	private error$ = this.store.select(editCurrentUserFailSelector);
 	protected form = this._formBuilder.group({
 		aboutUser: ['', [Validators.required]],
 	});
@@ -84,8 +88,7 @@ export class UserPageComponent implements OnInit {
 	}
 
 	protected saveNewBio(area: HTMLTextAreaElement) {
-		const fieldData = this.userAbout?.value as string;
-		const data: UserEdit = {
+		const payload: UserEdit = {
 			bio: this.currentUser().bio,
 			avatarBackGround: this.currentUser().avatarBackground,
 			bannerBackground: this.currentUser().bannerBackground,
@@ -93,20 +96,15 @@ export class UserPageComponent implements OnInit {
 			email: this.currentUser().email,
 			password: this.currentUser().password,
 		};
-
-		this._userService
-			.editUser(data)
-			.pipe(takeUntilDestroyed(this._destroyRef))
-			.subscribe({
-				next: (user) => {
-					computed(() => (this.currentUser().userAbout = user.userAbout));
-					this._toastRef.createToast({ type: 'success', text: 'Successfully edited', status: 200 });
-					area.contentEditable = 'false';
-					area.classList.remove('edit-field');
-				},
-				error: (err: BackendErrors) =>
-					this._toastRef.createToast({ type: 'error', text: 'Successfully edited', status: err.statusCode }),
+		this.store.dispatch(editUserStart({ data: payload }));
+		this._toastRef.createToast({ type: 'success', text: 'Successfully edited', status: 200 });
+		area.contentEditable = 'false';
+		area.classList.remove('edit-field');
+		if (this.error$) {
+			this.error$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((err) => {
+				this._toastRef.createToast({ type: 'error', text: 'Successfully edited', status: err?.statusCode });
 			});
+		}
 	}
 
 	protected unLogin() {
@@ -115,6 +113,9 @@ export class UserPageComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.store.dispatch(getCurrentUserStart());
 		this._titleService.setTitle(`${this.currentUser().username}'s account`);
 	}
+
+	protected readonly routingConst = routingConst;
 }

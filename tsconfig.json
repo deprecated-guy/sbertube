@@ -32,6 +32,7 @@
 			"@types": ["./src/shared/types"],
 			"@interceptors": ["./src/interceptors"],
 			"@store/*": ["src/shared/store/*"],
+			"@routing": ["src/shared/routing"],
       "@showcase/*": [
         "./src/showcase/*"
       ],

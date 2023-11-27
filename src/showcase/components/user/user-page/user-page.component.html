@@ -12,7 +12,11 @@
 	}
 </div>
 
-<sb-user-page-switche [user]="currentUser()" [homePath]="homePath" [libraryPath]="libraryPath"></sb-user-page-switche>
+<sb-user-page-switche
+	[user]="currentUser()"
+	[homePath]="routingConst.account"
+	[libraryPath]="routingConst.accountLib"
+></sb-user-page-switche>
 <div class="flex max-w-[900px] flex-col mx-auto my-[20px]">
 	<div class="w-full flex justify-center my-[15px] text-center px-[20px]">
 		<span>{{ currentUser().registerDate | convertTime }} </span>

@@ -1,7 +1,6 @@
 import {
 	ChangeDetectionStrategy,
 	Component,
-	DestroyRef,
 	ElementRef,
 	inject,
 	Input,
@@ -17,7 +16,6 @@ import { TimeAgoPipe } from '@showcase/components/video/pipes/time-ago.pipe';
 import { PersistenceService } from '@shared/services';
 
 import { ButtonComponent, RippleDirective, showButtonsAnimation } from '@showcase/components/ui';
-import { CommentService, DislikeService, LikeService } from '@showcase/services';
 import { COMMENT_EDIT } from '@di';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -53,12 +51,8 @@ export class CommentComponent implements OnInit {
 	@Input() video: Video = <Video>{};
 	protected form = inject(COMMENT_EDIT);
 	private _persistenceService = inject(PersistenceService);
-	private _commentService = inject(CommentService);
 	protected token = this._persistenceService.getItem('token');
 	protected isEditable = false;
-	private _likeService = inject(LikeService);
-	private _dislikeService = inject(DislikeService);
-	private _destroyRef = inject(DestroyRef);
 	@Input() user!: User;
 	protected commentSig = signal({} as Comment);
 

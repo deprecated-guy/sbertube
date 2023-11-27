@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { filter, map, Observable } from 'rxjs';
 import { CommentEdit, CommentInput, CommentResponse } from '@types';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class CommentService {
 	private httpRoute = 'http://localhost:3001/comment';
 	private httpClient = inject(HttpClient);
 	public createComment(data: CommentInput) {
-		return this.httpClient.post<CommentResponse>(this.httpRoute, data);
+		return this.httpClient.post<CommentResponse>(this.httpRoute, data).pipe(filter(Boolean));
 	}
 	public editComment(data: CommentEdit) {
 		return this.httpClient.put<CommentResponse>(this.httpRoute, data).pipe(map((v) => v.comment));

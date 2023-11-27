@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService } from '@showcase/services';
 import { Store } from '@ngrx/store';
 import { User, UserEdit } from '@types';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DialogRef, ToastRef } from '@ui';
-import { editUserFail, editUserStart, getCurrentUserFail, getCurrentUserStart } from '@store/actions';
-import { Router, RouterOutlet } from '@angular/router';
+import { editUserFail, editUserStart, getCurrentUserStart } from '@store/actions';
+import { RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { IS_MOBILE } from '@di';
 import { getCurrentUserSelector } from '@store/selectors';
@@ -26,13 +25,10 @@ import { SkeletonLoaderComponent } from '@shared/ui/components';
 	imports: [CommonModule, RouterOutlet, UserBannerComponent, UserPageSwitcheComponent, SkeletonLoaderComponent],
 })
 export class UserMainComponent implements OnInit {
-	private _userService = inject(UserService);
 	private _store = inject(Store);
 	private _formBuilder = inject(FormBuilder);
 	private _toastRef = inject(ToastRef);
-	private _errors$ = this._store.select(getCurrentUserFail);
 	private _ediUserError$ = this._store.select(editUserFail);
-	private _router = inject(Router);
 	private _titleService = inject(Title);
 	protected IS_MOBILE$ = inject(IS_MOBILE);
 	private destroyRef = inject(DestroyRef);
@@ -77,7 +73,7 @@ export class UserMainComponent implements OnInit {
 		this._store.dispatch(editUserStart({ data }));
 		this._toastRef.createToast({ type: 'success', text: 'Successfully edited', status: 200 });
 		if (this._ediUserError$) {
-			this._ediUserError$.subscribe((err) => {
+			this._ediUserError$.pipe(takeUntilDestroyed()).subscribe((err) => {
 				this._toastRef.createToast({ type: 'error', text: 'Successfully edited', status: err.error?.statusCode });
 			});
 		}

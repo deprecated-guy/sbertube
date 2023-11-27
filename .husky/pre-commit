@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 echo "pre-commit hook runs"
-npx --no -- commitlint --edit "$1" & npx lint-staged & npx stylelint **/*scss
+npx --no -- commitlint --edit "$1" & npx lint-staged & npx stylelint **/*.scss

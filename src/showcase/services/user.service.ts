@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User, UserResponse, UserEdit } from '@types';
 import { mapUser } from './mappers';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -12,11 +12,7 @@ export class UserService {
 	private _httpClient = inject(HttpClient);
 
 	public getCurrentUser(): Observable<User> {
-		return this._httpClient.get<UserResponse>(this._httpRoute + '/account').pipe(
-			tap(console.log),
-			map((user) => mapUser(user)),
-			tap((user) => console.log(user)),
-		);
+		return this._httpClient.get<UserResponse>(this._httpRoute + '/account').pipe(map((user) => mapUser(user)));
 	}
 
 	public getUserByUsername(username: string) {
@@ -24,7 +20,6 @@ export class UserService {
 	}
 
 	public deleteUser() {
-		console.log('123');
 		return this._httpClient.delete(this._httpRoute + '/account/delete');
 	}
 

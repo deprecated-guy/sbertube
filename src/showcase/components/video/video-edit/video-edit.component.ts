@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ControlComponent, FormErrorComponent, ServerErrorsComponent, ToastRef } from '@ui';
@@ -10,7 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Portal } from '@cdk';
 import { BackendErrors } from '@types';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { delay, Subject } from 'rxjs';
 
 @Component({
 	selector: 'sb-video-edit',
@@ -36,7 +36,6 @@ export class VideoEditComponent implements OnInit {
 	private _toastRef = inject(ToastRef);
 	protected form = inject(Video_EDIT);
 	protected isLoading = false;
-	private _ngZone = inject(NgZone);
 	private _destroyRef = inject(DestroyRef);
 	private _timer!: any;
 
@@ -50,30 +49,28 @@ export class VideoEditComponent implements OnInit {
 			isViewed: !!this.state$?.['video'].isViewed,
 			watchDate: this.state$?.['video'].watchedTime,
 		};
-		console.log(data);
 		this.isLoading = true;
-		setTimeout(() => {}, 2000);
-		this._ngZone.runOutsideAngular(() =>
-			setTimeout(() => {
-				this._videoLoader
-					.updateVideo(data)
-					.pipe(takeUntilDestroyed(this._destroyRef))
-					.subscribe({
-						next: () => this._toastRef.createToast({ type: 'success', text: 'All Done', status: 200 }),
-						error: (err: BackendErrors) => {
-							this._toastRef.createToast({ type: 'error', status: err.statusCode, text: 'Error while updating' });
-							this.serverErrors$.next(err);
-						},
-					});
-				this.isLoading = false;
-			}, 2000),
-		);
+		this._videoLoader
+			.updateVideo(data)
+			.pipe(delay(2000), takeUntilDestroyed(this._destroyRef))
+			.subscribe({
+				next: () => {
+					this._toastRef.createToast({ type: 'success', text: 'All Done', status: 200 });
+					this.isLoading = false;
+				},
+				error: (err: BackendErrors) => {
+					this.isLoading = false;
+					this._toastRef.createToast({ type: 'error', status: err.statusCode, text: 'Error while updating' });
+					this.serverErrors$.next(err);
+				},
+			});
+
 		this._timer = setTimeout(() => this._router.navigateByUrl(`/video/${this.state$?.['video'].alias}`), 2500);
+		this._destroyRef.onDestroy(() => clearTimeout(this._timer));
 	}
 	ngOnInit() {
 		if (!this.state$?.['video']) {
 			this._router.navigateByUrl('/**');
 		}
-		clearTimeout(this._timer);
 	}
 }

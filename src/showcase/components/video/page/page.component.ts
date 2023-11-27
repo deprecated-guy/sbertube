@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal 
 import { CommonModule } from '@angular/common';
 import { ControlComponent, FormErrorComponent, HintDirective, IconComponent, PlayerComponent, ToastRef } from '@ui';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { map } from 'rxjs';
 import { CommentService, UserService, VideoLoader } from '@showcase/services';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BackendErrors, CommentInput, CommentResponse, User, Video } from '@types';
@@ -16,6 +16,8 @@ import { TimeAgoPipe } from '@showcase/components/video/pipes/time-ago.pipe';
 import { PersistenceService } from '@shared/services';
 import { CommentComponent } from '@showcase/components/video/comment/comment.component';
 import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import { getCurrentUserSelector } from '@store/selectors';
 
 @Component({
 	selector: 'sb-page',
@@ -46,13 +48,14 @@ export class PageComponent implements OnInit {
 	private _route = inject(ActivatedRoute);
 	private _titleService = inject(Title);
 	private _userService = inject(UserService);
+	private store = inject(Store);
 	private _commentService = inject(CommentService);
 	private _destroyRef = inject(DestroyRef);
 	private _persistenceService = inject(PersistenceService);
 	protected videoTitle$ = this._route.paramMap.pipe(map((param) => param.get('title') as string));
 	protected video$ = this._videoLoader.getVideoByTitle(this.videoTitle$);
 	protected video = signal({} as Video);
-	protected currentUser$!: Observable<User>;
+	protected currentUser$ = this.store.select(getCurrentUserSelector);
 	protected user = signal({} as User);
 	protected comments = signal(this.video().comments as CommentResponse[]);
 	protected isOpenFull = false;

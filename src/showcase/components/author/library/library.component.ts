@@ -36,6 +36,8 @@ import { map } from 'rxjs';
 import { PersistenceService } from '@shared/services';
 import { UserBannerComponent } from '@shared/ui/components/user';
 import { VideoActionComponent } from '@shared/ui/components/video-action/video-action.component';
+import { RouteComputationPipe } from '@shared/pipes';
+import { routingConst } from '@showcase/routing';
 
 @Component({
 	selector: 'sb-library',
@@ -54,6 +56,7 @@ import { VideoActionComponent } from '@shared/ui/components/video-action/video-a
 		VideoPreviewComponent,
 		ButtonComponent,
 		VideoActionComponent,
+		RouteComputationPipe,
 	],
 	templateUrl: './library.component.html',
 	styleUrls: ['./library.component.scss'],
@@ -170,4 +173,7 @@ export class LibraryComponent implements OnInit {
 	ngOnInit() {
 		this._titleService.setTitle(`${this._pageTitle()}'s Library`);
 	}
+
+	protected readonly routingConst = routingConst;
+	protected readonly routingConst = routingConst;
 }

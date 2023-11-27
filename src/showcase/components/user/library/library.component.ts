@@ -43,6 +43,7 @@ import { types } from '@shared/types/vide-file-types';
 import { RouterModule } from '@angular/router';
 import { VideoActionComponent } from '@shared/ui/components/video-action/video-action.component';
 import { Title } from '@angular/platform-browser';
+import { routingConst } from '@showcase/routing';
 
 @Component({
 	selector: 'sb-library',
@@ -180,4 +181,6 @@ export class LibraryComponent implements OnInit {
 			.pipe(takeUntilDestroyed(this._destroyRef))
 			.subscribe((value) => this.currentUserVideos.set(value.videos));
 	}
+
+	protected readonly routingConst = routingConst;
 }
